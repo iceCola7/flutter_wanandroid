@@ -1,4 +1,4 @@
-package com.cxz.flutter.flutterwanandroid
+package com.cxz.flutter.wanandroid
 
 import android.os.Bundle
 
