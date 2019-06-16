@@ -1,6 +1,8 @@
 
 ## Flutter 学习资源汇总
 
+- [Dart 官方网站](https://dart.dev/)
+- [Dart 编程语言中文网](http://dart.goodev.org/)
 - [Flutter 官方网站](https://flutter.dev/)
 - [Flutter 中文网](https://flutterchina.club/)
 - [Flutter 官方 Demo](https://github.com/flutter/flutter/tree/master/examples/flutter_gallery)
@@ -11,5 +13,4 @@
 - [awesome-flutter](https://github.com/Solido/awesome-flutter)：包含了很多优秀的 Flutter 库
 - [Flutter-Notebook](https://github.com/OpenFlutter/Flutter-Notebook)：提供了很多优秀的样例
 - [Dart 语言的 Json 转 Model 插件](https://github.com/neverwoodsS/idea_dart_json_format)
-
 
