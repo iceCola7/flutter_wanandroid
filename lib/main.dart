@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/app.dart';
+import 'package:flutter_wanandroid/loading.dart';
 import 'package:flutter_wanandroid/ui/splash_screen.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
@@ -43,6 +44,7 @@ class MyAppState extends State<MyApp> {
         "app": (BuildContext context) => new App(),
         "splash": (BuildContext context) => new SplashScreen()
       },
+      home: new LoadingPage(),
     );
   }
 }

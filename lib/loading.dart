@@ -37,8 +37,8 @@ class _LoadingState extends State<LoadingPage> {
     return new Center(
       child: Stack(
         children: <Widget>[
-          Image.asset(
-            "./images/loading.png",
+          new Image.asset(
+            "images/loading.png",
             fit: BoxFit.cover,
           )
         ],

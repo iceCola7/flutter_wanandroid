@@ -21,7 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   # https://github.com/flutterchina/dio
-  dio: ^1.0.13
+  dio: ^2.1.0
   shared_preferences: ^0.4.3
   intro_slider: ^1.2.0
 
@@ -71,3 +71,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+  assets:
+    # 加载页面图片资源
+    - images/loading.png
