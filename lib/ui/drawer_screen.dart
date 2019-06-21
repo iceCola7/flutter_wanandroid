@@ -21,7 +21,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             accountName: InkWell(
               child: Text(
                 username,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
               ),
               onTap: () {},
             ),
@@ -30,6 +30,18 @@ class DrawerScreenState extends State<DrawerScreen> {
                 backgroundImage: AssetImage("images/head_avatar.png"),
               ),
             ),
+          ),
+          ListTile(
+            title: Text(
+              "我的收藏",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
+            leading: Icon(
+              Icons.collections,
+              size: 22,
+            ),
+            onTap: () {},
           )
         ],
       ),

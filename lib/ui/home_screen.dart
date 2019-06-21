@@ -20,9 +20,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(""),
-      ),
       body: new Center(child: new Text(textToShow)),
       floatingActionButton: new FloatingActionButton(
         onPressed: _updateText,
