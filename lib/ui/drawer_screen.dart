@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+
+class DrawerScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new DrawerScreenState();
+  }
+}
+
+class DrawerScreenState extends State<DrawerScreen> {
+  bool isLogin = false;
+  String username = "未登录";
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: InkWell(
+              child: Text(
+                username,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              onTap: () {},
+            ),
+            currentAccountPicture: InkWell(
+              child: CircleAvatar(
+                backgroundImage: AssetImage("images/head_avatar.png"),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

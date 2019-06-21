@@ -75,3 +75,4 @@ flutter:
   assets:
     # 加载页面图片资源
     - images/loading.png
+    - images/head_avatar.png

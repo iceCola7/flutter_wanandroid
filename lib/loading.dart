@@ -16,7 +16,12 @@ class _LoadingState extends State<LoadingPage> {
   void initState() {
     super.initState();
     new Future.delayed(Duration(seconds: 2), () {
-      _getHasSkip();
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(builder: (context) => App()),
+          (route) => route == null);
+
+      // _getHasSkip();
+
     });
   }
 
