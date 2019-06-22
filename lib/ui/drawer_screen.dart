@@ -42,6 +42,18 @@ class DrawerScreenState extends State<DrawerScreen> {
               size: 22,
             ),
             onTap: () {},
+          ),
+          ListTile(
+            title: Text(
+              "设置",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
+            leading: Icon(
+              Icons.settings,
+              size: 22,
+            ),
+            onTap: () {},
           )
         ],
       ),
