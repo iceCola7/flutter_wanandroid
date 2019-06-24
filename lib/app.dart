@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/drawer_screen.dart';
 import 'package:flutter_wanandroid/ui/home_screen.dart';
+import 'package:flutter_wanandroid/ui/knowledge_tree_screen.dart';
+import 'package:flutter_wanandroid/ui/navigation_screen.dart';
+import 'package:flutter_wanandroid/ui/project_screen.dart';
+import 'package:flutter_wanandroid/ui/wechat_screen.dart';
 
 class App extends StatefulWidget {
   @override
@@ -16,10 +20,10 @@ class AppState extends State<App> {
 
   var pages = <Widget>[
     HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
-    HomeScreen()
+    KnowledgeTreeScreen(),
+    WeChatScreen(),
+    NavigationScreen(),
+    ProjectScreen()
   ];
 
   @override
