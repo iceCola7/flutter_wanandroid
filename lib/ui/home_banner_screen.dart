@@ -49,6 +49,9 @@ class HomeBannerState extends State<HomeBannerScreen> {
           );
         }
       },
+      itemCount: bannerList.length,
+      autoplay: true,
+      pagination: new SwiperPagination(),
     );
   }
 }
