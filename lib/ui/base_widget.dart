@@ -39,15 +39,15 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _getBaseAppBar(),
+      appBar: _attachBaseAppBar(),
       body: Container(
         color: Colors.white, // 背景颜色
         child: Stack(
           children: <Widget>[
-            getContentWidget(context),
-            _getBaseErrorWidget(),
-            _getBaseLoadingWidget(),
-            _getBaseEmptyWidget()
+            attachContentWidget(context),
+            _attachBaseErrorWidget(),
+            _attachBaseLoadingWidget(),
+            _attachBaseEmptyWidget()
           ],
         ),
       ),
@@ -59,34 +59,31 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
     super.dispose();
   }
 
-  Widget getContentWidget(BuildContext context);
+  Widget attachContentWidget(BuildContext context);
 
-  /// 点击错误页面后展示内容
-  void onClickErrorWidget();
-
-  PreferredSizeWidget _getBaseAppBar() {
+  PreferredSizeWidget _attachBaseAppBar() {
     return PreferredSize(
       child: Offstage(
         offstage: !_isAppBarShow,
-        child: getAppBar(),
+        child: attachAppBar(),
       ),
       preferredSize: Size.fromHeight(50),
     );
   }
 
   /// 导航栏  AppBar
-  AppBar getAppBar();
+  AppBar attachAppBar();
 
   /// 错误页面
-  Widget _getBaseErrorWidget() {
+  Widget _attachBaseErrorWidget() {
     return Offstage(
       offstage: !_isErrorWidgetShow,
-      child: getErrorWidget(),
+      child: attachErrorWidget(),
     );
   }
 
   /// 暴露的错误页面方法，可以自己重写定制
-  Widget getErrorWidget() {
+  Widget attachErrorWidget() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 80),
       color: Colors.white,
@@ -125,16 +122,19 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
     );
   }
 
+  /// 点击错误页面后展示内容
+  void onClickErrorWidget();
+
   /// 正在加载页面
-  Widget _getBaseLoadingWidget() {
+  Widget _attachBaseLoadingWidget() {
     return Offstage(
       offstage: !_isLoadingWidgetShow,
-      child: getLoadingWidget(),
+      child: attachLoadingWidget(),
     );
   }
 
   /// 暴露的正在加载页面方法，可以自己重写定制
-  Widget getLoadingWidget() {
+  Widget attachLoadingWidget() {
     return Center(
       child: CupertinoActivityIndicator(
         radius: 15.0,
@@ -143,15 +143,15 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 数据为空的页面
-  Widget _getBaseEmptyWidget() {
+  Widget _attachBaseEmptyWidget() {
     return Offstage(
       offstage: !_isEmptyWidgetShow,
-      child: getEmptyWidget(),
+      child: attachEmptyWidget(),
     );
   }
 
   /// 暴露的数据为空页面方法，可以自己重写定制
-  Widget getEmptyWidget() {
+  Widget attachEmptyWidget() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
       color: Colors.white,

@@ -27,7 +27,7 @@ class DrawerScreenState extends State<DrawerScreen> {
             ),
             currentAccountPicture: InkWell(
               child: CircleAvatar(
-                backgroundImage: AssetImage("images/head_avatar.png"),
+                backgroundImage: AssetImage("images/ic_default_avatar.png"),
               ),
             ),
           ),
