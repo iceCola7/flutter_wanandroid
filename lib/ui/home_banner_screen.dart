@@ -16,10 +16,11 @@ class HomeBannerState extends State<HomeBannerScreen> {
   @override
   void initState() {
     super.initState();
+    bannerList.clear();
     _getBannerList();
   }
 
-  void _getBannerList() {
+  Future<Null> _getBannerList() {
     ApiService().getBannerList((BannerModel _bannerModel) {
       if (_bannerModel.data.length > 0) {
         setState(() {

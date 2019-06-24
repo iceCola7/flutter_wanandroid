@@ -29,6 +29,7 @@ class AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: _onWillPop,
       child: Scaffold(
         drawer: DrawerScreen(),
         appBar: AppBar(
@@ -71,5 +72,26 @@ class AppState extends State<App> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  Future<bool> _onWillPop() {
+    return showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+                title: new Text('提示'),
+                content: new Text('确定退出应用吗？'),
+                actions: <Widget>[
+                  new FlatButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: new Text('再看一会'),
+                  ),
+                  new FlatButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: new Text('退出'),
+                  ),
+                ],
+              ),
+        ) ??
+        false;
   }
 }
