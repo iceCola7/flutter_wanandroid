@@ -16,7 +16,7 @@ class HomeBannerState extends State<HomeBannerScreen> {
   @override
   void initState() {
     super.initState();
-    bannerList.clear();
+    bannerList.add(null);
     _getBannerList();
   }
 
