@@ -25,6 +25,7 @@ dependencies:
   intro_slider: ^1.2.0
   flutter_swiper: ^1.1.4
   fluttertoast: ^3.1.0
+  flutter_webview_plugin: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:
