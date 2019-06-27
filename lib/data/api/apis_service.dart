@@ -22,7 +22,7 @@ class ApiService {
   /// 获取首页文章列表数据
   void getArticleList(Function callback, Function errorCallback, int _page) {
     DioManager.singleton.dio
-        .get(Apis.HOME_ARTICLE_LIST + "$_page/json", options: _getOptions())
+        .get(Apis.HOME_ARTICLE_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
       callback(ArticleModel(response.data));
     }).catchError((e) {
