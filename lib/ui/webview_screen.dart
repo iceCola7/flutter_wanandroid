@@ -41,23 +41,25 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new WebviewScaffold(
-      url: widget.url,
-      appBar: new AppBar(
-        elevation: 0.4,
-        title: new Text(widget.title),
-        bottom: new PreferredSize(
-            child: isLoad
-                ? new LinearProgressIndicator()
-                : new Divider(
-                    height: 1.0,
-                    color: Theme.of(context).primaryColor,
-                  ),
-            preferredSize: Size.fromHeight(1.0)),
+    return WillPopScope(
+      child: WebviewScaffold(
+        url: widget.url,
+        appBar: new AppBar(
+          elevation: 0.4,
+          title: new Text(widget.title),
+          bottom: new PreferredSize(
+              child: isLoad
+                  ? new LinearProgressIndicator()
+                  : new Divider(
+                      height: 1.0,
+                      color: Theme.of(context).primaryColor,
+                    ),
+              preferredSize: Size.fromHeight(1.0)),
+        ),
+        withZoom: false,
+        withLocalStorage: true,
+        withJavascript: true,
       ),
-      withZoom: false,
-      withLocalStorage: true,
-      withJavascript: true,
     );
   }
 }
