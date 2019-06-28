@@ -6,6 +6,7 @@ import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/home_banner_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends BaseWidget {
@@ -58,10 +59,11 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   Future<Null> getTopArticleList() async {
     ApiService().getTopArticleList((TopArticleModel topArticleModel) {
       if (topArticleModel.errorCode == Constants.STATUS_SUCCESS) {
-        setState(() {
-          _articles.clear();
-          _articles.addAll(topArticleModel.data);
+        topArticleModel.data.forEach((v) {
+          v.top = 1;
         });
+        _articles.clear();
+        _articles.addAll(topArticleModel.data);
       }
       getArticleList();
     }, (DioError error) {
@@ -148,6 +150,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
           : FloatingActionButton(
               heroTag: "home",
               child: Icon(Icons.arrow_upward),
+              backgroundColor: ThemeUtils.currentColorTheme,
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,
@@ -173,26 +176,87 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     }
 
     if (index < _articles.length - 1) {
+      ArticleBean item = _articles[index - 1];
+
       return InkWell(
         onTap: () {
-          RouteUtil.toWebView(
-              context, _articles[index - 1].title, _articles[index - 1].link);
+          RouteUtil.toWebView(context, item.title, item.link);
         },
         child: Column(
           children: <Widget>[
             Container(
               color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Row(
                 children: <Widget>[
+                  Offstage(
+                    offstage: item.top == 0,
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: new Border.all(
+                            color: Color(0xFFF44336), width: 0.5),
+                        borderRadius: new BorderRadius.vertical(
+                            top: Radius.elliptical(2, 2),
+                            bottom: Radius.elliptical(2, 2)),
+                      ),
+                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                      margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                      child: Text(
+                        "置顶",
+                        style: TextStyle(
+                            fontSize: 10, color: const Color(0xFFF44336)),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: !item.fresh,
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: new Border.all(
+                            color: Color(0xFFF44336), width: 0.5),
+                        borderRadius: new BorderRadius.vertical(
+                            top: Radius.elliptical(2, 2),
+                            bottom: Radius.elliptical(2, 2)),
+                      ),
+                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                      margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                      child: Text(
+                        "新",
+                        style: TextStyle(
+                            fontSize: 10, color: const Color(0xFFF44336)),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: item.tags.length == 0,
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: new Border.all(
+                            color: Color(0xFF00BCD4), width: 0.5),
+                        borderRadius: new BorderRadius.vertical(
+                            top: Radius.elliptical(2, 2),
+                            bottom: Radius.elliptical(2, 2)),
+                      ),
+                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                      margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
+                      child: Text(
+                        item.tags.length > 0 ? item.tags[0].name : "",
+                        style: TextStyle(
+                            fontSize: 10, color: const Color(0xFF00BCD4)),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
                   Text(
-                    _articles[index - 1].author,
+                    item.author,
                     style: TextStyle(fontSize: 12),
                     textAlign: TextAlign.left,
                   ),
                   Expanded(
                     child: Text(
-                      _articles[index - 1].niceDate,
+                      item.niceDate,
                       style: TextStyle(fontSize: 12),
                       textAlign: TextAlign.right,
                     ),
@@ -200,6 +264,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                 ],
               ),
             ),
+
             Container(
               color: Colors.white,
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -207,11 +272,11 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      _articles[index - 1].title,
+                      item.title,
                       maxLines: 2,
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         color: const Color(0xFF3D4E5F),
                       ),
                       textAlign: TextAlign.left,
@@ -222,12 +287,12 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
             ),
             Container(
               color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      _articles[index - 1].superChapterName,
+                      item.superChapterName + " / " + item.chapterName,
                       style: TextStyle(fontSize: 12),
                       textAlign: TextAlign.left,
                     ),

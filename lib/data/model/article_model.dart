@@ -116,6 +116,7 @@ class ArticleBean {
   String superChapterName;
   String title;
   List<Tag> tags;
+  int top;
 
   ArticleBean.fromParams(
       {this.chapterId,
@@ -140,7 +141,8 @@ class ArticleBean {
       this.projectLink,
       this.superChapterName,
       this.title,
-      this.tags});
+      this.tags,
+      this.top});
 
   ArticleBean.fromJson(jsonRes) {
     chapterId = jsonRes['chapterId'];
@@ -166,6 +168,7 @@ class ArticleBean {
     superChapterName = jsonRes['superChapterName'];
     title = jsonRes['title'];
     tags = jsonRes['tags'] == null ? null : [];
+    top = 0;
 
     for (var tagsItem in tags == null ? [] : jsonRes['tags']) {
       tags.add(tagsItem == null ? null : new Tag.fromJson(tagsItem));
