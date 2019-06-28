@@ -22,6 +22,7 @@ class WeChatScreenState extends State<WeChatScreen> {
     return new Scaffold(
       body: new Center(child: new Text(textToShow)),
       floatingActionButton: new FloatingActionButton(
+        heroTag: "wechat",
         onPressed: _updateText,
         tooltip: 'Update Text',
         child: new Icon(Icons.update),

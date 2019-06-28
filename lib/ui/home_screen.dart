@@ -5,6 +5,7 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/home_banner_screen.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends BaseWidget {
@@ -129,6 +130,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
       floatingActionButton: !_isShowFAB
           ? null
           : FloatingActionButton(
+              heroTag: "home",
               child: Icon(Icons.arrow_upward),
               onPressed: () {
                 /// 回到顶部时要执行的动画
@@ -156,6 +158,10 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
 
     if (index < _articles.length - 1) {
       return InkWell(
+        onTap: () {
+          RouteUtil.toWebView(
+              context, _articles[index - 1].title, _articles[index - 1].link);
+        },
         child: Column(
           children: <Widget>[
             Container(

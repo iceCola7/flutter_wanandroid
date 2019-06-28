@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
 
 class HomeBannerScreen extends StatefulWidget {
   @override
@@ -11,20 +12,20 @@ class HomeBannerScreen extends StatefulWidget {
 }
 
 class HomeBannerState extends State<HomeBannerScreen> {
-  List<BannerBean> bannerList = new List();
+  List<BannerBean> _bannerList = new List();
 
   @override
   void initState() {
     super.initState();
-    bannerList.add(null);
+    _bannerList.add(null);
     _getBannerList();
   }
 
   Future<Null> _getBannerList() {
-    ApiService().getBannerList((BannerModel _bannerModel) {
-      if (_bannerModel.data.length > 0) {
+    ApiService().getBannerList((BannerModel bannerModel) {
+      if (bannerModel.data.length > 0) {
         setState(() {
-          bannerList = _bannerModel.data;
+          _bannerList = bannerModel.data;
         });
       }
     });
@@ -34,7 +35,7 @@ class HomeBannerState extends State<HomeBannerScreen> {
   Widget build(BuildContext context) {
     return Swiper(
       itemBuilder: (BuildContext context, int index) {
-        if (bannerList[index] == null || bannerList[index].imagePath == null) {
+        if (_bannerList[index] == null || _bannerList[index].imagePath == null) {
           return new Container(
             color: Colors.grey[100],
           );
@@ -42,15 +43,18 @@ class HomeBannerState extends State<HomeBannerScreen> {
           return InkWell(
             child: new Container(
               child: new Image.network(
-                bannerList[index].imagePath,
+                _bannerList[index].imagePath,
                 fit: BoxFit.fill,
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              RouteUtil.toWebView(
+                  context, _bannerList[index].title, _bannerList[index].url);
+            },
           );
         }
       },
-      itemCount: bannerList.length,
+      itemCount: _bannerList.length,
       autoplay: true,
       pagination: new SwiperPagination(),
     );

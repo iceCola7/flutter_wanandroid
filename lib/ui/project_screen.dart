@@ -22,6 +22,7 @@ class ProjectScreenState extends State<ProjectScreen> {
     return new Scaffold(
       body: new Center(child: new Text(textToShow)),
       floatingActionButton: new FloatingActionButton(
+        heroTag: "project",
         onPressed: _updateText,
         tooltip: 'Update Text',
         child: new Icon(Icons.update),
