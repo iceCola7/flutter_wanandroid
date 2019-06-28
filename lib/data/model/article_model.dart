@@ -25,6 +25,35 @@ class ArticleModel {
   }
 }
 
+class TopArticleModel {
+  int errorCode;
+  String errorMsg;
+  List<ArticleBean> data;
+
+  TopArticleModel.fromParams({this.errorCode, this.errorMsg, this.data});
+
+  factory TopArticleModel(jsonStr) => jsonStr == null
+      ? null
+      : jsonStr is String
+          ? new TopArticleModel.fromJson(json.decode(jsonStr))
+          : new TopArticleModel.fromJson(jsonStr);
+
+  TopArticleModel.fromJson(jsonRes) {
+    errorCode = jsonRes['errorCode'];
+    errorMsg = jsonRes['errorMsg'];
+    data = jsonRes['data'] == null ? null : [];
+
+    for (var dataItem in data == null ? [] : jsonRes['data']) {
+      data.add(dataItem == null ? null : new ArticleBean.fromJson(dataItem));
+    }
+  }
+
+  @override
+  String toString() {
+    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  }
+}
+
 class Data {
   int curPage;
   int offset;
@@ -32,7 +61,7 @@ class Data {
   int size;
   int total;
   bool over;
-  List<Article> datas;
+  List<ArticleBean> datas;
 
   Data.fromParams(
       {this.curPage,
@@ -53,7 +82,7 @@ class Data {
     datas = jsonRes['datas'] == null ? null : [];
 
     for (var datasItem in datas == null ? [] : jsonRes['datas']) {
-      datas.add(datasItem == null ? null : new Article.fromJson(datasItem));
+      datas.add(datasItem == null ? null : new ArticleBean.fromJson(datasItem));
     }
   }
 
@@ -63,7 +92,7 @@ class Data {
   }
 }
 
-class Article {
+class ArticleBean {
   int chapterId;
   int courseId;
   int id;
@@ -88,7 +117,7 @@ class Article {
   String title;
   List<Tag> tags;
 
-  Article.fromParams(
+  ArticleBean.fromParams(
       {this.chapterId,
       this.courseId,
       this.id,
@@ -113,7 +142,7 @@ class Article {
       this.title,
       this.tags});
 
-  Article.fromJson(jsonRes) {
+  ArticleBean.fromJson(jsonRes) {
     chapterId = jsonRes['chapterId'];
     courseId = jsonRes['courseId'];
     id = jsonRes['id'];

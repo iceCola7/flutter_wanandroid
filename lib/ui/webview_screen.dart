@@ -49,9 +49,12 @@ class WebViewScreenState extends State<WebViewScreen> {
           title: new Text(widget.title),
           bottom: new PreferredSize(
               child: isLoad
-                  ? new LinearProgressIndicator()
+                  ? new SizedBox(
+                      height: 2.0,
+                      child: new LinearProgressIndicator(),
+                    )
                   : new Divider(
-                      height: 1.0,
+                      height: 2.0,
                       color: Theme.of(context).primaryColor,
                     ),
               preferredSize: Size.fromHeight(1.0)),
@@ -61,5 +64,11 @@ class WebViewScreenState extends State<WebViewScreen> {
         withJavascript: true,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    flutterWebViewPlugin.dispose();
+    super.dispose();
   }
 }

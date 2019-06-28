@@ -19,6 +19,17 @@ class ApiService {
     });
   }
 
+  /// 获取首页置顶文章数据
+  void getTopArticleList(Function callback, Function errorCallback) {
+    DioManager.singleton.dio
+        .get(Apis.HOME_TOP_ARTICLE_LIST, options: _getOptions())
+        .then((response) {
+      callback(TopArticleModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
   /// 获取首页文章列表数据
   void getArticleList(Function callback, Function errorCallback, int _page) {
     DioManager.singleton.dio

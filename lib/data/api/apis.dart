@@ -7,6 +7,9 @@ class Apis {
   // 首页列表
   static const String HOME_ARTICLE_LIST = BASE_HOST + "/article/list";
 
+  // 首页置顶文章列表
+  static const String HOME_TOP_ARTICLE_LIST = BASE_HOST + "/article/top/json";
+
   // 知识体系详情
   static const String SYSTEM_TREE_CONTENT = BASE_HOST + "/tree/json";
 }

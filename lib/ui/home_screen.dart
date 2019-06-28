@@ -17,7 +17,7 @@ class HomeScreen extends BaseWidget {
 
 class HomeScreenState extends BaseWidgetState<HomeScreen> {
   /// 首页文章列表数据
-  List<Article> _articles = new List();
+  List<ArticleBean> _articles = new List();
 
   /// listview 控制器
   ScrollController _scrollController = new ScrollController();
@@ -34,7 +34,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     setAppBarVisible(false);
 
     showLoading();
-    getArticleList();
+    getTopArticleList();
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
@@ -54,6 +54,22 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     });
   }
 
+  /// 获取置顶文章数据
+  Future<Null> getTopArticleList() async {
+    ApiService().getTopArticleList((TopArticleModel topArticleModel) {
+      if (topArticleModel.errorCode == Constants.STATUS_SUCCESS) {
+        setState(() {
+          _articles.clear();
+          _articles.addAll(topArticleModel.data);
+        });
+      }
+      getArticleList();
+    }, (DioError error) {
+      print(error.response);
+    });
+  }
+
+  /// 获取文章列表数据
   Future<Null> getArticleList() async {
     _page = 0;
     ApiService().getArticleList((ArticleModel articleModel) {
@@ -61,7 +77,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         if (articleModel.data.datas.length > 0) {
           showContent();
           setState(() {
-            _articles.clear();
             _articles.addAll(articleModel.data.datas);
           });
         } else {
@@ -79,6 +94,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     }, _page);
   }
 
+  /// 获取更多文章列表数据
   Future<Null> getMoreArticleList() async {
     _page++;
     ApiService().getArticleList((ArticleModel articleModel) {
@@ -113,7 +129,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     return Scaffold(
       body: RefreshIndicator(
         displacement: 15,
-        onRefresh: getArticleList,
+        onRefresh: getTopArticleList,
         child: ListView.separated(
             itemBuilder: itemView,
             separatorBuilder: (BuildContext context, int index) {
@@ -144,7 +160,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   @override
   void onClickErrorWidget() {
     showLoading();
-    getArticleList();
+    getTopArticleList();
   }
 
   Widget itemView(BuildContext context, int index) {
