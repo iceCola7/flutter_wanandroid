@@ -11,5 +11,5 @@ class Apis {
   static const String HOME_TOP_ARTICLE_LIST = BASE_HOST + "/article/top/json";
 
   // 知识体系详情
-  static const String SYSTEM_TREE_CONTENT = BASE_HOST + "/tree/json";
+  static const String SYSTEM_TREE_LIST = BASE_HOST + "/tree/json";
 }
