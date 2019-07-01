@@ -164,7 +164,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
       floatingActionButton: !_isShowFAB
           ? null
           : FloatingActionButton(
-              heroTag: "home",
+              heroTag: "knowledge",
               child: Icon(Icons.arrow_upward),
               backgroundColor: ThemeUtils.currentColorTheme,
               onPressed: () {

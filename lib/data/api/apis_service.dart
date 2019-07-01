@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
-import 'package:flutter_wanandroid/net/dio_manager.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
+import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
+import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
+import 'package:flutter_wanandroid/net/dio_manager.dart';
 
 class ApiService {
   Options _getOptions() {
@@ -45,9 +47,32 @@ class ApiService {
   /// 获取知识体系数据
   void getKnowledgeTreeList(Function callback, Function errorCallback) {
     DioManager.singleton.dio
-        .get(Apis.SYSTEM_TREE_LIST, options: _getOptions())
+        .get(Apis.KNOWLEDGE_TREE_LIST, options: _getOptions())
         .then((response) {
       callback(KnowledgeTreeModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取公众号名称
+  void getWXChaptersList(Function callback, Function errorCallback) {
+    DioManager.singleton.dio
+        .get(Apis.WX_CHAPTERS_LIST, options: _getOptions())
+        .then((response) {
+      callback(WXChaptersModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取公众号文章列表数据
+  void getWXArticleList(
+      Function callback, Function errorCallback, int _id, int _page) {
+    DioManager.singleton.dio
+        .get(Apis.WX_ARTICLE_LIST + "/$_id/$_page/json", options: _getOptions())
+        .then((response) {
+      callback(WXArticleModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
