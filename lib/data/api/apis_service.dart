@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/data/api/apis.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
+import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/net/dio_manager.dart';
@@ -73,6 +74,17 @@ class ApiService {
         .get(Apis.WX_ARTICLE_LIST + "/$_id/$_page/json", options: _getOptions())
         .then((response) {
       callback(WXArticleModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取导航列表数据
+  void getNavigationList(Function callback, Function errorCallback) {
+    DioManager.singleton.dio
+        .get(Apis.NAVIGATION_LIST, options: _getOptions())
+        .then((response) {
+      callback(NavigationModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

@@ -18,4 +18,7 @@ class Apis {
 
   // 公众号文章数据列表
   static const String WX_ARTICLE_LIST = BASE_HOST + "/wxarticle/list";
+
+  // 导航数据列表
+  static const String NAVIGATION_LIST = BASE_HOST + "/navi/json";
 }
