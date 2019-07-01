@@ -4,6 +4,8 @@ import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/navigation_model.dart';
+import 'package:flutter_wanandroid/data/model/project_article_model.dart';
+import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/net/dio_manager.dart';
@@ -85,6 +87,30 @@ class ApiService {
         .get(Apis.NAVIGATION_LIST, options: _getOptions())
         .then((response) {
       callback(NavigationModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取项目分类列表数据
+  void getProjectTreeList(Function callback, Function errorCallback) {
+    DioManager.singleton.dio
+        .get(Apis.PROJECT_TREE_LIST, options: _getOptions())
+        .then((response) {
+      callback(ProjectTreeModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取项目文章列表数据
+  void getProjectArticleList(
+      Function callback, Function errorCallback, int _id, int _page) {
+    DioManager.singleton.dio
+        .get(Apis.PROJECT_ARTICLE_LIST + "/$_page/json?cid=$_id",
+            options: _getOptions())
+        .then((response) {
+      callback(ProjectArticleListModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

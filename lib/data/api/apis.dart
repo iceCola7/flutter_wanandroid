@@ -21,4 +21,10 @@ class Apis {
 
   // 导航数据列表
   static const String NAVIGATION_LIST = BASE_HOST + "/navi/json";
+
+  // 项目分类列表
+  static const String PROJECT_TREE_LIST = BASE_HOST + "/project/tree/json";
+
+  // 项目文章列表数据
+  static const String PROJECT_ARTICLE_LIST = BASE_HOST + "/project/list";
 }
