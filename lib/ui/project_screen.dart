@@ -1,32 +1,301 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/project_article_model.dart';
+import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
+import 'package:flutter_wanandroid/ui/base_widget.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class ProjectScreen extends StatefulWidget {
+class ProjectScreen extends BaseWidget {
   @override
-  State<StatefulWidget> createState() {
+  BaseWidgetState<BaseWidget> attachState() {
     return new ProjectScreenState();
   }
 }
 
-class ProjectScreenState extends State<ProjectScreen> {
-  String textToShow = "项目";
+class ProjectScreenState extends BaseWidgetState<ProjectScreen>
+    with TickerProviderStateMixin {
+  Color _themeColor = ThemeUtils.currentColorTheme;
 
-  void _updateText() {
-    setState(() {
-      // update the text
-      textToShow = "Flutter is Awesome!";
+  List<ProjectTreeBean> _projectTreeList = new List();
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    setAppBarVisible(false);
+    getProjectTreeList();
+  }
+
+  Future<Null> getProjectTreeList() async {
+    ApiService().getProjectTreeList((ProjectTreeModel projectTreeModel) {
+      if (projectTreeModel.errorCode == Constants.STATUS_SUCCESS) {
+        if (projectTreeModel.data.length > 0) {
+          showContent();
+          setState(() {
+            _projectTreeList.clear();
+            _projectTreeList.addAll(projectTreeModel.data);
+          });
+        } else {
+          showEmpty();
+        }
+      } else {
+        Fluttertoast.showToast(msg: projectTreeModel.errorMsg);
+      }
+    }, (DioError error) {
+      print(error.response);
+      showError();
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Center(child: new Text(textToShow)),
-      floatingActionButton: new FloatingActionButton(
-        heroTag: "project",
-        onPressed: _updateText,
-        tooltip: 'Update Text',
-        child: new Icon(Icons.update),
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  AppBar attachAppBar() {
+    return AppBar(
+      title: Text(""),
+    );
+  }
+
+  @override
+  Widget attachContentWidget(BuildContext context) {
+    _tabController =
+        new TabController(length: _projectTreeList.length, vsync: this);
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Container(
+            color: _themeColor,
+            height: 48,
+            child: TabBar(
+                indicatorColor: Colors.white,
+                labelStyle: TextStyle(fontSize: 16),
+                unselectedLabelStyle: TextStyle(fontSize: 16),
+                controller: _tabController,
+                isScrollable: true,
+                tabs: _projectTreeList.map((item) {
+                  return Tab(
+                    text: item.name,
+                  );
+                }).toList()),
+          ),
+          Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: _projectTreeList.map((item) {
+                  return ProjectArticleScreen(item.id);
+                }).toList()),
+          )
+        ],
       ),
     );
+  }
+
+  @override
+  void onClickErrorWidget() {
+    showLoading();
+    getProjectTreeList();
+  }
+}
+
+class ProjectArticleScreen extends StatefulWidget {
+  final int id;
+
+  ProjectArticleScreen(this.id);
+
+  @override
+  State<StatefulWidget> createState() {
+    return new ProjectArticleScreenState();
+  }
+}
+
+class ProjectArticleScreenState extends State<ProjectArticleScreen> {
+  List<ProjectArticleBean> _projectArticleList = new List();
+
+  /// listview 控制器
+  ScrollController _scrollController = new ScrollController();
+
+  /// 是否显示悬浮按钮
+  bool _isShowFAB = false;
+  int _page = 1;
+
+  Future<Null> getProjectArticleList() async {
+    _page = 1;
+    int _id = widget.id;
+    ApiService().getProjectArticleList((ProjectArticleListModel model) {
+      if (model.errorCode == Constants.STATUS_SUCCESS) {
+        setState(() {
+          _projectArticleList.clear();
+          _projectArticleList.addAll(model.data.datas);
+        });
+      } else {
+        Fluttertoast.showToast(msg: model.errorMsg);
+      }
+    }, (DioError error) {
+      print(error.response);
+    }, _id, _page);
+  }
+
+  Future<Null> getMoreProjectArticleList() async {
+    _page++;
+    int _id = widget.id;
+
+    ApiService().getProjectArticleList((ProjectArticleListModel model) {
+      if (model.errorCode == Constants.STATUS_SUCCESS) {
+        setState(() {
+          _projectArticleList.addAll(model.data.datas);
+        });
+      } else {
+        Fluttertoast.showToast(msg: model.errorMsg);
+      }
+    }, (DioError error) {
+      print(error.response);
+    }, _id, _page);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getProjectArticleList();
+
+    _scrollController.addListener(() {
+      /// 滑动到底部，加载更多
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        getMoreProjectArticleList();
+      }
+      if (_scrollController.offset < 200 && _isShowFAB) {
+        setState(() {
+          _isShowFAB = false;
+        });
+      } else if (_scrollController.offset >= 200 && !_isShowFAB) {
+        setState(() {
+          _isShowFAB = true;
+        });
+      }
+    });
+  }
+
+  Widget itemView(BuildContext context, int index) {
+    if (index < _projectArticleList.length) {
+      ProjectArticleBean item = _projectArticleList[index];
+      return InkWell(
+          onTap: () {
+            RouteUtil.toWebView(context, item.title, item.link);
+          },
+          child: InkWell(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                  child: new Image.network(
+                    item.envelopePic,
+                    width: 80,
+                    height: 130,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                        child: Text(
+                          item.title,
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          maxLines: 2,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                        child: Text(
+                          item.desc,
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0xFF757575)),
+                          maxLines: 2,
+                          textAlign: TextAlign.left,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              item.author,
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                            Text(
+                              item.niceDate,
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                        // child: Icon(Icons.info),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ));
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        displacement: 15,
+        onRefresh: getProjectArticleList,
+        child: ListView.separated(
+            itemBuilder: itemView,
+            separatorBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 0.5,
+                color: Colors.black26,
+              );
+            },
+            physics: new AlwaysScrollableScrollPhysics(),
+            controller: _scrollController,
+            itemCount: _projectArticleList.length),
+      ),
+      floatingActionButton: !_isShowFAB
+          ? null
+          : FloatingActionButton(
+              heroTag: "project",
+              child: Icon(Icons.arrow_upward),
+              backgroundColor: ThemeUtils.currentColorTheme,
+              onPressed: () {
+                /// 回到顶部时要执行的动画
+                _scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 2000), curve: Curves.ease);
+              },
+            ),
+    );
+    ;
   }
 }
