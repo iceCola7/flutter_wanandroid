@@ -27,4 +27,7 @@ class Apis {
 
   // 项目文章列表数据
   static const String PROJECT_ARTICLE_LIST = BASE_HOST + "/project/list";
+
+  // 搜索热词列表
+  static const String hot_search_list = BASE_HOST + "/hotkey/json";
 }
