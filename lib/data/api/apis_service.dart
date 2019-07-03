@@ -134,7 +134,7 @@ class ApiService {
       Function callback, Function errorCallback, int _page, String _keyword) {
     FormData formData = new FormData.from({"k": _keyword});
     DioManager.singleton.dio
-        .post(Apis.SEARCH_ARTICLE_LIST + "$_page/json",
+        .post(Apis.SEARCH_ARTICLE_LIST + "/$_page/json",
             data: formData, options: _getOptions())
         .then((response) {
       callback(SearchArticleModel.fromMap(response.data));

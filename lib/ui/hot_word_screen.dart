@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
+import 'package:flutter_wanandroid/ui/hot_result_screen.dart';
 import 'package:flutter_wanandroid/utils/common_util.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HotWordScreen extends StatefulWidget {
@@ -64,7 +66,9 @@ class HotWordScreenState extends State<HotWordScreen> {
   void textChanged() {
     focusNode.unfocus();
     if (editingController.text == null || editingController.text == "") {
-    } else {}
+    } else {
+      RouteUtil.push(context, HotResultScreen(editingController.text));
+    }
   }
 
   Future<Null> getSearchHotList() async {
@@ -117,10 +121,12 @@ class HotWordScreenState extends State<HotWordScreen> {
                 fontStyle: FontStyle.italic),
           ),
           labelPadding: EdgeInsets.only(left: 3.0, right: 3.0),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         ),
-        onTap: () {},
+        onTap: () {
+          RouteUtil.push(context, HotResultScreen(item.name));
+        },
       ));
     }
 

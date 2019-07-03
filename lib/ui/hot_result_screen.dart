@@ -2,23 +2,25 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
-import 'package:flutter_wanandroid/data/model/article_model.dart';
+import 'package:flutter_wanandroid/data/model/search_article_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
-import 'package:flutter_wanandroid/ui/home_banner_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class HomeScreen extends BaseWidget {
+class HotResultScreen extends BaseWidget {
+  String keyword;
+
+  HotResultScreen(this.keyword);
+
   @override
   BaseWidgetState<BaseWidget> attachState() {
-    return HomeScreenState();
+    return new HotResultScreenState();
   }
 }
 
-class HomeScreenState extends BaseWidgetState<HomeScreen> {
-  /// 首页文章列表数据
-  List<ArticleBean> _articles = new List();
+class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
+  List<SearchArticleBean> _searchArticleList = new List();
 
   /// listview 控制器
   ScrollController _scrollController = new ScrollController();
@@ -26,22 +28,20 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   /// 是否显示悬浮按钮
   bool _isShowFAB = false;
 
-  /// 页码，从0开始
   int _page = 0;
 
   @override
   void initState() {
     super.initState();
-    setAppBarVisible(false);
 
     showLoading();
-    getTopArticleList();
+    getSearchArticleList();
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreArticleList();
+        getMoreSearchArticleList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -55,31 +55,21 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     });
   }
 
-  /// 获取置顶文章数据
-  Future<Null> getTopArticleList() async {
-    ApiService().getTopArticleList((TopArticleModel topArticleModel) {
-      if (topArticleModel.errorCode == Constants.STATUS_SUCCESS) {
-        topArticleModel.data.forEach((v) {
-          v.top = 1;
-        });
-        _articles.clear();
-        _articles.addAll(topArticleModel.data);
-      }
-      getArticleList();
-    }, (DioError error) {
-      print(error.response);
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
-  /// 获取文章列表数据
-  Future<Null> getArticleList() async {
+  Future<Null> getSearchArticleList() async {
     _page = 0;
-    ApiService().getArticleList((ArticleModel model) {
+    ApiService().getSearchArticleList((SearchArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
           setState(() {
-            _articles.addAll(model.data.datas);
+            _searchArticleList.clear();
+            _searchArticleList.addAll(model.data.datas);
           });
         } else {
           showEmpty();
@@ -88,23 +78,18 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         Fluttertoast.showToast(msg: model.errorMsg);
       }
     }, (DioError error) {
-      /// 发生错误
       print(error.response);
-      setState(() {
-        showError();
-      });
-    }, _page);
+      showError();
+    }, _page, widget.keyword);
   }
 
-  /// 获取更多文章列表数据
-  Future<Null> getMoreArticleList() async {
+  Future<Null> getMoreSearchArticleList() async {
     _page++;
-    ApiService().getArticleList((ArticleModel model) {
+    ApiService().getSearchArticleList((SearchArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
-          showContent();
           setState(() {
-            _articles.addAll(model.data.datas);
+            _searchArticleList.addAll(model.data.datas);
           });
         } else {
           Fluttertoast.showToast(msg: "没有更多数据了");
@@ -113,18 +98,15 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         Fluttertoast.showToast(msg: model.errorMsg);
       }
     }, (DioError error) {
-      /// 发生错误
       print(error.response);
-      setState(() {
-        showError();
-      });
-    }, _page);
+      showError();
+    }, _page, widget.keyword);
   }
 
   @override
   AppBar attachAppBar() {
     return AppBar(
-      title: Text(""),
+      title: Text(widget.keyword),
     );
   }
 
@@ -133,7 +115,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     return Scaffold(
       body: RefreshIndicator(
         displacement: 15,
-        onRefresh: getTopArticleList,
+        onRefresh: getSearchArticleList,
         child: ListView.separated(
             itemBuilder: itemView,
             separatorBuilder: (BuildContext context, int index) {
@@ -144,13 +126,12 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
             },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
-            // 包含轮播和加载更多
-            itemCount: _articles.length + 2),
+            itemCount: _searchArticleList.length),
       ),
       floatingActionButton: !_isShowFAB
           ? null
           : FloatingActionButton(
-              heroTag: "home",
+              heroTag: "hot",
               child: Icon(Icons.arrow_upward),
               backgroundColor: ThemeUtils.currentColorTheme,
               onPressed: () {
@@ -162,23 +143,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     );
   }
 
-  @override
-  void onClickErrorWidget() {
-    showLoading();
-    getTopArticleList();
-  }
-
   Widget itemView(BuildContext context, int index) {
-    if (index == 0) {
-      return Container(
-        height: 200,
-        color: Colors.transparent,
-        child: new HomeBannerScreen(),
-      );
-    }
-
-    if (index < _articles.length - 1) {
-      ArticleBean item = _articles[index - 1];
+    if (index < _searchArticleList.length - 1) {
+      SearchArticleBean item = _searchArticleList[index];
 
       return InkWell(
         onTap: () {
@@ -191,26 +158,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
               padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Row(
                 children: <Widget>[
-                  Offstage(
-                    offstage: item.top == 0,
-                    child: Container(
-                      decoration: new BoxDecoration(
-                        border: new Border.all(
-                            color: Color(0xFFF44336), width: 0.5),
-                        borderRadius: new BorderRadius.vertical(
-                            top: Radius.elliptical(2, 2),
-                            bottom: Radius.elliptical(2, 2)),
-                      ),
-                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                      margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
-                      child: Text(
-                        "置顶",
-                        style: TextStyle(
-                            fontSize: 10, color: const Color(0xFFF44336)),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ),
                   Offstage(
                     offstage: !item.fresh,
                     child: Container(
@@ -309,8 +256,8 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
+  void onClickErrorWidget() {
+    showLoading();
+    getSearchArticleList();
   }
 }
