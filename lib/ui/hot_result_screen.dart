@@ -144,7 +144,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
   }
 
   Widget itemView(BuildContext context, int index) {
-    if (index < _searchArticleList.length - 1) {
+    if (index < _searchArticleList.length) {
       SearchArticleBean item = _searchArticleList[index];
 
       return InkWell(

@@ -148,7 +148,29 @@ class HotWordScreenState extends State<HotWordScreen> {
             alignment: WrapAlignment.start,
             children: widgets,
           ),
-        )
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Row(
+            children: <Widget>[
+              Text(
+                "搜索历史",
+                style:
+                    TextStyle(fontSize: 16.0, color: const Color(0xFF00BCD4)),
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Text(
+                    "清空",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                  ),
+                  onTap: () {},
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
