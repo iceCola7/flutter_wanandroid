@@ -2,10 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
+import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
+import 'package:flutter_wanandroid/data/model/search_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/net/dio_manager.dart';
@@ -111,6 +113,31 @@ class ApiService {
             options: _getOptions())
         .then((response) {
       callback(ProjectArticleListModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取搜索热词列表数据
+  void getSearchHotList(Function callback, Function errorCallback) {
+    DioManager.singleton.dio
+        .get(Apis.SEARCH_HOT_LIST, options: _getOptions())
+        .then((response) {
+      callback(HotWordModel.fromMap(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取搜索的文章列表
+  void getSearchArticleList(
+      Function callback, Function errorCallback, int _page, String _keyword) {
+    FormData formData = new FormData.from({"k": _keyword});
+    DioManager.singleton.dio
+        .post(Apis.SEARCH_ARTICLE_LIST + "$_page/json",
+            data: formData, options: _getOptions())
+        .then((response) {
+      callback(SearchArticleModel.fromMap(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
