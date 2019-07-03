@@ -33,30 +33,34 @@ class HomeBannerState extends State<HomeBannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Swiper(
-      itemBuilder: (BuildContext context, int index) {
-        if (_bannerList[index] == null || _bannerList[index].imagePath == null) {
-          return new Container(
-            color: Colors.grey[100],
-          );
-        } else {
-          return InkWell(
-            child: new Container(
-              child: new Image.network(
-                _bannerList[index].imagePath,
-                fit: BoxFit.fill,
+    return Offstage(
+      offstage: _bannerList.length == 0,
+      child: Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          if (_bannerList[index] == null ||
+              _bannerList[index].imagePath == null) {
+            return new Container(
+              color: Colors.grey[100],
+            );
+          } else {
+            return InkWell(
+              child: new Container(
+                child: new Image.network(
+                  _bannerList[index].imagePath,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            onTap: () {
-              RouteUtil.toWebView(
-                  context, _bannerList[index].title, _bannerList[index].url);
-            },
-          );
-        }
-      },
-      itemCount: _bannerList.length,
-      autoplay: true,
-      pagination: new SwiperPagination(),
+              onTap: () {
+                RouteUtil.toWebView(
+                    context, _bannerList[index].title, _bannerList[index].url);
+              },
+            );
+          }
+        },
+        itemCount: _bannerList.length,
+        autoplay: true,
+        pagination: new SwiperPagination(),
+      ),
     );
   }
 }
