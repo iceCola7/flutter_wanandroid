@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/history_model.dart';
 import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
 import 'package:flutter_wanandroid/ui/hot_result_screen.dart';
 import 'package:flutter_wanandroid/utils/common_util.dart';
+import 'package:flutter_wanandroid/utils/db_util.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -25,11 +27,17 @@ class HotWordScreenState extends State<HotWordScreen> {
 
   List<HotWordBean> _hotWordList = new List();
 
+  var db = DatabaseUtil();
+
+  List<HistoryBean> _historyList = new List();
+
   @override
   void initState() {
     super.initState();
 
     getSearchHotList();
+
+    getHistoryList();
 
     editingController = new TextEditingController(text: keyword);
     editingController.addListener(() {
@@ -67,10 +75,29 @@ class HotWordScreenState extends State<HotWordScreen> {
     focusNode.unfocus();
     if (editingController.text == null || editingController.text == "") {
     } else {
+      saveHistory(editingController.text);
       RouteUtil.push(context, HotResultScreen(editingController.text));
     }
   }
 
+  /// 保存搜索记录
+  Future<Null> saveHistory(String text) async {
+    HistoryBean bean = HistoryBean();
+    bean.name = text;
+    db.insertItem(bean);
+  }
+
+  /// 获取历史搜索记录
+  Future<Null> getHistoryList() async {
+    var list = await db.queryList();
+    setState(() {
+      _historyList.clear();
+      _historyList.addAll(HistoryBean.fromMapList(list));
+    });
+    print(list.toString());
+  }
+
+  /// 获取搜索热词
   Future<Null> getSearchHotList() async {
     ApiService().getSearchHotList((HotWordModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
@@ -84,6 +111,11 @@ class HotWordScreenState extends State<HotWordScreen> {
     }, (DioError error) {
       print(error.response);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -125,6 +157,7 @@ class HotWordScreenState extends State<HotWordScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         ),
         onTap: () {
+          saveHistory(item.name);
           RouteUtil.push(context, HotResultScreen(item.name));
         },
       ));
@@ -153,25 +186,88 @@ class HotWordScreenState extends State<HotWordScreen> {
           padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
           child: Row(
             children: <Widget>[
-              Text(
-                "搜索历史",
-                style:
-                    TextStyle(fontSize: 16.0, color: const Color(0xFF00BCD4)),
-              ),
               Expanded(
+                child: Text(
+                  "搜索历史",
+                  style:
+                      TextStyle(fontSize: 16.0, color: const Color(0xFF00BCD4)),
+                ),
+              ),
+              Container(
                 child: InkWell(
                   child: Text(
                     "清空",
                     textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 13.0, color: Colors.black54),
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    db.clear();
+                    setState(() {
+                      _historyList.clear();
+                    });
+                  },
                 ),
               ),
             ],
           ),
         ),
+        ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+            itemBuilder: itemHistoryView,
+            separatorBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 0.1,
+                color: Colors.black26,
+              );
+            },
+            physics: new AlwaysScrollableScrollPhysics(),
+            itemCount: _historyList.length),
       ],
     );
+  }
+
+  Widget itemHistoryView(BuildContext context, int index) {
+    if (index < _historyList.length) {
+      HistoryBean item = _historyList[index];
+      return InkWell(
+          child: Container(
+        padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  RouteUtil.push(context, HotResultScreen(item.name));
+                },
+                child: Text(
+                  item.name,
+                  style: TextStyle(fontSize: 14.0, color: Colors.black54),
+                ),
+              ),
+            ),
+            Container(
+              child: InkWell(
+                onTap: () {
+                  db.deleteById(item.id);
+                  setState(() {
+                    _historyList.removeAt(index);
+                  });
+                },
+                child: Icon(
+                  Icons.close,
+                  color: Colors.black26,
+                  size: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ));
+    }
+    return null;
   }
 }
