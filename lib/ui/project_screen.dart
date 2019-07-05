@@ -161,6 +161,12 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
@@ -281,7 +287,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
             },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
-            itemCount: _projectArticleList.length),
+            itemCount: _projectArticleList.length + 1),
       ),
       floatingActionButton: !_isShowFAB
           ? null
@@ -296,6 +302,5 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
               },
             ),
     );
-    ;
   }
 }

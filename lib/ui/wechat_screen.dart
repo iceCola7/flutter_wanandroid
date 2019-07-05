@@ -126,7 +126,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   bool _isShowFAB = false;
   int _page = 1;
 
-  Future<Null> getWXArticleList() {
+  Future<Null> getWXArticleList() async {
     _page = 1;
     int _id = widget.id;
     ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
@@ -143,7 +143,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
     }, _id, _page);
   }
 
-  Future<Null> getMoreWXArticleList() {
+  Future<Null> getMoreWXArticleList() async {
     _page++;
     int _id = widget.id;
     ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
@@ -157,6 +157,12 @@ class WXArticleScreenState extends State<WXArticleScreen> {
     }, (DioError error) {
       print(error.response);
     }, _id, _page);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -271,7 +277,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             // 包含轮播和加载更多
-            itemCount: _wxArticleList.length),
+            itemCount: _wxArticleList.length + 1),
       ),
       floatingActionButton: !_isShowFAB
           ? null

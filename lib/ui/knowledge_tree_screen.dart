@@ -124,7 +124,6 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
 
   Widget itemChildrenView(List<KnowledgeTreeChildBean> children) {
     List<Widget> tiles = []; //先建一个数组用于存放循环生成的widget
-    Widget content; //单独一个widget组件，用于返回需要生成的内容widget
     for (var item in children) {
       tiles.add(
         new Text(
@@ -134,13 +133,11 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
       );
     }
 
-    content = Wrap(
+    return Wrap(
         spacing: 10,
         runSpacing: 6,
         alignment: WrapAlignment.start,
         children: tiles);
-
-    return content;
   }
 
   @override
@@ -159,7 +156,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
             },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
-            itemCount: _list.length),
+            itemCount: _list.length + 1),
       ),
       floatingActionButton: !_isShowFAB
           ? null

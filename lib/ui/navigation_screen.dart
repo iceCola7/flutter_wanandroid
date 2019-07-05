@@ -48,7 +48,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
     });
   }
 
-  Future<Null> getNavigationList() {
+  Future<Null> getNavigationList() async {
     ApiService().getNavigationList((NavigationModel navigationModel) {
       if (navigationModel.errorCode == Constants.STATUS_SUCCESS) {
         if (navigationModel.data.length > 0) {
@@ -67,6 +67,12 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
       print(error.response);
       showError();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -92,7 +98,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
             },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
-            itemCount: _navigationList.length),
+            itemCount: _navigationList.length + 1),
       ),
       floatingActionButton: !_isShowFAB
           ? null
