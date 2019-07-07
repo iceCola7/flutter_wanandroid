@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
+import 'package:flutter_wanandroid/data/model/UserModel.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
@@ -138,6 +139,37 @@ class ApiService {
             data: formData, options: _getOptions())
         .then((response) {
       callback(SearchArticleModel.fromMap(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 登录
+  void login(Function callback, Function errorCallback, String _username,
+      String _password) async {
+    FormData formData =
+        new FormData.from({"username": _username, "password": _password});
+    DioManager.singleton.dio
+        .post(Apis.USER_LOGIN, data: formData, options: _getOptions())
+        .then((response) {
+      callback(UserModel(response.data), response);
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 注册
+  void register(Function callback, Function errorCallback, String _username,
+      String _password) async {
+    FormData formData = new FormData.from({
+      "username": _username,
+      "password": _password,
+      "repassword": _password
+    });
+    DioManager.singleton.dio
+        .post(Apis.USER_REGISTER, data: formData, options: null)
+        .then((response) {
+      callback(UserModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
