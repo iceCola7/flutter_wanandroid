@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/ui/login_screen.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -23,7 +25,9 @@ class DrawerScreenState extends State<DrawerScreen> {
                 username,
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
               ),
-              onTap: () {},
+              onTap: () {
+                RouteUtil.push(context, LoginScreen());
+              },
             ),
             currentAccountPicture: InkWell(
               child: CircleAvatar(
