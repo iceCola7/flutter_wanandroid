@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/application.dart';
+import 'package:flutter_wanandroid/common/user.dart';
+import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 
@@ -14,6 +17,26 @@ class DrawerScreenState extends State<DrawerScreen> {
   String username = "未登录";
 
   @override
+  void initState() {
+    super.initState();
+    this.registerLoginEvent();
+
+    if (null != User.singleton.userName && User.singleton.userName.isNotEmpty) {
+      isLogin = true;
+      username = User.singleton.userName;
+    }
+  }
+
+  void registerLoginEvent() {
+    Application.eventBus.on<LoginEvent>().listen((event) {
+      setState(() {
+        isLogin = true;
+        username = User.singleton.userName;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
@@ -26,7 +49,9 @@ class DrawerScreenState extends State<DrawerScreen> {
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
               ),
               onTap: () {
-                RouteUtil.push(context, LoginScreen());
+                if (!isLogin) {
+                  RouteUtil.push(context, LoginScreen());
+                }
               },
             ),
             currentAccountPicture: InkWell(

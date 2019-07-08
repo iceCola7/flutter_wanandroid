@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/app.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/loading.dart';
 import 'package:flutter_wanandroid/ui/splash_screen.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
@@ -31,6 +33,7 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    Application.eventBus = new EventBus();
   }
 
   @override
@@ -46,5 +49,11 @@ class MyAppState extends State<MyApp> {
       },
       home: new LoadingPage(),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Application.eventBus.destroy();
   }
 }
