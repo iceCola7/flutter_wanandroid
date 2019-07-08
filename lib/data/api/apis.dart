@@ -33,4 +33,10 @@ class Apis {
 
   // 搜索文章类别列表
   static const String SEARCH_ARTICLE_LIST = BASE_HOST + "/article/query";
+
+  // 用户登录
+  static const String USER_LOGIN = BASE_HOST + "/user/login";
+
+  // 用户注册
+  static const String USER_REGISTER = BASE_HOST + "/user/register";
 }
