@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/UserModel.dart';
+import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/register_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,8 +29,9 @@ class LoginScreenState extends State<LoginScreen> {
         (null != password && password.length > 0)) {
       ApiService().login((UserModel model, Response response) {
         if (null != model) {
-          User().saveUserInfo(model, response);
           if (model.errorCode == Constants.STATUS_SUCCESS) {
+            User().saveUserInfo(model, response);
+            Application.eventBus.fire(new LoginEvent());
             Fluttertoast.showToast(msg: "登录成功");
             Navigator.of(context).pop();
           } else {

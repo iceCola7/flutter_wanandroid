@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/model/UserModel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_wanandroid/utils/sp_util.dart';
 
 class User {
   static final User singleton = User._internal();
@@ -22,22 +22,20 @@ class User {
   }
 
   Future<Null> getUserInfo() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    List<String> cookies = sp.getStringList("cookies");
+    List<String> cookies = SPUtil.getStringList("cookies");
     if (cookies != null) {
       cookie = cookies;
     }
 
-    String username = sp.getString("username");
+    String username = SPUtil.getString("username");
     if (username != null) {
       userName = username;
     }
   }
 
   saveInfo() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setStringList("cookies", cookie);
-    sp.setString("username", userName);
+    SPUtil.putStringList("cookies", cookie);
+    SPUtil.putString("username", userName);
   }
 
   void clearUserInfo() {
@@ -47,8 +45,7 @@ class User {
   }
 
   clearInfo() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setStringList("cookies", null);
-    sp.setString("username", null);
+    SPUtil.putString("cookies", null);
+    SPUtil.putString("username", null);
   }
 }
