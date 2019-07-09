@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/data/api/apis.dart';
 import 'package:flutter_wanandroid/data/model/UserModel.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
+import 'package:flutter_wanandroid/data/model/collection_model.dart';
 import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/navigation_model.dart';
@@ -170,6 +171,17 @@ class ApiService {
         .post(Apis.USER_REGISTER, data: formData, options: null)
         .then((response) {
       callback(UserModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取收藏列表
+  void getCollectionList(Function callback, Function errorCallback, int _page) {
+    DioManager.singleton.dio
+        .get(Apis.COLLECTION_LIST + "/$_page/json", options: _getOptions())
+        .then((response) {
+      callback(CollectionModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

@@ -39,4 +39,7 @@ class Apis {
 
   // 用户注册
   static const String USER_REGISTER = BASE_HOST + "/user/register";
+
+  /// 收藏列表
+  static const String COLLECTION_LIST = BASE_HOST + "/lg/collect/list";
 }
