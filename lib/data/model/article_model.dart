@@ -3,7 +3,7 @@ import 'dart:convert' show json;
 class ArticleModel {
   int errorCode;
   String errorMsg;
-  Data data;
+  ArticleListBean data;
 
   ArticleModel.fromParams({this.errorCode, this.errorMsg, this.data});
 
@@ -16,7 +16,7 @@ class ArticleModel {
   ArticleModel.fromJson(jsonRes) {
     errorCode = jsonRes['errorCode'];
     errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null ? null : new Data.fromJson(jsonRes['data']);
+    data = jsonRes['data'] == null ? null : new ArticleListBean.fromJson(jsonRes['data']);
   }
 
   @override
@@ -54,7 +54,7 @@ class TopArticleModel {
   }
 }
 
-class Data {
+class ArticleListBean {
   int curPage;
   int offset;
   int pageCount;
@@ -63,7 +63,7 @@ class Data {
   bool over;
   List<ArticleBean> datas;
 
-  Data.fromParams(
+  ArticleListBean.fromParams(
       {this.curPage,
       this.offset,
       this.pageCount,
@@ -72,7 +72,7 @@ class Data {
       this.over,
       this.datas});
 
-  Data.fromJson(jsonRes) {
+  ArticleListBean.fromJson(jsonRes) {
     curPage = jsonRes['curPage'];
     offset = jsonRes['offset'];
     pageCount = jsonRes['pageCount'];

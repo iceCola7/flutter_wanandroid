@@ -4,6 +4,7 @@ import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -70,7 +71,9 @@ class DrawerScreenState extends State<DrawerScreen> {
               Icons.collections,
               size: 22,
             ),
-            onTap: () {},
+            onTap: () {
+              Fluttertoast.showToast(msg: "该功能正在开发中...");
+            },
           ),
           ListTile(
             title: Text(
@@ -82,7 +85,9 @@ class DrawerScreenState extends State<DrawerScreen> {
               Icons.settings,
               size: 22,
             ),
-            onTap: () {},
+            onTap: () {
+              Fluttertoast.showToast(msg: "该功能正在开发中...");
+            },
           ),
           ListTile(
             title: Text(
@@ -94,7 +99,9 @@ class DrawerScreenState extends State<DrawerScreen> {
               Icons.info,
               size: 22,
             ),
-            onTap: () {},
+            onTap: () {
+              Fluttertoast.showToast(msg: "该功能正在开发中...");
+            },
           ),
           ListTile(
             title: Text(
