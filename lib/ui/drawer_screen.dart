@@ -22,6 +22,7 @@ class DrawerScreenState extends State<DrawerScreen> {
     super.initState();
     this.registerLoginEvent();
 
+    User().getUserInfo();
     if (null != User.singleton.userName && User.singleton.userName.isNotEmpty) {
       isLogin = true;
       username = User.singleton.userName;

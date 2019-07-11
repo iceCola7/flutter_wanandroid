@@ -7,6 +7,7 @@ import 'package:flutter_wanandroid/app.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/loading.dart';
 import 'package:flutter_wanandroid/ui/splash_screen.dart';
+import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 void main() {
@@ -34,6 +35,11 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     Application.eventBus = new EventBus();
+    _initAsync();
+  }
+
+  void _initAsync() async {
+    await SPUtil.getInstance();
   }
 
   @override
