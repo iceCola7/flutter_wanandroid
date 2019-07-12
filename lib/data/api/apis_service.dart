@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/data/api/apis.dart';
 import 'package:flutter_wanandroid/data/model/UserModel.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
+import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/collection_model.dart';
 import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
@@ -182,6 +183,31 @@ class ApiService {
         .get(Apis.COLLECTION_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
       callback(CollectionModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 新增收藏(收藏站内文章)
+  void addCollection(Function callback, Function errorCallback, int _id) {
+    DioManager.singleton.dio
+        .post(Apis.ADD_COLLECTION + "/$_id/json", options: _getOptions())
+        .then((response) {
+      callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 取消收藏
+  void cancelCollection(
+      Function callback, Function errorCallback, int _id, int _originId) {
+    FormData formData = new FormData.from({"originId": _originId});
+    DioManager.singleton.dio
+        .post(Apis.CANCEL_COLLECTION + "/$_id/json",
+            data: formData, options: _getOptions())
+        .then((response) {
+      callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
