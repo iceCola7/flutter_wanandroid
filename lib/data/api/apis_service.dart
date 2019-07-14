@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
-import 'package:flutter_wanandroid/data/model/UserModel.dart';
+import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';

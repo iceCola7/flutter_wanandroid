@@ -4,7 +4,7 @@ import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
-import 'package:flutter_wanandroid/data/model/UserModel.dart';
+import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/register_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';

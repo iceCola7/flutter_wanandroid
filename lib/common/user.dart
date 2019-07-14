@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_wanandroid/data/model/UserModel.dart';
+import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 
 class User {
