@@ -147,79 +147,69 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
     if (index < _collectList.length) {
       CollectionBean item = _collectList[index];
       return InkWell(
-          onTap: () {
-            RouteUtil.toWebView(context, item.title, item.link);
-          },
-          child: InkWell(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                  child: new Image.network(
-                    item.envelopePic,
-                    width: 80,
-                    height: 60,
-                    fit: BoxFit.fill,
+        onTap: () {
+          RouteUtil.toWebView(context, item.title, item.link);
+        },
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    item.author,
+                    style: TextStyle(fontSize: 12),
+                    textAlign: TextAlign.left,
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
-                        child: Text(
-                          item.title,
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                          maxLines: 2,
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: Text(
-                          item.desc,
-                          style:
-                              TextStyle(fontSize: 14, color: Color(0xFF757575)),
-                          maxLines: 2,
-                          textAlign: TextAlign.left,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              item.author,
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
-                            ),
-                            Text(
-                              item.niceDate,
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        // child: Icon(Icons.info),
-                      )
-                    ],
+                  Expanded(
+                    child: Text(
+                      item.niceDate,
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.right,
+                    ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          ));
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      item.title,
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontSize: 16,
+                        // fontWeight: FontWeight.bold,
+                        color: const Color(0xFF3D4E5F),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      item.chapterName,
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.left,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
     }
     return null;
   }

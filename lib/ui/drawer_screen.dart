@@ -74,7 +74,12 @@ class DrawerScreenState extends State<DrawerScreen> {
               size: 22,
             ),
             onTap: () {
-              RouteUtil.push(context, CollectScreen());
+              if (User.singleton.cookie.length > 0) {
+                RouteUtil.push(context, CollectScreen());
+              } else {
+                Fluttertoast.showToast(msg: "清先登录！");
+                RouteUtil.push(context, LoginScreen());
+              }
             },
           ),
           ListTile(

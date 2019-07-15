@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
-import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
+import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/net/dio_manager.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_wanandroid/net/dio_manager.dart';
 class ApiService {
   Options _getOptions() {
     Map<String, String> map = new Map();
+    map["Cookie"] = User().cookie.toString();
     return Options(headers: map);
   }
 
