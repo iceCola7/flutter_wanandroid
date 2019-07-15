@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
+import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -73,7 +74,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               size: 22,
             ),
             onTap: () {
-              Fluttertoast.showToast(msg: "该功能正在开发中...");
+              RouteUtil.push(context, CollectScreen());
             },
           ),
           ListTile(
