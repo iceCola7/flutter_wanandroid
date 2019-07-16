@@ -78,7 +78,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               size: 22,
             ),
             onTap: () {
-              if (User.singleton.cookie.length > 0) {
+              if (isLogin) {
                 RouteUtil.push(context, CollectScreen());
               } else {
                 Fluttertoast.showToast(msg: "清先登录！");
@@ -114,19 +114,22 @@ class DrawerScreenState extends State<DrawerScreen> {
               Fluttertoast.showToast(msg: "该功能正在开发中...");
             },
           ),
-          ListTile(
-            title: Text(
-              "退出登录",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+          Offstage(
+            offstage: !isLogin,
+            child: ListTile(
+              title: Text(
+                "退出登录",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+              ),
+              leading: Icon(
+                Icons.power_settings_new,
+                size: 22,
+              ),
+              onTap: () {
+                _logout(context);
+              },
             ),
-            leading: Icon(
-              Icons.power_settings_new,
-              size: 22,
-            ),
-            onTap: () {
-              _logout(context);
-            },
           )
         ],
       ),
