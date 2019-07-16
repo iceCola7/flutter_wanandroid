@@ -51,4 +51,7 @@ class Apis {
 
   /// 取消收藏
   static const String CANCEL_COLLECTION = BASE_HOST + "/lg/uncollect";
+
+  /// 退出登录
+  static const String USER_LOGOUT = BASE_HOST + "/user/logout/json";
 }

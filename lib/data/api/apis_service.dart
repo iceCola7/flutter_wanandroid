@@ -214,4 +214,13 @@ class ApiService {
       errorCallback(e);
     });
   }
+
+  /// 退出登录
+  void logout(Function callback, Function errorCallback) {
+    DioManager.singleton.dio.get(Apis.USER_LOGOUT).then((response) {
+      callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

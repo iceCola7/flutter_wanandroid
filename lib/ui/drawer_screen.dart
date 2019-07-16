@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/application.dart';
+import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/common/user.dart';
+import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
@@ -120,10 +124,48 @@ class DrawerScreenState extends State<DrawerScreen> {
               Icons.power_settings_new,
               size: 22,
             ),
-            onTap: () {},
+            onTap: () {
+              _logout(context);
+            },
           )
         ],
       ),
+    );
+  }
+
+  /// 退出登录
+  void _logout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+            title: new Text('提示'),
+            content: new Text('确定退出登录吗？'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('取消'),
+              ),
+              new FlatButton(
+                onPressed: () => {
+                      ApiService().logout((BaseModel model) {
+                        Navigator.of(context).pop(true);
+                        if (model.errorCode == Constants.STATUS_SUCCESS) {
+                          User.singleton.clearUserInfo();
+                          setState(() {
+                            isLogin = false;
+                            username = "未登录";
+                          });
+                        } else {
+                          Fluttertoast.showToast(msg: model.errorMsg);
+                        }
+                      }, (DioError error) {
+                        print(error.response);
+                      })
+                    },
+                child: new Text('确定'),
+              ),
+            ],
+          ),
     );
   }
 }
