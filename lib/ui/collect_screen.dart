@@ -150,63 +150,82 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
         onTap: () {
           RouteUtil.toWebView(context, item.title, item.link);
         },
-        child: Column(
+        child: Row(
           children: <Widget>[
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: Row(
+            Offstage(
+              offstage: item.envelopePic == '',
+              child: Container(
+                color: Colors.white,
+                padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
+                child: new Image.network(
+                  item.envelopePic,
+                  width: 90,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
                 children: <Widget>[
-                  Text(
-                    item.author,
-                    style: TextStyle(fontSize: 12),
-                    textAlign: TextAlign.left,
-                  ),
-                  Expanded(
-                    child: Text(
-                      item.niceDate,
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.right,
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          item.author,
+                          style: TextStyle(fontSize: 12),
+                          textAlign: TextAlign.left,
+                        ),
+                        Expanded(
+                          child: Text(
+                            item.niceDate,
+                            style: TextStyle(fontSize: 12),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.title,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: const Color(0xFF3D4E5F),
-                      ),
-                      textAlign: TextAlign.left,
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            item.title,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: const Color(0xFF3D4E5F),
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.chapterName,
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.left,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            item.chapterName,
+                            style: TextStyle(fontSize: 12),
+                            textAlign: TextAlign.left,
+                          ),
+                        )
+                      ],
                     ),
-                  )
+                  ),
                 ],
               ),
-            ),
+            )
           ],
         ),
       );
