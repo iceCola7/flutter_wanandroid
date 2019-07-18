@@ -223,4 +223,13 @@ class ApiService {
       errorCallback(e);
     });
   }
+
+  /// 获取TODO列表数据
+  void getTodoList(Function callback, Function errorCallback) {
+    DioManager.singleton.dio.get(Apis.TODO_LIST).then((response) {
+      callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }
