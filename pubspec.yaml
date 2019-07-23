@@ -88,3 +88,5 @@ flutter:
     - images/ic_default_avatar.png
     - images/ic_empty.png
     - images/ic_error.png
+    - images/ic_like.png
+    - images/ic_like_not.png
