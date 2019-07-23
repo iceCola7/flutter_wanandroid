@@ -50,7 +50,7 @@ class Apis {
   static const String ADD_COLLECTION_2 = BASE_HOST + "/lg/collect/add/json";
 
   /// 取消收藏
-  static const String CANCEL_COLLECTION = BASE_HOST + "/lg/uncollect";
+  static const String CANCEL_COLLECTION = BASE_HOST + "/lg/uncollect_originId";
 
   /// 退出登录
   static const String USER_LOGOUT = BASE_HOST + "/user/logout/json";

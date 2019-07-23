@@ -202,12 +202,9 @@ class ApiService {
   }
 
   /// 取消收藏
-  void cancelCollection(
-      Function callback, Function errorCallback, int _id, int _originId) {
-    FormData formData = new FormData.from({"originId": _originId});
+  void cancelCollection(Function callback, Function errorCallback, int _id) {
     DioManager.singleton.dio
-        .post(Apis.CANCEL_COLLECTION + "/$_id/json",
-            data: formData, options: _getOptions())
+        .post(Apis.CANCEL_COLLECTION + "/$_id/json", options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
