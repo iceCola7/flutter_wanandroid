@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/collection_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
@@ -219,6 +221,19 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.left,
                           ),
+                        ),
+                        InkWell(
+                          child: Container(
+                            child: Image(
+                              // color: Colors.black12,
+                              image: AssetImage('images/ic_like.png'),
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          onTap: () {
+                            cancelCollect(index, item);
+                          },
                         )
                       ],
                     ),
@@ -231,6 +246,27 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
       );
     }
     return null;
+  }
+
+  /// 取消收藏
+  void cancelCollect(index, item) {
+    List<String> cookies = User.singleton.cookie;
+    if (cookies == null) {
+      Fluttertoast.showToast(msg: '请先登录~');
+    } else {
+      ApiService().cancelCollection((BaseModel model) {
+        if (model.errorCode == Constants.STATUS_SUCCESS) {
+          Fluttertoast.showToast(msg: '已取消收藏~');
+          setState(() {
+            _collectList.removeAt(index);
+          });
+        } else {
+          Fluttertoast.showToast(msg: '取消收藏失败~');
+        }
+      }, (DioError error) {
+        print(error.response);
+      }, item.id);
+    }
   }
 
   @override
