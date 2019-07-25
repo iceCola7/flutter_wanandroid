@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
@@ -259,7 +261,18 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
                       Container(
                         alignment: Alignment.topRight,
                         padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        // child: Icon(Icons.info),
+                        child: InkWell(
+                            onTap: () {
+                              addOrCancelCollect(item);
+                            },
+                            child: Image(
+                              // color: Colors.black12,
+                              image: AssetImage(item.collect
+                                  ? 'images/ic_like.png'
+                                  : 'images/ic_like_not.png'),
+                              width: 24,
+                              height: 24,
+                            )),
                       )
                     ],
                   ),
@@ -269,6 +282,42 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
           ));
     }
     return null;
+  }
+
+  /// 添加收藏或者取消收藏
+  void addOrCancelCollect(item) {
+    List<String> cookies = User.singleton.cookie;
+    if (cookies == null) {
+      Fluttertoast.showToast(msg: '请先登录~');
+    } else {
+      if (item.collect) {
+        ApiService().cancelCollection((BaseModel model) {
+          if (model.errorCode == Constants.STATUS_SUCCESS) {
+            Fluttertoast.showToast(msg: '已取消收藏~');
+            setState(() {
+              item.collect = false;
+            });
+          } else {
+            Fluttertoast.showToast(msg: '取消收藏失败~');
+          }
+        }, (DioError error) {
+          print(error.response);
+        }, item.id);
+      } else {
+        ApiService().addCollection((BaseModel model) {
+          if (model.errorCode == Constants.STATUS_SUCCESS) {
+            Fluttertoast.showToast(msg: '收藏成功~');
+            setState(() {
+              item.collect = true;
+            });
+          } else {
+            Fluttertoast.showToast(msg: '收藏失败~');
+          }
+        }, (DioError error) {
+          print(error.response);
+        }, item.id);
+      }
+    }
   }
 
   @override
