@@ -34,7 +34,7 @@ class ApiService {
   }
 
   /// 获取首页置顶文章数据
-  void getTopArticleList(Function callback, Function errorCallback) {
+  void getTopArticleList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio
         .get(Apis.HOME_TOP_ARTICLE_LIST, options: _getOptions())
         .then((response) {
@@ -45,7 +45,8 @@ class ApiService {
   }
 
   /// 获取首页文章列表数据
-  void getArticleList(Function callback, Function errorCallback, int _page) {
+  void getArticleList(
+      Function callback, Function errorCallback, int _page) async {
     DioManager.singleton.dio
         .get(Apis.HOME_ARTICLE_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
@@ -56,7 +57,7 @@ class ApiService {
   }
 
   /// 获取知识体系数据
-  void getKnowledgeTreeList(Function callback, Function errorCallback) {
+  void getKnowledgeTreeList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio
         .get(Apis.KNOWLEDGE_TREE_LIST, options: _getOptions())
         .then((response) {
@@ -68,7 +69,7 @@ class ApiService {
 
   /// 获取知识体系详情数据
   void getKnowledgeDetailList(
-      Function callback, Function errorCallback, int _page, int _id) {
+      Function callback, Function errorCallback, int _page, int _id) async {
     DioManager.singleton.dio
         .get(Apis.KNOWLEDGE_DETAIL_LIST + "/$_page/json?cid=$_id",
             options: _getOptions())
@@ -80,7 +81,7 @@ class ApiService {
   }
 
   /// 获取公众号名称
-  void getWXChaptersList(Function callback, Function errorCallback) {
+  void getWXChaptersList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio
         .get(Apis.WX_CHAPTERS_LIST, options: _getOptions())
         .then((response) {
@@ -92,7 +93,7 @@ class ApiService {
 
   /// 获取公众号文章列表数据
   void getWXArticleList(
-      Function callback, Function errorCallback, int _id, int _page) {
+      Function callback, Function errorCallback, int _id, int _page) async {
     DioManager.singleton.dio
         .get(Apis.WX_ARTICLE_LIST + "/$_id/$_page/json", options: _getOptions())
         .then((response) {
@@ -103,7 +104,7 @@ class ApiService {
   }
 
   /// 获取导航列表数据
-  void getNavigationList(Function callback, Function errorCallback) {
+  void getNavigationList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio
         .get(Apis.NAVIGATION_LIST, options: _getOptions())
         .then((response) {
@@ -114,7 +115,7 @@ class ApiService {
   }
 
   /// 获取项目分类列表数据
-  void getProjectTreeList(Function callback, Function errorCallback) {
+  void getProjectTreeList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio
         .get(Apis.PROJECT_TREE_LIST, options: _getOptions())
         .then((response) {
@@ -126,7 +127,7 @@ class ApiService {
 
   /// 获取项目文章列表数据
   void getProjectArticleList(
-      Function callback, Function errorCallback, int _id, int _page) {
+      Function callback, Function errorCallback, int _id, int _page) async {
     DioManager.singleton.dio
         .get(Apis.PROJECT_ARTICLE_LIST + "/$_page/json?cid=$_id",
             options: _getOptions())
@@ -138,7 +139,7 @@ class ApiService {
   }
 
   /// 获取搜索热词列表数据
-  void getSearchHotList(Function callback, Function errorCallback) {
+  void getSearchHotList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio
         .get(Apis.SEARCH_HOT_LIST, options: _getOptions())
         .then((response) {
@@ -149,8 +150,8 @@ class ApiService {
   }
 
   /// 获取搜索的文章列表
-  void getSearchArticleList(
-      Function callback, Function errorCallback, int _page, String _keyword) {
+  void getSearchArticleList(Function callback, Function errorCallback,
+      int _page, String _keyword) async {
     FormData formData = new FormData.from({"k": _keyword});
     DioManager.singleton.dio
         .post(Apis.SEARCH_ARTICLE_LIST + "/$_page/json",
@@ -194,7 +195,8 @@ class ApiService {
   }
 
   /// 获取收藏列表
-  void getCollectionList(Function callback, Function errorCallback, int _page) {
+  void getCollectionList(
+      Function callback, Function errorCallback, int _page) async {
     DioManager.singleton.dio
         .get(Apis.COLLECTION_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
@@ -205,7 +207,7 @@ class ApiService {
   }
 
   /// 新增收藏(收藏站内文章)
-  void addCollection(Function callback, Function errorCallback, int _id) {
+  void addCollection(Function callback, Function errorCallback, int _id) async {
     DioManager.singleton.dio
         .post(Apis.ADD_COLLECTION + "/$_id/json", options: _getOptions())
         .then((response) {
@@ -216,7 +218,8 @@ class ApiService {
   }
 
   /// 取消收藏
-  void cancelCollection(Function callback, Function errorCallback, int _id) {
+  void cancelCollection(
+      Function callback, Function errorCallback, int _id) async {
     DioManager.singleton.dio
         .post(Apis.CANCEL_COLLECTION + "/$_id/json", options: _getOptions())
         .then((response) {
@@ -227,7 +230,7 @@ class ApiService {
   }
 
   /// 退出登录
-  void logout(Function callback, Function errorCallback) {
+  void logout(Function callback, Function errorCallback) async {
     DioManager.singleton.dio.get(Apis.USER_LOGOUT).then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
@@ -236,7 +239,7 @@ class ApiService {
   }
 
   /// 获取TODO列表数据
-  void getTodoList(Function callback, Function errorCallback) {
+  void getTodoList(Function callback, Function errorCallback) async {
     DioManager.singleton.dio.get(Apis.TODO_LIST).then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
