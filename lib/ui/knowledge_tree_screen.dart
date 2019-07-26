@@ -4,8 +4,11 @@ import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'knowledge_detail_screen.dart';
 
 class KnowledgeTreeScreen extends BaseWidget {
   @override
@@ -81,7 +84,11 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
 
   Widget itemView(BuildContext context, int index) {
     if (index < _list.length) {
+      KnowledgeTreeBean item = _list[index];
       return InkWell(
+        onTap: () {
+          RouteUtil.push(context, KnowledgeDetailScreen(new ValueKey(item)));
+        },
         child: Container(
           color: Colors.white,
           child: Row(
@@ -97,7 +104,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.only(bottom: 8),
                         child: Text(
-                          _list[index].name,
+                          item.name,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -107,7 +114,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: itemChildrenView(_list[index].children),
+                        child: itemChildrenView(item.children),
                       )
                     ],
                   ),
