@@ -6,6 +6,7 @@ import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/collection_model.dart';
 import 'package:flutter_wanandroid/data/model/hot_word_model.dart';
+import 'package:flutter_wanandroid/data/model/knowledge_detail_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/data/model/project_article_model.dart';
@@ -60,6 +61,19 @@ class ApiService {
         .get(Apis.KNOWLEDGE_TREE_LIST, options: _getOptions())
         .then((response) {
       callback(KnowledgeTreeModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取知识体系详情数据
+  void getKnowledgeDetailList(
+      Function callback, Function errorCallback, int _page, int _id) {
+    DioManager.singleton.dio
+        .get(Apis.KNOWLEDGE_DETAIL_LIST + "/$_page/json?cid=$_id",
+            options: _getOptions())
+        .then((response) {
+      callback(KnowledgeDetailModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

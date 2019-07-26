@@ -10,8 +10,11 @@ class Apis {
   /// 首页置顶文章列表
   static const String HOME_TOP_ARTICLE_LIST = BASE_HOST + "/article/top/json";
 
-  /// 知识体系详情
+  /// 知识体系
   static const String KNOWLEDGE_TREE_LIST = BASE_HOST + "/tree/json";
+
+  /// 知识体系详情
+  static const String KNOWLEDGE_DETAIL_LIST = BASE_HOST + "/article/list";
 
   /// 获取公众号名称
   static const String WX_CHAPTERS_LIST = BASE_HOST + "/wxarticle/chapters/json";
