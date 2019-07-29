@@ -52,7 +52,7 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     // Configure keyboard actions
-    FormKeyboardActions.setKeyboardActions(context, _buildConfig(context));
+    // FormKeyboardActions.setKeyboardActions(context, _buildConfig(context));
     super.initState();
   }
 
