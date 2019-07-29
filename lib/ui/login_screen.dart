@@ -7,7 +7,6 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/register_screen.dart';
-import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -48,91 +47,104 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.4,
-          title: Text("登录"),
-        ),
-        body: Container(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 10),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "用户登录",
-                      style: TextStyle(fontSize: 18),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        // 触摸收起键盘
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.4,
+            title: Text("登录"),
+          ),
+          body: Container(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(bottom: 20),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "请使用WanAndroid账号登录",
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 10),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "用户登录",
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    autofocus: true,
-                    controller: _userNameController,
-                    decoration: InputDecoration(
-                      labelText: "用户名",
-                      hintText: "请输入用户名",
-                      labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 20),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "请使用WanAndroid账号登录",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
                     ),
-                    maxLines: 1,
-                  ),
-                  TextField(
-                    controller: _psdController,
-                    decoration: InputDecoration(
-                      labelText: "密码",
-                      labelStyle: TextStyle(color: Color(0xFF00BCD4)),
-                      hintText: "请输入密码",
+                    TextField(
+                      autofocus: true,
+                      controller: _userNameController,
+                      decoration: InputDecoration(
+                        labelText: "用户名",
+                        hintText: "请输入用户名",
+                        labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                      ),
+                      maxLines: 1,
                     ),
-                    obscureText: true,
-                    maxLines: 1,
-                  ),
+                    TextField(
+                      controller: _psdController,
+                      decoration: InputDecoration(
+                        labelText: "密码",
+                        labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                        hintText: "请输入密码",
+                      ),
+                      obscureText: true,
+                      maxLines: 1,
+                    ),
 
-                  // 登录按钮
-                  Padding(
-                    padding: const EdgeInsets.only(top: 28.0),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: RaisedButton(
-                            padding: EdgeInsets.all(16.0),
-                            elevation: 0.5,
-                            child: Text("登录"),
-                            color: Color(0xFF00BCD4),
-                            textColor: Colors.white,
-                            onPressed: () {
-                              _login();
-                            },
+                    // 登录按钮
+                    Padding(
+                      padding: const EdgeInsets.only(top: 28.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: RaisedButton(
+                              padding: EdgeInsets.all(16.0),
+                              elevation: 0.5,
+                              child: Text("登录"),
+                              color: Color(0xFF00BCD4),
+                              textColor: Colors.white,
+                              onPressed: () {
+                                _login();
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                      padding: EdgeInsets.only(top: 10),
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                        child:
-                            Text("还没有账号，注册一个？", style: TextStyle(fontSize: 14)),
-                        onPressed: () {
-                          RouteUtil.push(context, RegisterScreen());
-                        },
-                      )),
-                ],
+                    Container(
+                        padding: EdgeInsets.only(top: 10),
+                        alignment: Alignment.centerRight,
+                        child: FlatButton(
+                          child: Text("还没有账号，注册一个？",
+                              style: TextStyle(fontSize: 14)),
+                          onPressed: () {
+                            registerClick();
+                          },
+                        )),
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
+  }
+
+  void registerClick() async {
+    await Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return new RegisterScreen();
+    }));
   }
 }

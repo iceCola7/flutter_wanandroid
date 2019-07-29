@@ -40,85 +40,94 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.4,
-          title: Text("注册"),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16),
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.only(bottom: 10),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "注册用户",
-                    style: TextStyle(fontSize: 18),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        // 触摸收起键盘
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.4,
+            title: Text("注册"),
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(bottom: 20),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "用户注册后才可以登录！",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "注册用户",
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
-                ),
-                TextField(
-                  autofocus: true,
-                  controller: _userNameController,
-                  decoration: InputDecoration(
-                    labelText: "用户名",
-                    hintText: "请输入用户名",
-                    labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 20),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "用户注册后才可以登录！",
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
                   ),
-                  maxLines: 1,
-                ),
-                TextField(
-                  controller: _psdController,
-                  decoration: InputDecoration(
+                  TextField(
+                    autofocus: true,
+                    controller: _userNameController,
+                    decoration: InputDecoration(
+                      labelText: "用户名",
+                      hintText: "请输入用户名",
+                      labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                    ),
+                    maxLines: 1,
+                  ),
+                  TextField(
+                    controller: _psdController,
+                    decoration: InputDecoration(
                       labelText: "密码",
                       labelStyle: TextStyle(color: Color(0xFF00BCD4)),
-                      hintText: "请输入密码",),
-                  obscureText: true,
-                  maxLines: 1,
-                ),
-                TextField(
-                  controller: _psdAgainController,
-                  decoration: InputDecoration(
+                      hintText: "请输入密码",
+                    ),
+                    obscureText: true,
+                    maxLines: 1,
+                  ),
+                  TextField(
+                    controller: _psdAgainController,
+                    decoration: InputDecoration(
                       labelText: "再次输入密码",
                       labelStyle: TextStyle(color: Color(0xFF00BCD4)),
-                      hintText: "请再次输入密码",),
-                  obscureText: true,
-                  maxLines: 1,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 28.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: RaisedButton(
-                          padding: EdgeInsets.all(16.0),
-                          elevation: 0.5,
-                          child: Text("注册"),
-                          color: Color(0xFF00BCD4),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            _register();
-                          },
-                        ),
-                      ),
-                    ],
+                      hintText: "请再次输入密码",
+                    ),
+                    obscureText: true,
+                    maxLines: 1,
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 28.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(16.0),
+                            elevation: 0.5,
+                            child: Text("注册"),
+                            color: Color(0xFF00BCD4),
+                            textColor: Colors.white,
+                            onPressed: () {
+                              _register();
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }
