@@ -91,10 +91,4 @@ flutter:
 
   assets:
     # 加载页面图片资源
-    - images/loading.png
-    - images/head_avatar.png
-    - images/ic_default_avatar.png
-    - images/ic_empty.png
-    - images/ic_error.png
-    - images/ic_like.png
-    - images/ic_like_not.png
+    - assets/images/
