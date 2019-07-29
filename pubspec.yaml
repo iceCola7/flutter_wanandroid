@@ -33,6 +33,14 @@ dependencies:
   event_bus: ^1.0.3
   # https://github.com/tekartik/synchronized.dart
   synchronized: '>=0.1.0 <3.0.0'
+  # https://github.com/ReactiveX/rxdart
+  rxdart: ^0.22.1
+  # 处理键盘事件 https://github.com/diegoveloper/flutter_keyboard_actions
+  keyboard_actions: ^2.1.1+1
+  # 启动URL的插件 https://github.com/flutter/plugins/tree/master/packages/url_launcher
+  url_launcher: 5.1.0
+  # 图片缓存 https://github.com/renefloor/flutter_cached_network_image
+  cached_network_image: ^1.1.1
 
 dev_dependencies:
   flutter_test:
