@@ -47,6 +47,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             elevation: 0.4,
             title: Text("注册"),

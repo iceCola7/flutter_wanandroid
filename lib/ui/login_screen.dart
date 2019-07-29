@@ -8,6 +8,7 @@ import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/register_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,6 +20,9 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> {
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _psdController = TextEditingController();
+
+  final FocusNode _userNameFocusNode = FocusNode();
+  final FocusNode _psdFocusNode = FocusNode();
 
   Future<Null> _login() async {
     String username = _userNameController.text;
@@ -46,6 +50,33 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    // Configure keyboard actions
+    FormKeyboardActions.setKeyboardActions(context, _buildConfig(context));
+    super.initState();
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+      keyboardBarColor: Colors.grey[200],
+      nextFocus: true,
+      actions: [
+        KeyboardAction(
+          focusNode: _userNameFocusNode,
+        ),
+        KeyboardAction(
+          focusNode: _psdFocusNode,
+          closeWidget: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.close),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -54,6 +85,7 @@ class LoginScreenState extends State<LoginScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             elevation: 0.4,
             title: Text("登录"),
@@ -83,25 +115,33 @@ class LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ),
-                    TextField(
-                      autofocus: true,
-                      controller: _userNameController,
-                      decoration: InputDecoration(
-                        labelText: "用户名",
-                        hintText: "请输入用户名",
-                        labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                      child: TextField(
+                        focusNode: _userNameFocusNode,
+                        autofocus: true,
+                        controller: _userNameController,
+                        decoration: InputDecoration(
+                          labelText: "用户名",
+                          hintText: "请输入用户名",
+                          labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                        ),
+                        maxLines: 1,
                       ),
-                      maxLines: 1,
                     ),
-                    TextField(
-                      controller: _psdController,
-                      decoration: InputDecoration(
-                        labelText: "密码",
-                        labelStyle: TextStyle(color: Color(0xFF00BCD4)),
-                        hintText: "请输入密码",
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                      child: TextField(
+                        focusNode: _psdFocusNode,
+                        controller: _psdController,
+                        decoration: InputDecoration(
+                          labelText: "密码",
+                          labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                          hintText: "请输入密码",
+                        ),
+                        obscureText: true,
+                        maxLines: 1,
                       ),
-                      obscureText: true,
-                      maxLines: 1,
                     ),
 
                     // 登录按钮
