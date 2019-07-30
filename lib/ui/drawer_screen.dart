@@ -8,6 +8,7 @@ import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
+import 'package:flutter_wanandroid/ui/todo_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -80,6 +81,25 @@ class DrawerScreenState extends State<DrawerScreen> {
             onTap: () {
               if (isLogin) {
                 RouteUtil.push(context, CollectScreen());
+              } else {
+                Fluttertoast.showToast(msg: "清先登录！");
+                RouteUtil.push(context, LoginScreen());
+              }
+            },
+          ),
+          ListTile(
+            title: Text(
+              "TODO",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
+            leading: Icon(
+              Icons.description,
+              size: 22,
+            ),
+            onTap: () {
+              if (isLogin) {
+                RouteUtil.push(context, TodoScreen());
               } else {
                 Fluttertoast.showToast(msg: "清先登录！");
                 RouteUtil.push(context, LoginScreen());
