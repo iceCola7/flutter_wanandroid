@@ -20,13 +20,13 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   /// 错误信息是否显示
   bool _isErrorWidgetShow = false;
   String _errorContentMsg = "网络请求失败，请检查您的网络";
-  String _errorImgPath = "images/ic_error.png";
+  String _errorImgPath = "assets/images/ic_error.png";
 
   bool _isLoadingWidgetShow = false;
 
   bool _isEmptyWidgetShow = false;
   String _emptyContentMsg = "暂无数据";
-  String _emptyImgPath = "images/ic_empty.png";
+  String _emptyImgPath = "assets/images/ic_empty.png";
 
   /// 错误页面和空页面的字体粗度
   FontWeight _fontWidget = FontWeight.w600;

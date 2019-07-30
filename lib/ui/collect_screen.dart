@@ -226,7 +226,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
                           child: Container(
                             child: Image(
                               // color: Colors.black12,
-                              image: AssetImage('images/ic_like.png'),
+                              image: AssetImage('assets/images/ic_like.png'),
                               width: 24,
                               height: 24,
                             ),

@@ -305,8 +305,8 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                       child: Image(
                         // color: Colors.black12,
                         image: AssetImage(item.collect
-                            ? 'images/ic_like.png'
-                            : 'images/ic_like_not.png'),
+                            ? 'assets/images/ic_like.png'
+                            : 'assets/images/ic_like_not.png'),
                         width: 24,
                         height: 24,
                       ),

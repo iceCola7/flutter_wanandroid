@@ -21,7 +21,6 @@ class _LoadingState extends State<LoadingPage> {
           (route) => route == null);
 
       // _getHasSkip();
-
     });
   }
 
@@ -43,7 +42,7 @@ class _LoadingState extends State<LoadingPage> {
       child: Stack(
         children: <Widget>[
           new Image.asset(
-            "images/loading.png",
+            "assets/images/loading.png",
             fit: BoxFit.cover,
           )
         ],
