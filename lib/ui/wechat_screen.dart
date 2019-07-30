@@ -280,7 +280,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   /// 添加收藏或者取消收藏
   void addOrCancelCollect(item) {
     List<String> cookies = User.singleton.cookie;
-    if (cookies == null) {
+    if (cookies == null || cookies.length == 0) {
       Fluttertoast.showToast(msg: '请先登录~');
     } else {
       if (item.collect) {
