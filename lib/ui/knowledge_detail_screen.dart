@@ -11,6 +11,7 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 知识体系详情页面
 class KnowledgeDetailScreen extends StatefulWidget {
   KnowledgeTreeBean bean;
 

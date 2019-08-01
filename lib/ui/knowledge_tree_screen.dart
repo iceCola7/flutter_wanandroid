@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'knowledge_detail_screen.dart';
 
+/// 知识体系页面
 class KnowledgeTreeScreen extends BaseWidget {
   @override
   BaseWidgetState<BaseWidget> attachState() {

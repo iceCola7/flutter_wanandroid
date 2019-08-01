@@ -4,6 +4,7 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 注册页面
 class RegisterScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
