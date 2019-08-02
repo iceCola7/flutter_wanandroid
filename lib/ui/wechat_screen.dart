@@ -11,6 +11,7 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 公众号页面
 class WeChatScreen extends BaseWidget {
   @override
   BaseWidgetState<BaseWidget> attachState() {

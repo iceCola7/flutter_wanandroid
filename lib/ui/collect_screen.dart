@@ -10,6 +10,7 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 收藏页面
 class CollectScreen extends BaseWidget {
   @override
   BaseWidgetState<BaseWidget> attachState() {

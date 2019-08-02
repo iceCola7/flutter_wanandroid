@@ -9,6 +9,7 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 导航页面
 class NavigationScreen extends BaseWidget {
   @override
   BaseWidgetState<BaseWidget> attachState() {

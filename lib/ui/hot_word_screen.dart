@@ -10,6 +10,7 @@ import 'package:flutter_wanandroid/utils/db_util.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 搜索页面
 class HotWordScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
