@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/app.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// 启动页面
 class SplashScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

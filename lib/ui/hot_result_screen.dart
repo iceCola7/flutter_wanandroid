@@ -8,6 +8,7 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// 热词搜索页面
 class HotResultScreen extends BaseWidget {
   String keyword;
 
