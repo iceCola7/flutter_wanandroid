@@ -28,7 +28,9 @@ class TodoScreenState extends BaseWidgetState<TodoScreen> {
   @override
   AppBar attachAppBar() {
     return new AppBar(
-      title: Text(""),
+      title: Scaffold(
+        body: Text(""),
+      ),
     );
   }
 
