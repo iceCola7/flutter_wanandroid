@@ -1,44 +1,58 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/common/common.dart';
-import 'package:flutter_wanandroid/data/api/apis_service.dart';
-import 'package:flutter_wanandroid/data/model/base_model.dart';
-import 'package:flutter_wanandroid/ui/base_widget.dart';
+import 'package:flutter_wanandroid/ui/todo_complete_screen.dart';
+import 'package:flutter_wanandroid/ui/todo_list_screen.dart';
 
 /// TODO 页面
-class TodoScreen extends BaseWidget {
+class TodoScreen extends StatefulWidget {
   @override
-  BaseWidgetState<BaseWidget> attachState() {
-    return TodoScreenState();
+  State<StatefulWidget> createState() {
+    return new TodoScreenState();
   }
 }
 
-class TodoScreenState extends BaseWidgetState<TodoScreen> {
-  /// 获取TODO列表数据
-  Future<Null> getTodoList() async {
-    ApiService().getTodoList((BaseModel model) {
-      if (model.errorCode == Constants.STATUS_SUCCESS) {
-      } else {}
-    }, (DioError error) {
-      print(error.response);
-      showError();
-    });
-  }
+class TodoScreenState extends State<TodoScreen> {
+  int _selectedIndex = 0; // 当前选中的索引
+
+  final bottomBarTitles = ["待办", "已完成"];
+
+  var pages = <Widget>[
+    TodoListScreen(),
+    TodoCompleteScreen(),
+  ];
 
   @override
-  AppBar attachAppBar() {
-    return new AppBar(
-      title: Scaffold(
-        body: Text(""),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: new Text(bottomBarTitles[_selectedIndex]),
+        bottom: null,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.swap_horiz),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: new IndexedStack(
+        children: pages,
+        index: _selectedIndex,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text(bottomBarTitles[0])),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.assignment), title: Text(bottomBarTitles[1])),
+        ],
+        type: BottomNavigationBarType.fixed, // 设置显示模式
+        currentIndex: _selectedIndex, // 当前选中项的索引
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        }, //
       ),
     );
   }
-
-  @override
-  Widget attachContentWidget(BuildContext context) {
-    return Text("");
-  }
-
-  @override
-  void onClickErrorWidget() {}
 }
