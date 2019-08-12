@@ -51,12 +51,18 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
           ],
         ),
       ),
+      floatingActionButton: fabWidget(),
     );
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  /// 悬浮按钮
+  Widget fabWidget() {
+    return null;
   }
 
   Widget attachContentWidget(BuildContext context);

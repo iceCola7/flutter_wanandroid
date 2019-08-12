@@ -121,18 +121,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
             controller: _scrollController,
             itemCount: _todoBeanList.length + 1),
       ),
-      floatingActionButton: _isShowFAB
-          ? null
-          : FloatingActionButton(
-              heroTag: "todo_list",
-              child: Icon(Icons.arrow_upward),
-              backgroundColor: ThemeUtils.currentColorTheme,
-              onPressed: () {
-                /// 回到顶部时要执行的动画
-                _scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 2000), curve: Curves.ease);
-              },
-            ),
+      // floatingActionButton: fabWidget(),
     );
   }
 
@@ -169,6 +158,19 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
           ));
     }
     return null;
+  }
+
+  @override
+  Widget fabWidget() {
+    return _isShowFAB
+        ? null
+        : FloatingActionButton(
+            heroTag: "todo_list",
+            child: Icon(Icons.edit),
+            backgroundColor: ThemeUtils.currentColorTheme,
+            onPressed: () {
+            },
+          );
   }
 
   @override
