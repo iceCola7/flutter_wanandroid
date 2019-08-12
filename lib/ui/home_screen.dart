@@ -271,51 +271,74 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
             ),
             Container(
               color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.title,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: const Color(0xFF3D4E5F),
+                  Offstage(
+                    offstage: item.envelopePic == "",
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
+                      child: new Image.network(
+                        item.envelopePic,
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.cover,
                       ),
-                      textAlign: TextAlign.left,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.superChapterName + " / " + item.chapterName,
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.left,
                     ),
                   ),
-                  InkWell(
-                    child: Container(
-                      child: Image(
-                        // color: Colors.black12,
-                        image: AssetImage(item.collect
-                            ? 'assets/images/ic_like.png'
-                            : 'assets/images/ic_like_not.png'),
-                        width: 24,
-                        height: 24,
-                      ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          child: Text(
+                            item.title,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: const Color(0xFF3D4E5F),
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  item.superChapterName +
+                                      " / " +
+                                      item.chapterName,
+                                  style: TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              InkWell(
+                                child: Container(
+                                  child: Image(
+                                    // color: Colors.black12,
+                                    image: AssetImage(item.collect
+                                        ? 'assets/images/ic_like.png'
+                                        : 'assets/images/ic_like_not.png'),
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                                onTap: () {
+                                  addOrCancelCollect(item);
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      addOrCancelCollect(item);
-                    },
-                  )
+                  ),
                 ],
               ),
             ),
