@@ -152,9 +152,13 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
 
     ApiService().getProjectArticleList((ProjectArticleListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
-        setState(() {
-          _projectArticleList.addAll(model.data.datas);
-        });
+        if (model.data.datas.length > 0) {
+          setState(() {
+            _projectArticleList.addAll(model.data.datas);
+          });
+        } else {
+          Fluttertoast.showToast(msg: "没有更多数据了");
+        }
       } else {
         Fluttertoast.showToast(msg: model.errorMsg);
       }

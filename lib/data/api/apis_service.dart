@@ -246,7 +246,31 @@ class ApiService {
         .then((response) {
       callback(TodoListModel(response.data));
     }).catchError((e) {
-      print(e);
+      errorCallback(e);
+    });
+  }
+
+  // 获取未完成TODO列表
+  void getNoTodoList(
+      Function callback, Function errorCallback, int _type, int _page) async {
+    DioManager.singleton.dio
+        .post(Apis.NO_TODO_LIST + "/$_type/json/$_page", options: _getOptions())
+        .then((response) {
+      callback(TodoListModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  // 获取已完成TODO列表
+  void getDoneTodoList(
+      Function callback, Function errorCallback, int _type, int _page) async {
+    DioManager.singleton.dio
+        .post(Apis.DONE_TODO_LIST + "/$_type/json/$_page",
+            options: _getOptions())
+        .then((response) {
+      callback(TodoListModel(response.data));
+    }).catchError((e) {
       errorCallback(e);
     });
   }

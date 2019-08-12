@@ -60,4 +60,10 @@ class Apis {
 
   /// TODO 列表
   static const String TODO_LIST = BASE_HOST + "/lg/todo/v2/list";
+
+  // 未完成TODO列表
+  static const String NO_TODO_LIST = BASE_HOST + "/lg/todo/listnotdo";
+
+  // 已完成TODO列表
+  static const String DONE_TODO_LIST = BASE_HOST + "/lg/todo/listdone";
 }
