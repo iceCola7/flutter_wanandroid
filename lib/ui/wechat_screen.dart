@@ -151,9 +151,13 @@ class WXArticleScreenState extends State<WXArticleScreen> {
     int _id = widget.id;
     ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
       if (wxArticleModel.errorCode == Constants.STATUS_SUCCESS) {
-        setState(() {
-          _wxArticleList.addAll(wxArticleModel.data.datas);
-        });
+        if (wxArticleModel.data.datas.length > 0) {
+          setState(() {
+            _wxArticleList.addAll(wxArticleModel.data.datas);
+          });
+        } else {
+          Fluttertoast.showToast(msg: "没有更多数据了");
+        }
       } else {
         Fluttertoast.showToast(msg: wxArticleModel.errorMsg);
       }
