@@ -12,6 +12,7 @@ import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
+import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
@@ -239,10 +240,13 @@ class ApiService {
   }
 
   /// 获取TODO列表数据
-  void getTodoList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio.get(Apis.TODO_LIST).then((response) {
-      callback(BaseModel(response.data));
+  void getTodoList(Function callback, Function errorCallback, int _page) async {
+    DioManager.singleton.dio
+        .get(Apis.TODO_LIST + "/$_page/json", options: _getOptions())
+        .then((response) {
+      callback(TodoListModel(response.data));
     }).catchError((e) {
+      print(e);
       errorCallback(e);
     });
   }

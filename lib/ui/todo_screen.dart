@@ -41,9 +41,9 @@ class TodoScreenState extends State<TodoScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.home), title: Text(bottomBarTitles[0])),
+              icon: Icon(Icons.description), title: Text(bottomBarTitles[0])),
           BottomNavigationBarItem(
-              icon: Icon(Icons.assignment), title: Text(bottomBarTitles[1])),
+              icon: Icon(Icons.check_circle), title: Text(bottomBarTitles[1])),
         ],
         type: BottomNavigationBarType.fixed, // 设置显示模式
         currentIndex: _selectedIndex, // 当前选中项的索引
