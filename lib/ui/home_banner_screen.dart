@@ -37,7 +37,8 @@ class HomeBannerState extends State<HomeBannerScreen> {
       offstage: _bannerList.length == 0,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          if (_bannerList[index] == null ||
+          if (index >= _bannerList.length ||
+              _bannerList[index] == null ||
               _bannerList[index].imagePath == null) {
             return new Container(
               color: Colors.grey[100],
@@ -60,6 +61,7 @@ class HomeBannerState extends State<HomeBannerScreen> {
         itemCount: _bannerList.length,
         autoplay: true,
         pagination: new SwiperPagination(),
+        control: new SwiperControl(),
       ),
     );
   }

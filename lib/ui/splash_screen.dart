@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/app.dart';
 import 'package:intro_slider/intro_slider.dart';
+import 'package:intro_slider/slide_object.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// 启动页面
