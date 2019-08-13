@@ -4,6 +4,8 @@ import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
+import 'package:flutter_wanandroid/ui/todo_add_screen.dart';
+import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -129,33 +131,38 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
     if (index < _todoBeanList.length) {
       TodoBean item = _todoBeanList[index];
 
-      return Container(
-          color: Colors.white,
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Text(
-                  item.title,
-                  style: TextStyle(fontSize: 16, color: Colors.black),
-                  maxLines: 2,
-                  textAlign: TextAlign.left,
+      return InkWell(
+        onTap: () {
+          RouteUtil.push(context, TodoAddScreen(2));
+        },
+        child: Container(
+            color: Colors.white,
+            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Text(
+                    item.title,
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    maxLines: 2,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                child: Text(
-                  item.content,
-                  style: TextStyle(fontSize: 14, color: Color(0xFF757575)),
-                  maxLines: 2,
-                  textAlign: TextAlign.left,
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Text(
+                    item.content,
+                    style: TextStyle(fontSize: 14, color: Color(0xFF757575)),
+                    maxLines: 2,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
-              ),
-            ],
-          ));
+              ],
+            )),
+      );
     }
     return null;
   }
@@ -169,7 +176,9 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
             heroTag: "todo_done_list",
             child: Icon(Icons.edit),
             backgroundColor: ThemeUtils.currentColorTheme,
-            onPressed: () {},
+            onPressed: () {
+              RouteUtil.push(context, TodoAddScreen(0));
+            },
           );
   }
 
