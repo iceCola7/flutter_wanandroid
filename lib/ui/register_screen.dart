@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
+import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 注册页面
@@ -24,7 +25,9 @@ class RegisterScreenState extends State<RegisterScreen> {
     if (password != passwordAgain) {
       Fluttertoast.showToast(msg: "两次密码输入不一致！");
     } else {
+      _showLoading(context);
       ApiService().register((UserModel _userModel) {
+        _dismissLoading(context);
         if (_userModel != null) {
           if (_userModel.errorCode == 0) {
             Fluttertoast.showToast(msg: "注册成功！");
@@ -37,6 +40,24 @@ class RegisterScreenState extends State<RegisterScreen> {
         print(error.response);
       }, username, password);
     }
+  }
+
+  /// 显示Loading
+  _showLoading(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return new LoadingDialog(
+            outsideDismiss: false,
+            loadingText: "正在注册...",
+          );
+        });
+  }
+
+  /// 隐藏Loading
+  _dismissLoading(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   @override

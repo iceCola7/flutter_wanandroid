@@ -7,6 +7,7 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/register_screen.dart';
+import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
@@ -31,7 +32,9 @@ class LoginScreenState extends State<LoginScreen> {
 
     if ((null != username && username.length > 0) &&
         (null != password && password.length > 0)) {
+      _showLoading(context);
       ApiService().login((UserModel model, Response response) {
+        _dismissLoading(context);
         if (null != model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             User().saveUserInfo(model, response);
@@ -75,6 +78,24 @@ class LoginScreenState extends State<LoginScreen> {
         ),
       ],
     );
+  }
+
+  /// 显示Loading
+  _showLoading(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return new LoadingDialog(
+            outsideDismiss: false,
+            loadingText: "正在登陆...",
+          );
+        });
+  }
+
+  /// 隐藏Loading
+  _dismissLoading(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   @override
