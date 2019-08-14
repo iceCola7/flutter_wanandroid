@@ -46,6 +46,7 @@ class LoginScreenState extends State<LoginScreen> {
           }
         }
       }, (DioError error) {
+        _dismissLoading(context);
         print(error.response);
       }, username, password);
     } else {

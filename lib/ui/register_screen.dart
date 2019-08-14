@@ -37,6 +37,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           }
         }
       }, (DioError error) {
+        _dismissLoading(context);
         print(error.response);
       }, username, password);
     }

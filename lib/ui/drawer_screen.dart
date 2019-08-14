@@ -84,7 +84,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               if (isLogin) {
                 RouteUtil.push(context, CollectScreen());
               } else {
-                Fluttertoast.showToast(msg: "清先登录！");
+                Fluttertoast.showToast(msg: "请先登录~");
                 RouteUtil.push(context, LoginScreen());
               }
             },
@@ -103,7 +103,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               if (isLogin) {
                 RouteUtil.push(context, TodoScreen());
               } else {
-                Fluttertoast.showToast(msg: "清先登录！");
+                Fluttertoast.showToast(msg: "请先登录~");
                 RouteUtil.push(context, LoginScreen());
               }
             },

@@ -250,7 +250,7 @@ class ApiService {
     });
   }
 
-  // 获取未完成TODO列表
+  /// 获取未完成TODO列表
   void getNoTodoList(
       Function callback, Function errorCallback, int _type, int _page) async {
     DioManager.singleton.dio
@@ -262,7 +262,7 @@ class ApiService {
     });
   }
 
-  // 获取已完成TODO列表
+  /// 获取已完成TODO列表
   void getDoneTodoList(
       Function callback, Function errorCallback, int _type, int _page) async {
     DioManager.singleton.dio
@@ -270,6 +270,17 @@ class ApiService {
             options: _getOptions())
         .then((response) {
       callback(TodoListModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 新增一个TODO
+  void addTodo(Function callback, Function errorCallback, params) {
+    DioManager.singleton.dio
+        .post(Apis.ADD_TODO, queryParameters: params, options: _getOptions())
+        .then((response) {
+      callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
