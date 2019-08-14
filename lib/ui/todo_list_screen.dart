@@ -144,7 +144,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
 
       return InkWell(
         onTap: () {
-          RouteUtil.push(context, TodoAddScreen(1));
+          RouteUtil.push(context, TodoAddScreen(1, bean: item));
         },
         child: Container(
             color: Colors.white,

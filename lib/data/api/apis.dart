@@ -69,4 +69,7 @@ class Apis {
 
   /// 新增一个TODO
   static const String ADD_TODO = BASE_HOST + "/lg/todo/add/json";
+
+  /// 更新TODO
+  static const String UPDATE_TODO = BASE_HOST + "/lg/todo/update";
 }

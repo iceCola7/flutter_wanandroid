@@ -276,9 +276,22 @@ class ApiService {
   }
 
   /// 新增一个TODO
-  void addTodo(Function callback, Function errorCallback, params) {
+  void addTodo(Function callback, Function errorCallback, params) async {
     DioManager.singleton.dio
         .post(Apis.ADD_TODO, queryParameters: params, options: _getOptions())
+        .then((response) {
+      callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 根据ID更新TODO
+  void updateTodo(
+      Function callback, Function errorCallback, int _id, params) async {
+    DioManager.singleton.dio
+        .post(Apis.UPDATE_TODO + "/$_id/json",
+            queryParameters: params, options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {

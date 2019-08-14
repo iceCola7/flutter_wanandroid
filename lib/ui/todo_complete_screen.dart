@@ -133,7 +133,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
 
       return InkWell(
         onTap: () {
-          RouteUtil.push(context, TodoAddScreen(2));
+          RouteUtil.push(context, TodoAddScreen(2, bean: item));
         },
         child: Container(
             color: Colors.white,

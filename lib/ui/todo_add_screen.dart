@@ -5,6 +5,7 @@ import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
+import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,8 +14,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 class TodoAddScreen extends StatefulWidget {
   /// 类型：0:新增  1:编辑  2:查看
   final int typeKey;
+  final TodoBean bean;
 
-  TodoAddScreen(this.typeKey);
+  TodoAddScreen(this.typeKey, {Key key, this.bean}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,12 +25,15 @@ class TodoAddScreen extends StatefulWidget {
 }
 
 class TodoAddScreenSate extends State<TodoAddScreen> {
+  bool isEnabled = true; // 是否可编辑
+
   String toolbarTitle = "";
+
   TextEditingController _titleController = TextEditingController();
-  TextEditingController _detailController = TextEditingController();
+  TextEditingController _contentController = TextEditingController();
 
   final FocusNode _titleFocusNode = FocusNode();
-  final FocusNode _detailFocusNode = FocusNode();
+  final FocusNode _contentFocusNode = FocusNode();
 
   String title = ''; // 标题
   String content = ''; // 详情
@@ -42,7 +47,17 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
     toolbarTitle =
         widget.typeKey == 0 ? '新增' : (widget.typeKey == 1 ? '编辑' : '查看');
 
+    isEnabled = widget.typeKey == 0 || widget.typeKey == 1;
+
     selectedDate = DateUtil.formatDate(DateTime.now(), format: 'yyyy-MM-dd');
+
+    // 判断 bean 是否有值
+    if (widget.bean != null) {
+      _titleController.text = widget.bean.title;
+      _contentController.text = widget.bean.content;
+      priorityValue = widget.bean.priority;
+      selectedDate = widget.bean.dateStr;
+    }
   }
 
   /// 构造分割线
@@ -51,6 +66,24 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       height: 0.5,
       color: Colors.black26,
     );
+  }
+
+  /// 显示Loading
+  _showLoading(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return new LoadingDialog(
+            outsideDismiss: false,
+            loadingText: "正在保存...",
+          );
+        });
+  }
+
+  /// 隐藏Loading
+  _dismissLoading(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   @override
@@ -82,7 +115,8 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                       Expanded(
                         child: TextField(
                           focusNode: _titleFocusNode,
-                          autofocus: true,
+                          autofocus: false,
+                          enabled: isEnabled,
                           controller: _titleController,
                           decoration: InputDecoration.collapsed(
                             hintText: "请输入标题",
@@ -105,9 +139,10 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                       ),
                       Expanded(
                         child: TextField(
-                          focusNode: _detailFocusNode,
+                          focusNode: _contentFocusNode,
                           autofocus: false,
-                          controller: _detailController,
+                          enabled: isEnabled,
+                          controller: _contentController,
                           decoration: InputDecoration.collapsed(
                             hintText: "请输入详情",
                           ),
@@ -127,28 +162,42 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                         "优先级：",
                         style: TextStyle(fontSize: 16),
                       ),
-                      Radio(
-                        value: 0,
-                        groupValue: this.priorityValue,
-                        activeColor: Color(0xFF00BCD4),
-                        onChanged: (value) {
-                          setState(() {
-                            this.priorityValue = value;
-                          });
-                        },
+                      Offstage(
+                        offstage: !isEnabled && priorityValue == 1,
+                        child: Row(
+                          children: <Widget>[
+                            Radio(
+                              value: 0,
+                              groupValue: this.priorityValue,
+                              activeColor: Color(0xFF00BCD4),
+                              onChanged: (value) {
+                                setState(() {
+                                  this.priorityValue = value;
+                                });
+                              },
+                            ),
+                            Text('一般'),
+                          ],
+                        ),
                       ),
-                      Text('一般'),
-                      Radio(
-                        value: 1,
-                        groupValue: this.priorityValue,
-                        activeColor: Color(0xFF00BCD4),
-                        onChanged: (value) {
-                          setState(() {
-                            this.priorityValue = value;
-                          });
-                        },
+                      Offstage(
+                        offstage: !isEnabled && priorityValue == 0,
+                        child: Row(
+                          children: <Widget>[
+                            Radio(
+                              value: 1,
+                              groupValue: this.priorityValue,
+                              activeColor: Color(0xFF00BCD4),
+                              onChanged: (value) {
+                                setState(() {
+                                  this.priorityValue = value;
+                                });
+                              },
+                            ),
+                            Text('重要'),
+                          ],
+                        ),
                       ),
-                      Text('重要'),
                     ],
                   ),
                 ),
@@ -157,6 +206,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
                   child: InkWell(
                     onTap: () {
+                      if (!isEnabled) return;
                       showDatePicker(
                         context: context,
                         initialDate: new DateTime.now(),
@@ -188,11 +238,14 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                             ),
                           ),
                         ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 14,
-                          color: Colors.grey,
-                        )
+                        Offstage(
+                          offstage: !isEnabled,
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -202,23 +255,32 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                   flex: 1,
                   child: Container(),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: RaisedButton(
-                          padding: EdgeInsets.all(16.0),
-                          elevation: 0.5,
-                          child: Text("保存"),
-                          color: Color(0xFF00BCD4),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            _saveTodo();
-                          },
+                Offstage(
+                  offstage: !isEnabled,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(16.0),
+                            elevation: 0.5,
+                            child: Text("保存"),
+                            color: Color(0xFF00BCD4),
+                            textColor: Colors.white,
+                            onPressed: () {
+                              if (widget.typeKey == 0) {
+                                /// 新增
+                                _saveTodo();
+                              } else if (widget.typeKey == 1) {
+                                /// 编辑
+                                _updateTodo();
+                              }
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -227,28 +289,10 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
         ));
   }
 
-  /// 显示Loading
-  _showLoading(BuildContext context) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) {
-          return new LoadingDialog(
-            outsideDismiss: false,
-            loadingText: "正在保存...",
-          );
-        });
-  }
-
-  /// 隐藏Loading
-  _dismissLoading(BuildContext context) {
-    Navigator.of(context).pop();
-  }
-
   /// 保存TODO
   Future<Null> _saveTodo() async {
     title = _titleController.text;
-    content = _detailController.text;
+    content = _contentController.text;
 
     if (title == '') {
       Fluttertoast.showToast(msg: '请输入标题');
@@ -263,7 +307,8 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       'title': title,
       'content': content,
       'date': selectedDate,
-      'type': 0
+      'type': 0,
+      'priority': priorityValue
     };
     ApiService().addTodo((BaseModel model) {
       _dismissLoading(context);
@@ -278,5 +323,45 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       _dismissLoading(context);
       print(error.response);
     }, params);
+  }
+
+  /// 更新TODO
+  Future<Null> _updateTodo() async {
+    int _id = widget.bean.id;
+    int _status = widget.bean.status;
+
+    title = _titleController.text;
+    content = _contentController.text;
+
+    if (title == '') {
+      Fluttertoast.showToast(msg: '请输入标题');
+      return;
+    }
+    if (content == '') {
+      Fluttertoast.showToast(msg: '请输入详情');
+      return;
+    }
+    _showLoading(context);
+    var params = {
+      'title': title,
+      'content': content,
+      'date': selectedDate,
+      'type': 0,
+      'priority': priorityValue,
+      'status': _status
+    };
+    ApiService().updateTodo((BaseModel model) {
+      _dismissLoading(context);
+      if (model.errorCode == Constants.STATUS_SUCCESS) {
+        Fluttertoast.showToast(msg: '更新成功');
+        Application.eventBus.fire(new RefreshTodoEvent());
+        Navigator.of(context).pop();
+      } else {
+        Fluttertoast.showToast(msg: model.errorMsg);
+      }
+    }, (DioError error) {
+      _dismissLoading(context);
+      print(error.response);
+    }, _id, params);
   }
 }
