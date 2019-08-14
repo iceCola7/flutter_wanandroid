@@ -298,4 +298,29 @@ class ApiService {
       errorCallback(e);
     });
   }
+
+  /// 仅更新完成状态Todo
+  void updateTodoState(
+      Function callback, Function errorCallback, int _id, params) async {
+    DioManager.singleton.dio
+        .post(Apis.UPDATE_TODO_STATE + "/$_id/json",
+            queryParameters: params, options: _getOptions())
+        .then((response) {
+      callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 根据ID删除TODO
+  void deleteTodoById(
+      Function callback, Function errorCallback, int _id) async {
+    DioManager.singleton.dio
+        .post(Apis.DELETE_TODO_BY_ID + "/$_id/json", options: _getOptions())
+        .then((response) {
+      callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }

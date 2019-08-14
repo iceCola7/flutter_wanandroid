@@ -72,4 +72,10 @@ class Apis {
 
   /// 更新TODO
   static const String UPDATE_TODO = BASE_HOST + "/lg/todo/update";
+
+  /// 仅更新完成状态Todo
+  static const String UPDATE_TODO_STATE = BASE_HOST + "/lg/todo/done";
+
+  /// 根据ID删除TODO
+  static const String DELETE_TODO_BY_ID = BASE_HOST + "/lg/todo/delete";
 }

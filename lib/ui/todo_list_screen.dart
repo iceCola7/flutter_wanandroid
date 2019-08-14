@@ -1,14 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/todo_add_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
+import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// TODO 待办列表页面
@@ -29,6 +32,8 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
 
   /// 是否显示悬浮按钮
   bool _isShowFAB = false;
+
+  final SlidableController slidableController = SlidableController();
 
   /// 获取待办TODO列表数据
   Future<Null> getNoTodoList() async {
@@ -74,6 +79,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     }, _type, _page);
   }
 
+  /// 注册刷新TODO事件
   void registerRefreshEvent() {
     Application.eventBus.on<RefreshTodoEvent>().listen((event) {
       showLoading();
@@ -116,6 +122,24 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     );
   }
 
+  /// 显示Loading
+  _showLoading(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return new LoadingDialog(
+            outsideDismiss: false,
+            loadingText: "loading...",
+          );
+        });
+  }
+
+  /// 隐藏Loading
+  _dismissLoading(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
@@ -142,37 +166,70 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     if (index < _todoBeanList.length) {
       TodoBean item = _todoBeanList[index];
 
-      return InkWell(
-        onTap: () {
-          RouteUtil.push(context, TodoAddScreen(1, bean: item));
-        },
-        child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Text(
-                    item.title,
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                    maxLines: 2,
-                    textAlign: TextAlign.left,
+      return Slidable(
+        controller: slidableController,
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.25,
+        child: InkWell(
+          onTap: () {
+            RouteUtil.push(context, TodoAddScreen(1, bean: item));
+          },
+          child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Text(
+                      item.title,
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                  child: Text(
-                    item.content,
-                    style: TextStyle(fontSize: 14, color: Color(0xFF757575)),
-                    maxLines: 2,
-                    textAlign: TextAlign.left,
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                    child: Text(
+                      item.content,
+                      style: TextStyle(fontSize: 14, color: Color(0xFF757575)),
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )),
+        ),
+        secondaryActions: <Widget>[
+          InkWell(
+            onTap: () {
+              this.updateTodoState(item.id, index);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              color: const Color(0xFF4CAF50),
+              child: Text(
+                "已完成",
+                style: TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              this.deleteTodoById(item.id, index);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              color: Colors.red,
+              child: Text(
+                "删除",
+                style: TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       );
     }
     return null;
@@ -196,5 +253,45 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   void onClickErrorWidget() {
     showLoading();
     getNoTodoList();
+  }
+
+  /// 根据ID删除TODO
+  Future<Null> deleteTodoById(int _id, int index) async {
+    _showLoading(context);
+    ApiService().deleteTodoById((BaseModel model) {
+      _dismissLoading(context);
+      if (model.errorCode == Constants.STATUS_SUCCESS) {
+        Fluttertoast.showToast(msg: "删除成功");
+        setState(() {
+          _todoBeanList.removeAt(index);
+        });
+      } else {
+        Fluttertoast.showToast(msg: model.errorMsg);
+      }
+    }, (DioError error) {
+      _dismissLoading(context);
+      print(error.response);
+    }, _id);
+  }
+
+  /// 仅更新完成状态Todo
+  Future<Null> updateTodoState(int _id, int index) async {
+    // status: 0或1，传1代表未完成到已完成，反之则反之。
+    var params = {'status': 1};
+    _showLoading(context);
+    ApiService().updateTodoState((BaseModel model) {
+      _dismissLoading(context);
+      if (model.errorCode == Constants.STATUS_SUCCESS) {
+        Fluttertoast.showToast(msg: "更新成功");
+        setState(() {
+          _todoBeanList.removeAt(index);
+        });
+      } else {
+        Fluttertoast.showToast(msg: model.errorMsg);
+      }
+    }, (DioError error) {
+      _dismissLoading(context);
+      print(error.response);
+    }, _id, params);
   }
 }

@@ -51,6 +51,8 @@ dependencies:
   common_utils: ^1.1.3
   # Flutter 常用工具类库 https://github.com/Sky24n/flustars
   flustars: 0.2.6+1
+  # 侧滑删除 https://github.com/letsar/flutter_slidable
+  flutter_slidable: ^0.5.3
 
 dev_dependencies:
   flutter_test:
