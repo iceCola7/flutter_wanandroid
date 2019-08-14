@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
+import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/todo_add_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
@@ -72,10 +74,19 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     }, _type, _page);
   }
 
+  void registerRefreshEvent() {
+    Application.eventBus.on<RefreshTodoEvent>().listen((event) {
+      showLoading();
+      getNoTodoList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     setAppBarVisible(false);
+
+    this.registerRefreshEvent();
 
     showLoading();
     getNoTodoList();

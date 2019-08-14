@@ -72,7 +72,7 @@ class DrawerScreenState extends State<DrawerScreen> {
           ),
           ListTile(
             title: Text(
-              "我的收藏",
+              "收藏",
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),

@@ -1,9 +1,11 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
+import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -267,6 +269,8 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         Fluttertoast.showToast(msg: '保存成功');
+        Application.eventBus.fire(new RefreshTodoEvent());
+        Navigator.of(context).pop();
       } else {
         Fluttertoast.showToast(msg: model.errorMsg);
       }
