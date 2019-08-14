@@ -61,7 +61,7 @@ class HomeBannerState extends State<HomeBannerScreen> {
         itemCount: _bannerList.length,
         autoplay: true,
         pagination: new SwiperPagination(),
-        control: new SwiperControl(),
+        // control: new SwiperControl(),
       ),
     );
   }

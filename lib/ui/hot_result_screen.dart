@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
+import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
@@ -216,36 +218,74 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
             ),
             Container(
               color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.title,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: const Color(0xFF3D4E5F),
+                  Offstage(
+                    offstage: item.envelopePic == "",
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
+                      child: new Image.network(
+                        item.envelopePic,
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.cover,
                       ),
-                      textAlign: TextAlign.left,
                     ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: Row(
-                children: <Widget>[
+                  ),
                   Expanded(
-                    child: Text(
-                      item.superChapterName + " / " + item.chapterName,
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.left,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          child: Text(
+                            item.title,
+                            maxLines: 2,
+                            style: TextStyle(
+                              fontSize: 16,
+                              // fontWeight: FontWeight.bold,
+                              color: const Color(0xFF3D4E5F),
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  item.superChapterName +
+                                      " / " +
+                                      item.chapterName,
+                                  style: TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              InkWell(
+                                child: Container(
+                                  child: Image(
+                                    // color: Colors.black12,
+                                    image: AssetImage(item.collect
+                                        ? 'assets/images/ic_like.png'
+                                        : 'assets/images/ic_like_not.png'),
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                                onTap: () {
+                                  addOrCancelCollect(item);
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -254,6 +294,42 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
       );
     }
     return null;
+  }
+
+  /// 添加收藏或者取消收藏
+  void addOrCancelCollect(item) {
+    List<String> cookies = User.singleton.cookie;
+    if (cookies == null || cookies.length == 0) {
+      Fluttertoast.showToast(msg: '请先登录~');
+    } else {
+      if (item.collect) {
+        ApiService().cancelCollection((BaseModel model) {
+          if (model.errorCode == Constants.STATUS_SUCCESS) {
+            Fluttertoast.showToast(msg: '已取消收藏~');
+            setState(() {
+              item.collect = false;
+            });
+          } else {
+            Fluttertoast.showToast(msg: '取消收藏失败~');
+          }
+        }, (DioError error) {
+          print(error.response);
+        }, item.id);
+      } else {
+        ApiService().addCollection((BaseModel model) {
+          if (model.errorCode == Constants.STATUS_SUCCESS) {
+            Fluttertoast.showToast(msg: '收藏成功~');
+            setState(() {
+              item.collect = true;
+            });
+          } else {
+            Fluttertoast.showToast(msg: '收藏失败~');
+          }
+        }, (DioError error) {
+          print(error.response);
+        }, item.id);
+      }
+    }
   }
 
   @override
