@@ -107,7 +107,7 @@ class TodoBean {
 
   @override
   String toString() {
-    return '{"completeDate": $completeDate,"courseId": $completeDateStr,"id": $completeDateStr,"content": $content,"date": $date,"dateStr": $dateStr,"id": $id,"priority": $priority,'
+    return '{"completeDate": $completeDate,"completeDateStr": $completeDateStr,"content": $content,"date": $date,"dateStr": $dateStr,"id": $id,"priority": $priority,'
         '"status": $status,"title": $title,"type": $type,"userId": $userId}}';
   }
 }

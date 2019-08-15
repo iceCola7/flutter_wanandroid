@@ -13,6 +13,7 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 /// TODO 待办列表页面
 class TodoListScreen extends BaseWidget {
@@ -35,6 +36,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
 
   final SlidableController slidableController = SlidableController();
 
+  /// 重新构建的数据集合
+  Map<String, List<TodoBean>> map = Map();
+
   /// 获取待办TODO列表数据
   Future<Null> getNoTodoList() async {
     _page = 1;
@@ -46,6 +50,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
             _todoBeanList.clear();
             _todoBeanList.addAll(model.data.datas);
           });
+          rebuildData();
         } else {
           showEmpty();
         }
@@ -67,6 +72,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
           setState(() {
             _todoBeanList.addAll(model.data.datas);
           });
+          rebuildData();
         } else {
           Fluttertoast.showToast(msg: "没有更多数据了");
         }
@@ -140,6 +146,24 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     Navigator.of(context).pop();
   }
 
+  /// 重新构建数据
+  void rebuildData() {
+    map.clear();
+    Set<String> set = new Set();
+    _todoBeanList.forEach((bean) {
+      set.add(bean.dateStr);
+    });
+
+    set.forEach((s) {
+      List<TodoBean> list = new List();
+      map.putIfAbsent(s, () => list);
+    });
+
+    _todoBeanList.forEach((bean) {
+      map[bean.dateStr].add(bean);
+    });
+  }
+
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
@@ -166,71 +190,95 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     if (index < _todoBeanList.length) {
       TodoBean item = _todoBeanList[index];
 
-      return Slidable(
-        controller: slidableController,
-        actionPane: SlidableDrawerActionPane(),
-        actionExtentRatio: 0.25,
-        child: InkWell(
-          onTap: () {
-            RouteUtil.push(context, TodoAddScreen(1, bean: item));
-          },
-          child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: Text(
-                      item.title,
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                      maxLines: 2,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                    child: Text(
-                      item.content,
-                      style: TextStyle(fontSize: 14, color: Color(0xFF757575)),
-                      maxLines: 2,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ],
-              )),
-        ),
-        secondaryActions: <Widget>[
-          InkWell(
-            onTap: () {
-              this.updateTodoState(item.id, index);
-            },
+      bool isShowSuspension = false;
+      if (map.containsKey(item.dateStr)) {
+        if (map[item.dateStr].length > 0) {
+          if (map[item.dateStr][0].id == item.id) {
+            isShowSuspension = true;
+          }
+        }
+      }
+
+      return StickyHeader(
+          header: Offstage(
+            offstage: !isShowSuspension,
             child: Container(
-              alignment: Alignment.center,
-              color: const Color(0xFF4CAF50),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              alignment: Alignment.centerLeft,
+              height: 28,
+              color: Color(0xFFF5F5F5),
               child: Text(
-                "已完成",
-                style: TextStyle(fontSize: 14, color: Colors.white),
+                item.dateStr,
+                style: TextStyle(fontSize: 12, color: Color(0xFF00BCD4)),
               ),
             ),
           ),
-          InkWell(
-            onTap: () {
-              this.deleteTodoById(item.id, index);
-            },
-            child: Container(
-              alignment: Alignment.center,
-              color: Colors.red,
-              child: Text(
-                "删除",
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
+          content: Slidable(
+            controller: slidableController,
+            actionPane: SlidableDrawerActionPane(),
+            actionExtentRatio: 0.25,
+            child: InkWell(
+              onTap: () {
+                RouteUtil.push(context, TodoAddScreen(1, bean: item));
+              },
+              child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Text(
+                          item.title,
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          maxLines: 2,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        child: Text(
+                          item.content,
+                          style:
+                              TextStyle(fontSize: 14, color: Color(0xFF757575)),
+                          maxLines: 2,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
+                  )),
             ),
-          ),
-        ],
-      );
+            secondaryActions: <Widget>[
+              InkWell(
+                onTap: () {
+                  this.updateTodoState(item.id, index);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  color: const Color(0xFF4CAF50),
+                  child: Text(
+                    "已完成",
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  this.deleteTodoById(item.id, index);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.red,
+                  child: Text(
+                    "删除",
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ));
     }
     return null;
   }
@@ -265,6 +313,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
         setState(() {
           _todoBeanList.removeAt(index);
         });
+        rebuildData();
       } else {
         Fluttertoast.showToast(msg: model.errorMsg);
       }
@@ -286,6 +335,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
         setState(() {
           _todoBeanList.removeAt(index);
         });
+        rebuildData();
       } else {
         Fluttertoast.showToast(msg: model.errorMsg);
       }
