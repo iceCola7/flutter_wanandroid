@@ -210,33 +210,65 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
               RouteUtil.push(context, TodoAddScreen(2, bean: item));
             },
             child: Container(
-                color: Colors.white,
-                padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Text(
+                              item.title,
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                            child: Text(
+                              item.content,
+                              style: TextStyle(
+                                  fontSize: 15, color: Color(0xFF757575)),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: item.priority != 1,
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        border: new Border.all(
+                            color: Color(0xFFF44336), width: 0.5),
+                        borderRadius: new BorderRadius.vertical(
+                            top: Radius.elliptical(2, 2),
+                            bottom: Radius.elliptical(2, 2)),
+                      ),
+                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
                       child: Text(
-                        item.title,
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                        maxLines: 2,
+                        "重要",
+                        style: TextStyle(
+                            fontSize: 10, color: const Color(0xFFF44336)),
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                      child: Text(
-                        item.content,
-                        style:
-                            TextStyle(fontSize: 14, color: Color(0xFF757575)),
-                        maxLines: 2,
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
           ),
           secondaryActions: <Widget>[
             InkWell(
