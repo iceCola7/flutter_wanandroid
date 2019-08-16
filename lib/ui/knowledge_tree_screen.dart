@@ -120,7 +120,10 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
                   ),
                 ),
               ),
-              Icon(Icons.chevron_right)
+              Icon(
+                Icons.chevron_right,
+                color: Colors.grey,
+              )
             ],
           ),
         ),

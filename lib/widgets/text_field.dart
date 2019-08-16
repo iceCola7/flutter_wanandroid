@@ -99,7 +99,7 @@ class _MyTextFieldState extends State<MyTextField> {
               focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colours.app_main, width: 0.8)),
               enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colours.line, width: 0.8))),
+                  borderSide: BorderSide(color: Colours.divider, width: 0.8))),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -170,12 +170,11 @@ class _MyTextFieldState extends State<MyTextField> {
                     textColor: Colours.app_main,
                     color: Colors.transparent,
                     disabledTextColor: Colors.white,
-                    disabledColor: Colours.text_gray_c,
+                    disabledColor: Colours.gray_33,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(1.0),
                         side: BorderSide(
-                          color:
-                              _isClick ? Colours.app_main : Colours.text_gray_c,
+                          color: _isClick ? Colours.app_main : Colours.gray_33,
                           width: 0.8,
                         )),
                     child: Text(

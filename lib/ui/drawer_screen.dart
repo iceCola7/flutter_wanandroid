@@ -6,6 +6,7 @@ import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
+import 'package:flutter_wanandroid/ui/about_screen.dart';
 import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
 import 'package:flutter_wanandroid/ui/todo_screen.dart';
@@ -124,7 +125,7 @@ class DrawerScreenState extends State<DrawerScreen> {
           ),
           ListTile(
             title: Text(
-              "关于我们",
+              "关于",
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
@@ -133,14 +134,14 @@ class DrawerScreenState extends State<DrawerScreen> {
               size: 22,
             ),
             onTap: () {
-              Fluttertoast.showToast(msg: "该功能正在开发中...");
+              RouteUtil.push(context, AboutScreen());
             },
           ),
           Offstage(
             offstage: !isLogin,
             child: ListTile(
               title: Text(
-                "退出登录",
+                "注销",
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
               ),
