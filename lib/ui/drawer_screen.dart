@@ -9,6 +9,7 @@ import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/about_screen.dart';
 import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
+import 'package:flutter_wanandroid/ui/setting_screen.dart';
 import 'package:flutter_wanandroid/ui/todo_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -120,7 +121,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               size: 22,
             ),
             onTap: () {
-              Fluttertoast.showToast(msg: "该功能正在开发中...");
+              RouteUtil.push(context, SettingScreen());
             },
           ),
           ListTile(
@@ -164,7 +165,7 @@ class DrawerScreenState extends State<DrawerScreen> {
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
-            title: new Text('提示'),
+            // title: new Text(''),
             content: new Text('确定退出登录吗？'),
             actions: <Widget>[
               new FlatButton(
