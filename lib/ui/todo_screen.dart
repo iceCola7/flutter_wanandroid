@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/ui/todo_complete_screen.dart';
 import 'package:flutter_wanandroid/ui/todo_list_screen.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 /// TODO 页面
 class TodoScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class TodoScreenState extends State<TodoScreen> {
             style: TextStyle(
                 color: index == _todoSelectedIndex
                     ? Color(0xFF00BCD4)
-                    : Colors.white),
+                    : ThemeUtils.dark ? Colors.white : Colors.black),
           ),
         ],
       ));

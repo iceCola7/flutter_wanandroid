@@ -333,7 +333,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
               Icons.edit,
               color: Colors.white,
             ),
-            backgroundColor: ThemeUtils.currentColorTheme,
+            // backgroundColor: ThemeUtils.currentThemeColor,
             onPressed: () {
               RouteUtil.push(
                   context,

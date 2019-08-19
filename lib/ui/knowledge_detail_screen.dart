@@ -186,7 +186,7 @@ class KnowledgeArticleScreenState
           : FloatingActionButton(
               heroTag: "knowledge_detail",
               child: Icon(Icons.arrow_upward),
-              backgroundColor: ThemeUtils.currentColorTheme,
+              // backgroundColor: ThemeUtils.currentThemeColor,
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,
