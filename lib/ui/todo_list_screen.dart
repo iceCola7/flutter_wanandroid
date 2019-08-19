@@ -24,7 +24,8 @@ class TodoListScreen extends BaseWidget {
 }
 
 class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
-  int _type = 0;
+  /// 待办类型：0:只用这一个  1:工作  2:学习  3:生活
+  int todoType = 0;
   int _page = 1;
   List<TodoBean> _todoBeanList = new List();
 
@@ -60,7 +61,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     }, (DioError error) {
       print(error.response);
       showError();
-    }, _type, _page);
+    }, todoType, _page);
   }
 
   /// 获取更多待办TODO列表数据
@@ -82,12 +83,13 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     }, (DioError error) {
       print(error.response);
       showError();
-    }, _type, _page);
+    }, todoType, _page);
   }
 
   /// 注册刷新TODO事件
   void registerRefreshEvent() {
     Application.eventBus.on<RefreshTodoEvent>().listen((event) {
+      todoType = event.todoType;
       showLoading();
       getNoTodoList();
     });
@@ -219,7 +221,13 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
             actionExtentRatio: 0.25,
             child: InkWell(
               onTap: () {
-                RouteUtil.push(context, TodoAddScreen(1, bean: item));
+                RouteUtil.push(
+                    context,
+                    TodoAddScreen(
+                      todoType: this.todoType,
+                      editKey: 1,
+                      bean: item,
+                    ));
               },
               child: Container(
                 child: Row(
@@ -325,7 +333,12 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
             ),
             backgroundColor: ThemeUtils.currentColorTheme,
             onPressed: () {
-              RouteUtil.push(context, TodoAddScreen(0));
+              RouteUtil.push(
+                  context,
+                  TodoAddScreen(
+                    todoType: this.todoType,
+                    editKey: 0,
+                  ));
             },
           );
   }

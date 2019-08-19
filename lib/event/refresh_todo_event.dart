@@ -1,1 +1,5 @@
-class RefreshTodoEvent {}
+class RefreshTodoEvent {
+  int todoType;
+
+  RefreshTodoEvent(this.todoType);
+}

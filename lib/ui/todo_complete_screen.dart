@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
+import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/todo_add_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
@@ -22,7 +24,8 @@ class TodoCompleteScreen extends BaseWidget {
 }
 
 class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
-  int _type = 0;
+  /// 待办类型：0:只用这一个  1:工作  2:学习  3:生活
+  int todoType = 0;
   int _page = 1;
   List<TodoBean> _todoBeanList = new List();
 
@@ -58,7 +61,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
     }, (DioError error) {
       print(error.response);
       showError();
-    }, _type, _page);
+    }, todoType, _page);
   }
 
   /// 获取更多已完成TODO列表数据
@@ -80,13 +83,24 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
     }, (DioError error) {
       print(error.response);
       showError();
-    }, _type, _page);
+    }, todoType, _page);
+  }
+
+  /// 注册刷新TODO事件
+  void registerRefreshEvent() {
+    Application.eventBus.on<RefreshTodoEvent>().listen((event) {
+      todoType = event.todoType;
+      showLoading();
+      getDoneTodoList();
+    });
   }
 
   @override
   void initState() {
     super.initState();
     setAppBarVisible(false);
+
+    this.registerRefreshEvent();
 
     showLoading();
     getDoneTodoList();
@@ -207,7 +221,13 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
           actionExtentRatio: 0.25,
           child: InkWell(
             onTap: () {
-              RouteUtil.push(context, TodoAddScreen(2, bean: item));
+              RouteUtil.push(
+                  context,
+                  TodoAddScreen(
+                    todoType: this.todoType,
+                    editKey: 2,
+                    bean: item,
+                  ));
             },
             child: Container(
               child: Row(
@@ -315,7 +335,12 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
             ),
             backgroundColor: ThemeUtils.currentColorTheme,
             onPressed: () {
-              RouteUtil.push(context, TodoAddScreen(0));
+              RouteUtil.push(
+                  context,
+                  TodoAddScreen(
+                    todoType: this.todoType,
+                    editKey: 0,
+                  ));
             },
           );
   }

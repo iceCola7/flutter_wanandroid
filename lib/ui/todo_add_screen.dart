@@ -13,10 +13,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 /// 新增或编辑TODO
 class TodoAddScreen extends StatefulWidget {
   /// 类型：0:新增  1:编辑  2:查看
-  final int typeKey;
+  final int editKey;
   final TodoBean bean;
 
-  TodoAddScreen(this.typeKey, {Key key, this.bean}) : super(key: key);
+  /// 待办类型：0:只用这一个  1:工作  2:学习  3:生活
+  final int todoType;
+
+  TodoAddScreen({Key key, this.todoType = 0, this.editKey = 0, this.bean})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -45,9 +49,9 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
     super.initState();
 
     toolbarTitle =
-        widget.typeKey == 0 ? '新增' : (widget.typeKey == 1 ? '编辑' : '查看');
+        widget.editKey == 0 ? '新增' : (widget.editKey == 1 ? '编辑' : '查看');
 
-    isEnabled = widget.typeKey == 0 || widget.typeKey == 1;
+    isEnabled = widget.editKey == 0 || widget.editKey == 1;
 
     selectedDate = DateUtil.formatDate(DateTime.now(), format: 'yyyy-MM-dd');
 
@@ -268,10 +272,10 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                             color: Color(0xFF00BCD4),
                             textColor: Colors.white,
                             onPressed: () {
-                              if (widget.typeKey == 0) {
+                              if (widget.editKey == 0) {
                                 /// 新增
                                 _saveTodo();
-                              } else if (widget.typeKey == 1) {
+                              } else if (widget.editKey == 1) {
                                 /// 编辑
                                 _updateTodo();
                               }
@@ -306,14 +310,14 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       'title': title,
       'content': content,
       'date': selectedDate,
-      'type': 0,
+      'type': widget.todoType,
       'priority': priorityValue
     };
     ApiService().addTodo((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         Fluttertoast.showToast(msg: '保存成功');
-        Application.eventBus.fire(new RefreshTodoEvent());
+        Application.eventBus.fire(new RefreshTodoEvent(widget.todoType));
         Navigator.of(context).pop();
       } else {
         Fluttertoast.showToast(msg: model.errorMsg);
@@ -345,7 +349,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       'title': title,
       'content': content,
       'date': selectedDate,
-      'type': 0,
+      'type': widget.todoType,
       'priority': priorityValue,
       'status': _status
     };
@@ -353,7 +357,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         Fluttertoast.showToast(msg: '更新成功');
-        Application.eventBus.fire(new RefreshTodoEvent());
+        Application.eventBus.fire(new RefreshTodoEvent(widget.todoType));
         Navigator.of(context).pop();
       } else {
         Fluttertoast.showToast(msg: model.errorMsg);
