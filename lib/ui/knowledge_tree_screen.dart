@@ -90,7 +90,6 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
           RouteUtil.push(context, KnowledgeDetailScreen(new ValueKey(item)));
         },
         child: Container(
-          color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -106,8 +105,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
                         child: Text(
                           item.name,
                           style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
+                            fontSize: 16
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -161,7 +159,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.5,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),

@@ -163,7 +163,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.5,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),
@@ -194,7 +194,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             alignment: Alignment.centerLeft,
             height: 28,
-            color: Color(0xFFF5F5F5),
+            color: ThemeUtils.dark ? Color(0xFF515151) : Color(0xFFF5F5F5),
             child: Text(
               item.dateStr,
               style: TextStyle(fontSize: 12, color: Color(0xFF00BCD4)),
@@ -210,7 +210,6 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
               RouteUtil.push(context, TodoAddScreen(2, bean: item));
             },
             child: Container(
-              color: Colors.white,
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -223,8 +222,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Text(
                               item.title,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black),
+                              style: TextStyle(fontSize: 16),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
@@ -311,7 +309,10 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
         ? null
         : FloatingActionButton(
             heroTag: "todo_done_list",
-            child: Icon(Icons.edit),
+            child: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
             backgroundColor: ThemeUtils.currentColorTheme,
             onPressed: () {
               RouteUtil.push(context, TodoAddScreen(0));

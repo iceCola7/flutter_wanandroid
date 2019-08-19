@@ -72,32 +72,22 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
     _tabController =
         new TabController(length: _projectTreeList.length, vsync: this);
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            color: _themeColor,
-            height: 48,
-            child: TabBar(
-                indicatorColor: Colors.white,
-                labelStyle: TextStyle(fontSize: 16),
-                unselectedLabelStyle: TextStyle(fontSize: 16),
-                controller: _tabController,
-                isScrollable: true,
-                tabs: _projectTreeList.map((item) {
-                  return Tab(
-                    text: item.name,
-                  );
-                }).toList()),
-          ),
-          Expanded(
-            child: TabBarView(
-                controller: _tabController,
-                children: _projectTreeList.map((item) {
-                  return ProjectArticleScreen(item.id);
-                }).toList()),
-          )
-        ],
+      appBar: AppBar(
+        title: TabBar(
+            indicatorColor: Colors.white,
+            labelStyle: TextStyle(fontSize: 16),
+            unselectedLabelStyle: TextStyle(fontSize: 16),
+            controller: _tabController,
+            isScrollable: true,
+            tabs: _projectTreeList.map((item) {
+              return Tab(text: item.name);
+            }).toList()),
       ),
+      body: TabBarView(
+          controller: _tabController,
+          children: _projectTreeList.map((item) {
+            return ProjectArticleScreen(item.id);
+          }).toList()),
     );
   }
 
@@ -226,7 +216,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
                         padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
                         child: Text(
                           item.title,
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          style: TextStyle(fontSize: 16),
                           maxLines: 2,
                           textAlign: TextAlign.left,
                         ),
@@ -236,8 +226,10 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
                         padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
                         child: Text(
                           item.desc,
-                          style:
-                              TextStyle(fontSize: 14, color: Color(0xFF757575)),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
                           maxLines: 2,
                           textAlign: TextAlign.left,
                           softWrap: true,
@@ -252,13 +244,17 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
                           children: <Widget>[
                             Text(
                               item.author,
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
                             ),
                             Text(
                               item.niceDate,
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
                             )
                           ],
                         ),
@@ -271,7 +267,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
                               addOrCancelCollect(item);
                             },
                             child: Image(
-                              // color: Colors.black12,
+                              color: Colors.grey[600],
                               image: AssetImage(item.collect
                                   ? 'assets/images/ic_like.png'
                                   : 'assets/images/ic_like_not.png'),
@@ -336,7 +332,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.5,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),

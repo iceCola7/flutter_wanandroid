@@ -36,7 +36,9 @@ class ThemeUtils {
   static ThemeData themeData = getThemeData(dark);
 
   static ThemeData themeDataLight = new ThemeData(
-      primaryColor: ThemeUtils.currentColorTheme, brightness: Brightness.light);
+    primaryColor: ThemeUtils.currentColorTheme,
+    brightness: Brightness.light,
+  );
 
   static ThemeData themeDataDark = new ThemeData.dark();
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 class LoadingDialog extends StatefulWidget {
   String loadingText;
@@ -47,7 +48,7 @@ class LoadingDialogState extends State<LoadingDialog> {
             height: 120.0,
             child: new Container(
               decoration: ShapeDecoration(
-                color: Color(0xffffffff),
+                color: ThemeUtils.dark ? Color(0xba000000) : Color(0xffffffff),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(8.0),

@@ -94,7 +94,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.5,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),
@@ -125,7 +125,6 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
   Widget itemView(BuildContext context, int index) {
     if (index < _navigationList.length) {
       return Container(
-        color: Colors.white,
         padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -135,7 +134,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
               padding: EdgeInsets.only(bottom: 8),
               child: Text(
                 _navigationList[index].name,
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -167,7 +166,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
                   fontStyle: FontStyle.italic),
             ),
             labelPadding: EdgeInsets.only(left: 3.0, right: 3.0),
-            backgroundColor: Color(0xfff1f1f1),
+            // backgroundColor: Color(0xfff1f1f1),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0)),
             materialTapTargetSize: MaterialTapTargetSize.padded,

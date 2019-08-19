@@ -56,9 +56,7 @@ class KnowledgeDetailScreenState extends State<KnowledgeDetailScreen>
             controller: _tabController,
             isScrollable: true,
             tabs: bean.children.map((KnowledgeTreeChildBean item) {
-              return Tab(
-                text: item.name,
-              );
+              return Tab(text: item.name);
             }).toList()),
       ),
       body: TabBarView(
@@ -217,7 +215,6 @@ class KnowledgeArticleScreenState
             Offstage(
               offstage: item.envelopePic == '',
               child: Container(
-                color: Colors.white,
                 padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
                 child: new Image.network(
                   item.envelopePic,
@@ -231,19 +228,24 @@ class KnowledgeArticleScreenState
               child: Column(
                 children: <Widget>[
                   Container(
-                    color: Colors.white,
                     padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                     child: Row(
                       children: <Widget>[
                         Text(
                           item.author,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
                           textAlign: TextAlign.left,
                         ),
                         Expanded(
                           child: Text(
                             item.niceDate,
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
                             textAlign: TextAlign.right,
                           ),
                         ),
@@ -251,7 +253,6 @@ class KnowledgeArticleScreenState
                     ),
                   ),
                   Container(
-                    color: Colors.white,
                     padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                     child: Row(
                       children: <Widget>[
@@ -259,11 +260,7 @@ class KnowledgeArticleScreenState
                           child: Text(
                             item.title,
                             maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: const Color(0xFF3D4E5F),
-                            ),
+                            style: TextStyle(fontSize: 16),
                             textAlign: TextAlign.left,
                           ),
                         )
@@ -271,21 +268,23 @@ class KnowledgeArticleScreenState
                     ),
                   ),
                   Container(
-                    color: Colors.white,
                     padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: Text(
                             item.chapterName,
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
                             textAlign: TextAlign.left,
                           ),
                         ),
                         InkWell(
                           child: Container(
                             child: Image(
-                              // color: Colors.black12,
+                              color: Colors.grey[600],
                               image: AssetImage(item.collect
                                   ? 'assets/images/ic_like.png'
                                   : 'assets/images/ic_like_not.png'),

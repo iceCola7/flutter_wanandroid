@@ -72,32 +72,22 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     _tabController =
         new TabController(length: _chaptersList.length, vsync: this);
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            color: _themeColor,
-            height: 48,
-            child: TabBar(
-                indicatorColor: Colors.white,
-                labelStyle: TextStyle(fontSize: 16),
-                unselectedLabelStyle: TextStyle(fontSize: 16),
-                controller: _tabController,
-                isScrollable: true,
-                tabs: _chaptersList.map((WXChaptersBean item) {
-                  return Tab(
-                    text: item.name,
-                  );
-                }).toList()),
-          ),
-          Expanded(
-            child: TabBarView(
-                controller: _tabController,
-                children: _chaptersList.map((item) {
-                  return WXArticleScreen(item.id);
-                }).toList()),
-          )
-        ],
+      appBar: AppBar(
+        title: TabBar(
+            indicatorColor: Colors.white,
+            labelStyle: TextStyle(fontSize: 16),
+            unselectedLabelStyle: TextStyle(fontSize: 16),
+            controller: _tabController,
+            isScrollable: true,
+            tabs: _chaptersList.map((WXChaptersBean item) {
+              return Tab(text: item.name);
+            }).toList()),
       ),
+      body: TabBarView(
+          controller: _tabController,
+          children: _chaptersList.map((item) {
+            return WXArticleScreen(item.id);
+          }).toList()),
     );
   }
 
@@ -206,19 +196,18 @@ class WXArticleScreenState extends State<WXArticleScreen> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Colors.white,
               padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Row(
                 children: <Widget>[
                   Text(
                     item.author,
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     textAlign: TextAlign.left,
                   ),
                   Expanded(
                     child: Text(
                       item.niceDate,
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       textAlign: TextAlign.right,
                     ),
                   ),
@@ -226,7 +215,6 @@ class WXArticleScreenState extends State<WXArticleScreen> {
               ),
             ),
             Container(
-              color: Colors.white,
               padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Row(
                 children: <Widget>[
@@ -236,8 +224,6 @@ class WXArticleScreenState extends State<WXArticleScreen> {
                       maxLines: 2,
                       style: TextStyle(
                         fontSize: 16,
-                        // fontWeight: FontWeight.bold,
-                        color: const Color(0xFF3D4E5F),
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -246,21 +232,20 @@ class WXArticleScreenState extends State<WXArticleScreen> {
               ),
             ),
             Container(
-              color: Colors.white,
               padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: Text(
                       item.superChapterName + " / " + item.chapterName,
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       textAlign: TextAlign.left,
                     ),
                   ),
                   InkWell(
                     child: Container(
                       child: Image(
-                        // color: Colors.black12,
+                        color: Colors.grey[600],
                         image: AssetImage(item.collect
                             ? 'assets/images/ic_like.png'
                             : 'assets/images/ic_like_not.png'),
@@ -329,7 +314,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.5,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),
@@ -341,7 +326,10 @@ class WXArticleScreenState extends State<WXArticleScreen> {
           ? null
           : FloatingActionButton(
               heroTag: "wechat",
-              child: Icon(Icons.arrow_upward),
+              child: Icon(
+                Icons.arrow_upward,
+                color: Colors.white,
+              ),
               backgroundColor: ThemeUtils.currentColorTheme,
               onPressed: () {
                 /// 回到顶部时要执行的动画

@@ -11,10 +11,9 @@ import 'package:flutter_wanandroid/loading.dart';
 import 'package:flutter_wanandroid/ui/splash_screen.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  _initAsync();
-
   bool dark = await getTheme();
 
   runApp(MyApp(dark));
@@ -29,16 +28,13 @@ void main() async {
 
 /// 获取是否是夜间模式
 Future<bool> getTheme() async {
-  bool dark = SPUtil.getBool(Constants.DARK_KEY);
+  SharedPreferences sp = await SharedPreferences.getInstance();
+  bool dark = sp.getBool(Constants.DARK_KEY);
   if (dark == null) {
     dark = false;
   }
   ThemeUtils.dark = dark;
   return dark;
-}
-
-void _initAsync() async {
-  await SPUtil.getInstance();
 }
 
 class MyApp extends StatefulWidget {
@@ -60,10 +56,14 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    _initAsync();
     Application.eventBus = new EventBus();
     themeData = ThemeUtils.getThemeData(widget.dark);
     this.registerThemeEvent();
-    _initAsync();
+  }
+
+  void _initAsync() async {
+    await SPUtil.getInstance();
   }
 
   /// 注册主题改变事件
@@ -78,8 +78,6 @@ class MyAppState extends State<MyApp> {
       themeData = ThemeUtils.getThemeData(onData.dark);
     });
   }
-
-  void _initAsync() async {}
 
   @override
   Widget build(BuildContext context) {

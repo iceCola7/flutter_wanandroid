@@ -145,7 +145,7 @@ class HotWordScreenState extends State<HotWordScreen> {
       widgets.add(new InkWell(
         child: new Chip(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          backgroundColor: Color(0xfff1f1f1),
+          // backgroundColor: Color(0xfff1f1f1),
           label: new Text(
             item.name,
             style: TextStyle(
@@ -201,7 +201,7 @@ class HotWordScreenState extends State<HotWordScreen> {
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       fontSize: 14.0,
-                      color: Colors.black,
+                      color: Colors.grey[600],
                     ),
                   ),
                   onTap: () {
@@ -222,7 +222,7 @@ class HotWordScreenState extends State<HotWordScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.1,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),
@@ -246,7 +246,10 @@ class HotWordScreenState extends State<HotWordScreen> {
                 },
                 child: Text(
                   item.name,
-                  style: TextStyle(fontSize: 14.0, color: Colors.black54),
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
             ),
@@ -260,7 +263,7 @@ class HotWordScreenState extends State<HotWordScreen> {
                 },
                 child: Icon(
                   Icons.close,
-                  color: Colors.black26,
+                  color: Colors.grey[600],
                   size: 16,
                 ),
               ),

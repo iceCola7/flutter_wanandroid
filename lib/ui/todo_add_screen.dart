@@ -64,7 +64,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
   Widget buildDivider() {
     return Container(
       height: 0.5,
-      color: Colors.black26,
+      color: Colors.grey[600],
     );
   }
 
@@ -100,7 +100,6 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
             title: new Text(toolbarTitle),
           ),
           body: Container(
-            color: Colors.white,
             padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: Column(
               children: <Widget>[
