@@ -154,7 +154,10 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
           ? null
           : FloatingActionButton(
               heroTag: "home",
-              child: Icon(Icons.arrow_upward),
+              child: Icon(
+                Icons.arrow_upward,
+                color: Colors.white,
+              ),
               backgroundColor: ThemeUtils.currentColorTheme,
               onPressed: () {
                 /// 回到顶部时要执行的动画
@@ -190,7 +193,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Colors.white,
               padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
               child: Row(
                 children: <Widget>[
@@ -256,13 +258,13 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                   ),
                   Text(
                     item.author,
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     textAlign: TextAlign.left,
                   ),
                   Expanded(
                     child: Text(
                       item.niceDate,
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       textAlign: TextAlign.right,
                     ),
                   ),
@@ -270,7 +272,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
               ),
             ),
             Container(
-              color: Colors.white,
               child: Row(
                 children: <Widget>[
                   Offstage(
@@ -296,11 +297,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                           child: Text(
                             item.title,
                             maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: const Color(0xFF3D4E5F),
-                            ),
+                            style: TextStyle(fontSize: 16),
                             textAlign: TextAlign.left,
                           ),
                         ),
@@ -314,14 +311,15 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                                   item.superChapterName +
                                       " / " +
                                       item.chapterName,
-                                  style: TextStyle(fontSize: 12),
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey[600]),
                                   textAlign: TextAlign.left,
                                 ),
                               ),
                               InkWell(
                                 child: Container(
                                   child: Image(
-                                    // color: Colors.black12,
+                                    color: Colors.grey[600],
                                     image: AssetImage(item.collect
                                         ? 'assets/images/ic_like.png'
                                         : 'assets/images/ic_like_not.png'),

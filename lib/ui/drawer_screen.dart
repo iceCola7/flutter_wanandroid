@@ -6,12 +6,15 @@ import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
+import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/ui/about_screen.dart';
 import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
 import 'package:flutter_wanandroid/ui/setting_screen.dart';
 import 'package:flutter_wanandroid/ui/todo_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/utils/sp_util.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 侧滑页面
@@ -112,6 +115,23 @@ class DrawerScreenState extends State<DrawerScreen> {
           ),
           ListTile(
             title: Text(
+              "夜间模式",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
+            leading: Icon(
+              Icons.brightness_2,
+              size: 22,
+            ),
+            onTap: () {
+              setState(() {
+                ThemeUtils.dark = !ThemeUtils.dark;
+                changeTheme();
+              });
+            },
+          ),
+          ListTile(
+            title: Text(
               "设置",
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
@@ -160,39 +180,45 @@ class DrawerScreenState extends State<DrawerScreen> {
     );
   }
 
+  /// 改变主题
+  changeTheme() async {
+    SPUtil.putBool(Constants.DARK_KEY, ThemeUtils.dark);
+    Application.eventBus.fire(new ThemeChangeEvent(ThemeUtils.dark));
+  }
+
   /// 退出登录
   void _logout(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => new AlertDialog(
-            // title: new Text(''),
-            content: new Text('确定退出登录吗？'),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('取消'),
-              ),
-              new FlatButton(
-                onPressed: () => {
-                      ApiService().logout((BaseModel model) {
-                        Navigator.of(context).pop(true);
-                        if (model.errorCode == Constants.STATUS_SUCCESS) {
-                          User.singleton.clearUserInfo();
-                          setState(() {
-                            isLogin = false;
-                            username = "未登录";
-                          });
-                        } else {
-                          Fluttertoast.showToast(msg: model.errorMsg);
-                        }
-                      }, (DioError error) {
-                        print(error.response);
-                      })
-                    },
-                child: new Text('确定'),
-              ),
-            ],
+        // title: new Text(''),
+        content: new Text('确定退出登录吗？'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('取消'),
           ),
+          new FlatButton(
+            onPressed: () => {
+              ApiService().logout((BaseModel model) {
+                Navigator.of(context).pop(true);
+                if (model.errorCode == Constants.STATUS_SUCCESS) {
+                  User.singleton.clearUserInfo();
+                  setState(() {
+                    isLogin = false;
+                    username = "未登录";
+                  });
+                } else {
+                  Fluttertoast.showToast(msg: model.errorMsg);
+                }
+              }, (DioError error) {
+                print(error.response);
+              })
+            },
+            child: new Text('确定'),
+          ),
+        ],
+      ),
     );
   }
 }

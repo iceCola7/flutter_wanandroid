@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class Colours {
   static const Color app_main = Color(0xFF666666);
   static const Color app_bg = Color(0xfff5f5f5);
@@ -29,3 +31,52 @@ class Colours {
 
   static const Color green_de = Color(0xffdedede);
 }
+
+Map<String, Color> circleAvatarMap = {
+  'A': Colors.blueAccent,
+  'B': Colors.blue,
+  'C': Colors.cyan,
+  'D': Colors.deepPurple,
+  'E': Colors.deepPurpleAccent,
+  'F': Colors.blue,
+  'G': Colors.green,
+  'H': Colors.lightBlue,
+  'I': Colors.indigo,
+  'J': Colors.blue,
+  'K': Colors.blue,
+  'L': Colors.lightGreen,
+  'M': Colors.blue,
+  'N': Colors.brown,
+  'O': Colors.orange,
+  'P': Colors.purple,
+  'Q': Colors.black,
+  'R': Colors.red,
+  'S': Colors.blue,
+  'T': Colors.teal,
+  'U': Colors.purpleAccent,
+  'V': Colors.black,
+  'W': Colors.brown,
+  'X': Colors.blue,
+  'Y': Colors.yellow,
+  'Z': Colors.grey,
+  '#': Colors.blue,
+};
+
+Map<String, Color> themeColorMap = {
+  'gray': Colours.gray_33,
+  'blue': Colors.blue,
+  'blueAccent': Colors.blueAccent,
+  'cyan': Colors.cyan,
+  'deepPurple': Colors.deepPurple,
+  'deepPurpleAccent': Colors.deepPurpleAccent,
+  'deepOrange': Colors.deepOrange,
+  'green': Colors.green,
+  'indigo': Colors.indigo,
+  'indigoAccent': Colors.indigoAccent,
+  'orange': Colors.orange,
+  'purple': Colors.purple,
+  'pink': Colors.pink,
+  'red': Colors.red,
+  'teal': Colors.teal,
+  'black': Colors.black,
+};

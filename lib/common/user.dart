@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 
@@ -22,20 +23,20 @@ class User {
   }
 
   Future<Null> getUserInfo() async {
-    List<String> cookies = SPUtil.getStringList("cookies");
+    List<String> cookies = SPUtil.getStringList(Constants.COOKIES_KEY);
     if (cookies != null) {
       cookie = cookies;
     }
 
-    String username = SPUtil.getString("username");
+    String username = SPUtil.getString(Constants.USERNAME_KEY);
     if (username != null) {
       userName = username;
     }
   }
 
   saveInfo() async {
-    SPUtil.putStringList("cookies", cookie);
-    SPUtil.putString("username", userName);
+    SPUtil.putStringList(Constants.COOKIES_KEY, cookie);
+    SPUtil.putString(Constants.USERNAME_KEY, userName);
   }
 
   void clearUserInfo() {
@@ -45,7 +46,7 @@ class User {
   }
 
   clearInfo() async {
-    SPUtil.putString("cookies", null);
-    SPUtil.putString("username", null);
+    SPUtil.putString(Constants.COOKIES_KEY, null);
+    SPUtil.putString(Constants.USERNAME_KEY, null);
   }
 }
