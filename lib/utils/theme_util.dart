@@ -26,27 +26,21 @@ class ThemeUtils {
   /// 是否是夜间模式
   static bool dark = false;
 
-  static getThemeData(bool dark) {
+  static ThemeData getThemeData() {
     if (dark) {
-      return themeDataDark;
+      return new ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Color(0xFF35464E),
+        primaryColorDark: Color(0xFF212A2F),
+        accentColor: Color(0xFF35464E),
+      );
     } else {
-      return themeDataLight;
+      return new ThemeData(
+        brightness: Brightness.light,
+        primaryColor: currentThemeColor,
+        primaryColorDark: currentThemeColor,
+        accentColor: currentThemeColor,
+      );
     }
   }
-
-  static ThemeData themeData = getThemeData(dark);
-
-  static ThemeData themeDataLight = new ThemeData(
-    brightness: Brightness.light,
-    primaryColor: currentThemeColor,
-    primaryColorDark: currentThemeColor,
-    accentColor: currentThemeColor,
-  );
-
-  static ThemeData themeDataDark = new ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Color(0xFF35464E),
-    primaryColorDark: Color(0xFF212A2F),
-    accentColor: Color(0xFF35464E),
-  );
 }

@@ -63,6 +63,7 @@ Map<String, Color> circleAvatarMap = {
 };
 
 Map<String, Color> themeColorMap = {
+  'redAccent': Colors.redAccent,
   'gray': Colours.gray_33,
   'blue': Colors.blue,
   'blueAccent': Colors.blueAccent,

@@ -1,9 +1,9 @@
-import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/res/colors.dart';
+import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 /// 设置页面
@@ -26,15 +26,10 @@ class SettingScreenState extends State<SettingScreen> {
           new ExpansionTile(
             title: new Row(
               children: <Widget>[
-                Icon(
-                  Icons.color_lens,
-                  color: Colours.gray_66,
-                ),
+                Icon(Icons.color_lens, color: Colors.grey[600]),
                 Padding(
                   padding: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    '主题',
-                  ),
+                  child: Text('主题'),
                 )
               ],
             ),
@@ -44,10 +39,9 @@ class SettingScreenState extends State<SettingScreen> {
                   Color value = themeColorMap[key];
                   return new InkWell(
                     onTap: () {
-                      print('===>>$key,$value');
-                      SpUtil.putString(Constants.KEY_THEME_COLOR, key);
+                      SPUtil.putString(Constants.THEME_COLOR_KEY, key);
                       ThemeUtils.currentThemeColor = value;
-                      Application.eventBus.fire(ThemeChangeEvent(false));
+                      Application.eventBus.fire(ThemeChangeEvent());
                     },
                     child: new Container(
                       margin: EdgeInsets.all(5.0),

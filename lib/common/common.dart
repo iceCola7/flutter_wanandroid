@@ -6,7 +6,7 @@ class Constants {
   static const String USERNAME_KEY = 'username_key';
   static const String COOKIES_KEY = 'cookies_key';
 
-  static const String KEY_THEME_COLOR = 'key_theme_color';
+  static const String THEME_COLOR_KEY = 'theme_color_key';
 
   static const String DARK_KEY = 'dark_key';
 

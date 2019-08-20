@@ -125,7 +125,6 @@ class DrawerScreenState extends State<DrawerScreen> {
             ),
             onTap: () {
               setState(() {
-                ThemeUtils.dark = !ThemeUtils.dark;
                 changeTheme();
               });
             },
@@ -182,8 +181,9 @@ class DrawerScreenState extends State<DrawerScreen> {
 
   /// 改变主题
   changeTheme() async {
+    ThemeUtils.dark = !ThemeUtils.dark;
     SPUtil.putBool(Constants.DARK_KEY, ThemeUtils.dark);
-    Application.eventBus.fire(new ThemeChangeEvent(ThemeUtils.dark));
+    Application.eventBus.fire(new ThemeChangeEvent());
   }
 
   /// 退出登录

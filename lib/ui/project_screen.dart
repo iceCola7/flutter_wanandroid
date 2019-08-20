@@ -21,7 +21,6 @@ class ProjectScreen extends BaseWidget {
 
 class ProjectScreenState extends BaseWidgetState<ProjectScreen>
     with TickerProviderStateMixin {
-  Color _themeColor = ThemeUtils.currentThemeColor;
 
   List<ProjectTreeBean> _projectTreeList = new List();
   TabController _tabController;
@@ -351,7 +350,6 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
           : FloatingActionButton(
               heroTag: "project",
               child: Icon(Icons.arrow_upward),
-              // backgroundColor: ThemeUtils.currentThemeColor,
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,

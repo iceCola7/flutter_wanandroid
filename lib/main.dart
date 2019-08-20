@@ -8,15 +8,17 @@ import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/loading.dart';
+import 'package:flutter_wanandroid/res/colors.dart';
 import 'package:flutter_wanandroid/ui/splash_screen.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  bool dark = await getTheme();
+  await SPUtil.getInstance();
 
-  runApp(MyApp(dark));
+  await getTheme();
+
+  runApp(MyApp());
   if (Platform.isAndroid) {
     // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，
     // 是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
@@ -26,22 +28,23 @@ void main() async {
   }
 }
 
-/// 获取是否是夜间模式
-Future<bool> getTheme() async {
-  SharedPreferences sp = await SharedPreferences.getInstance();
-  bool dark = sp.getBool(Constants.DARK_KEY);
-  if (dark == null) {
-    dark = false;
-  }
+/// 获取主题
+Future<Null> getTheme() async {
+  // 是否是夜间模式
+  bool dark = SPUtil.getBool(Constants.DARK_KEY, defValue: false);
   ThemeUtils.dark = dark;
-  return dark;
+
+  // 如果不是夜间模式，设置的其他主题颜色才起作用
+  if (!dark) {
+    String themeColorKey =
+        SPUtil.getString(Constants.THEME_COLOR_KEY, defValue: 'redAccent');
+    if (themeColorMap.containsKey(themeColorKey)) {
+      ThemeUtils.currentThemeColor = themeColorMap[themeColorKey];
+    }
+  }
 }
 
 class MyApp extends StatefulWidget {
-  final bool dark;
-
-  MyApp(this.dark);
-
   @override
   State<StatefulWidget> createState() {
     return new MyAppState();
@@ -56,13 +59,11 @@ class MyAppState extends State<MyApp> {
     super.initState();
     _initAsync();
     Application.eventBus = new EventBus();
-    themeData = ThemeUtils.getThemeData(widget.dark);
+    themeData = ThemeUtils.getThemeData();
     this.registerThemeEvent();
   }
 
-  void _initAsync() async {
-    await SPUtil.getInstance();
-  }
+  void _initAsync() async {}
 
   /// 注册主题改变事件
   void registerThemeEvent() {
@@ -73,7 +74,7 @@ class MyAppState extends State<MyApp> {
 
   void changeTheme(ThemeChangeEvent onData) async {
     setState(() {
-      themeData = ThemeUtils.getThemeData(onData.dark);
+      themeData = ThemeUtils.getThemeData();
     });
   }
 
