@@ -21,15 +21,7 @@ class ThemeUtils {
   ];
 
   /// 当前的主题色
-  static Color currentThemeColor = getCurrentThemeColor();
-
-  static getCurrentThemeColor() {
-    if (dark) {
-      return themeData.primaryColor;
-    } else {
-      return defaultColor;
-    }
-  }
+  static Color currentThemeColor = defaultColor;
 
   /// 是否是夜间模式
   static bool dark = false;
@@ -45,16 +37,16 @@ class ThemeUtils {
   static ThemeData themeData = getThemeData(dark);
 
   static ThemeData themeDataLight = new ThemeData(
-    primaryColor: defaultColor,
-    primaryColorDark: defaultColor,
-    accentColor: defaultColor,
     brightness: Brightness.light,
+    primaryColor: currentThemeColor,
+    primaryColorDark: currentThemeColor,
+    accentColor: currentThemeColor,
   );
 
   static ThemeData themeDataDark = new ThemeData(
+    brightness: Brightness.dark,
     primaryColor: Color(0xFF35464E),
     primaryColorDark: Color(0xFF212A2F),
     accentColor: Color(0xFF35464E),
-    brightness: Brightness.dark,
   );
 }

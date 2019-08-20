@@ -1,4 +1,5 @@
 import 'package:common_utils/common_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/webview_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +9,7 @@ class RouteUtil {
   /// 跳转页面
   static void push(BuildContext context, Widget page) {
     if (context == null || page == null) return;
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => page));
+    Navigator.push(context, new CupertinoPageRoute(builder: (context) => page));
   }
 
   /// 跳转到 WebView 打开
@@ -17,7 +18,7 @@ class RouteUtil {
     if (url.endsWith('.apk')) {
       launchInBrowser(url, title: title);
     } else {
-      Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
         return new WebViewScreen(
           title: title,
           url: url,

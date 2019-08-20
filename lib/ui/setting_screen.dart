@@ -1,7 +1,10 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/res/colors.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 /// 设置页面
 class SettingScreen extends StatefulWidget {
@@ -41,8 +44,10 @@ class SettingScreenState extends State<SettingScreen> {
                   Color value = themeColorMap[key];
                   return new InkWell(
                     onTap: () {
+                      print('===>>$key,$value');
                       SpUtil.putString(Constants.KEY_THEME_COLOR, key);
-                      //bloc.sendAppEvent(Constant.type_sys_update);
+                      ThemeUtils.currentThemeColor = value;
+                      Application.eventBus.fire(ThemeChangeEvent(false));
                     },
                     child: new Container(
                       margin: EdgeInsets.all(5.0),

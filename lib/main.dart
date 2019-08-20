@@ -49,8 +49,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  Color themeColor = ThemeUtils.currentThemeColor;
-
   ThemeData themeData;
 
   @override
@@ -73,7 +71,7 @@ class MyAppState extends State<MyApp> {
         .listen((ThemeChangeEvent onData) => this.changeTheme(onData));
   }
 
-  void changeTheme(ThemeChangeEvent onData) {
+  void changeTheme(ThemeChangeEvent onData) async {
     setState(() {
       themeData = ThemeUtils.getThemeData(onData.dark);
     });

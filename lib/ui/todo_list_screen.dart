@@ -331,7 +331,6 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
               Icons.edit,
               color: Colors.white,
             ),
-            // backgroundColor: ThemeUtils.currentThemeColor,
             onPressed: () {
               RouteUtil.push(
                   context,

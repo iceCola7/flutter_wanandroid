@@ -21,7 +21,6 @@ class WeChatScreen extends BaseWidget {
 
 class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     with TickerProviderStateMixin {
-  Color _themeColor = ThemeUtils.currentThemeColor;
 
   List<WXChaptersBean> _chaptersList = new List();
 
@@ -335,7 +334,6 @@ class WXArticleScreenState extends State<WXArticleScreen> {
                 Icons.arrow_upward,
                 color: Colors.white,
               ),
-              // backgroundColor: ThemeUtils.currentThemeColor,
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,

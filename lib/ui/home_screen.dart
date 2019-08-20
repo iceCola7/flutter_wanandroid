@@ -157,7 +157,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                 Icons.arrow_upward,
                 color: Colors.white,
               ),
-              // backgroundColor: ThemeUtils.currentThemeColor,
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,
