@@ -82,19 +82,19 @@ class AppState extends State<App> {
     return showDialog(
           context: context,
           builder: (context) => new AlertDialog(
-                title: new Text('提示'),
-                content: new Text('确定退出应用吗？'),
-                actions: <Widget>[
-                  new FlatButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: new Text('再看一会'),
-                  ),
-                  new FlatButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: new Text('退出'),
-                  ),
-                ],
+            title: new Text('提示'),
+            content: new Text('确定退出应用吗？'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('再看一会', style: TextStyle(color: Colors.cyan)),
               ),
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('退出', style: TextStyle(color: Colors.cyan)),
+              ),
+            ],
+          ),
         ) ??
         false;
   }

@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_wanandroid/res/colors.dart';
 import 'package:flutter_wanandroid/res/dimens.dart';
 
 class Decorations {
   static Decoration bottom = BoxDecoration(
-      border: Border(bottom: BorderSide(width: 0.33, color: Colours.divider)));
+      border: Border(bottom: BorderSide(width: 0.5, color: Colors.grey[600])));
 }
 
 /// 间隔

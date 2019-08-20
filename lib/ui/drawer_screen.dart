@@ -196,7 +196,7 @@ class DrawerScreenState extends State<DrawerScreen> {
         actions: <Widget>[
           new FlatButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('取消'),
+            child: new Text('取消', style: TextStyle(color: Colors.cyan)),
           ),
           new FlatButton(
             onPressed: () => {
@@ -215,7 +215,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                 print(error.response);
               })
             },
-            child: new Text('确定'),
+            child: new Text('确定', style: TextStyle(color: Colors.cyan)),
           ),
         ],
       ),

@@ -244,14 +244,19 @@ class WXArticleScreenState extends State<WXArticleScreen> {
                   ),
                   InkWell(
                     child: Container(
-                      child: Image(
-                        color: Colors.grey[600],
-                        image: AssetImage(item.collect
-                            ? 'assets/images/ic_like.png'
-                            : 'assets/images/ic_like_not.png'),
-                        width: 24,
-                        height: 24,
-                      ),
+                      child: item.collect
+                          ? Image(
+                              image: AssetImage('assets/images/ic_like.png'),
+                              width: 24,
+                              height: 24,
+                            )
+                          : Image(
+                              color: Colors.grey[600],
+                              image:
+                                  AssetImage('assets/images/ic_like_not.png'),
+                              width: 24,
+                              height: 24,
+                            ),
                     ),
                     onTap: () {
                       addOrCancelCollect(item);

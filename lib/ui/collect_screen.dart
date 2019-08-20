@@ -7,7 +7,6 @@ import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/collection_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 收藏页面
@@ -123,7 +122,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 height: 0.5,
-                color: Colors.black26,
+                color: Colors.grey[600],
               );
             },
             physics: new AlwaysScrollableScrollPhysics(),
@@ -135,7 +134,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
           ? null
           : FloatingActionButton(
               heroTag: "collect",
-              child: Icon(Icons.arrow_upward),
+              child: Icon(Icons.arrow_upward, color: Colors.white),
               // backgroundColor: ThemeUtils.currentThemeColor,
               onPressed: () {
                 /// 回到顶部时要执行的动画
@@ -158,7 +157,6 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
             Offstage(
               offstage: item.envelopePic == '',
               child: Container(
-                color: Colors.white,
                 padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
                 child: new Image.network(
                   item.envelopePic,
@@ -172,19 +170,24 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    color: Colors.white,
                     padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                     child: Row(
                       children: <Widget>[
                         Text(
                           item.author,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
                           textAlign: TextAlign.left,
                         ),
                         Expanded(
                           child: Text(
                             item.niceDate,
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
                             textAlign: TextAlign.right,
                           ),
                         ),
@@ -192,7 +195,6 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
                     ),
                   ),
                   Container(
-                    color: Colors.white,
                     padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                     child: Row(
                       children: <Widget>[
@@ -200,11 +202,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
                           child: Text(
                             item.title,
                             maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 16,
-                              // fontWeight: FontWeight.bold,
-                              color: const Color(0xFF3D4E5F),
-                            ),
+                            style: TextStyle(fontSize: 16),
                             textAlign: TextAlign.left,
                           ),
                         )
@@ -212,14 +210,16 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
                     ),
                   ),
                   Container(
-                    color: Colors.white,
                     padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                     child: Row(
                       children: <Widget>[
                         Expanded(
                           child: Text(
                             item.chapterName,
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
                             textAlign: TextAlign.left,
                           ),
                         ),

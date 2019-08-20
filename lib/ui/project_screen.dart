@@ -263,17 +263,24 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
                         alignment: Alignment.topRight,
                         padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
                         child: InkWell(
-                            onTap: () {
-                              addOrCancelCollect(item);
-                            },
-                            child: Image(
-                              color: Colors.grey[600],
-                              image: AssetImage(item.collect
-                                  ? 'assets/images/ic_like.png'
-                                  : 'assets/images/ic_like_not.png'),
-                              width: 24,
-                              height: 24,
-                            )),
+                          onTap: () {
+                            addOrCancelCollect(item);
+                          },
+                          child: item.collect
+                              ? Image(
+                                  image:
+                                      AssetImage('assets/images/ic_like.png'),
+                                  width: 24,
+                                  height: 24,
+                                )
+                              : Image(
+                                  color: Colors.grey[600],
+                                  image: AssetImage(
+                                      'assets/images/ic_like_not.png'),
+                                  width: 24,
+                                  height: 24,
+                                ),
+                        ),
                       )
                     ],
                   ),

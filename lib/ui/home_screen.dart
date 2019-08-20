@@ -8,7 +8,6 @@ import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/home_banner_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 首页
@@ -318,14 +317,20 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                               ),
                               InkWell(
                                 child: Container(
-                                  child: Image(
-                                    color: Colors.grey[600],
-                                    image: AssetImage(item.collect
-                                        ? 'assets/images/ic_like.png'
-                                        : 'assets/images/ic_like_not.png'),
-                                    width: 24,
-                                    height: 24,
-                                  ),
+                                  child: item.collect
+                                      ? Image(
+                                          image: AssetImage(
+                                              'assets/images/ic_like.png'),
+                                          width: 24,
+                                          height: 24,
+                                        )
+                                      : Image(
+                                          color: Colors.grey[600],
+                                          image: AssetImage(
+                                              'assets/images/ic_like_not.png'),
+                                          width: 24,
+                                          height: 24,
+                                        ),
                                 ),
                                 onTap: () {
                                   addOrCancelCollect(item);
