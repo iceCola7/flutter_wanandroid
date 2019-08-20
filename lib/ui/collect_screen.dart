@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
@@ -157,11 +158,12 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
               offstage: item.envelopePic == '',
               child: Container(
                 padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
-                child: new Image.network(
-                  item.envelopePic,
-                  width: 90,
+                child: CachedNetworkImage(
+                  width: 100,
                   height: 80,
                   fit: BoxFit.cover,
+                  imageUrl: item.envelopePic,
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
@@ -276,11 +277,13 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                     offstage: item.envelopePic == "",
                     child: Container(
                       padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
-                      child: new Image.network(
-                        item.envelopePic,
+                      child: CachedNetworkImage(
                         width: 100,
                         height: 80,
                         fit: BoxFit.cover,
+                        imageUrl: item.envelopePic,
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
                       ),
                     ),
                   ),

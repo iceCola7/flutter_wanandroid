@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
@@ -46,9 +47,10 @@ class HomeBannerState extends State<HomeBannerScreen> {
           } else {
             return InkWell(
               child: new Container(
-                child: new Image.network(
-                  _bannerList[index].imagePath,
+                child: CachedNetworkImage(
                   fit: BoxFit.fill,
+                  imageUrl: _bannerList[index].imagePath,
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
                 ),
               ),
               onTap: () {
