@@ -88,14 +88,8 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getNavigationList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: _navigationList.length + 1),
@@ -139,7 +133,8 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
             Container(
               alignment: Alignment.centerLeft,
               child: itemChildView(_navigationList[index].articles),
-            )
+            ),
+            Divider(height: 1),
           ],
         ),
       );

@@ -270,6 +270,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
                 ],
               ),
             ),
+            Divider(height: 1),
           ],
         ),
       );
@@ -319,14 +320,8 @@ class WXArticleScreenState extends State<WXArticleScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getWXArticleList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             // 包含轮播和加载更多

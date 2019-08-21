@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
+import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
-import 'package:flutter_wanandroid/ui/home_banner_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +22,9 @@ class HomeScreen extends BaseWidget {
 }
 
 class HomeScreenState extends BaseWidgetState<HomeScreen> {
+  /// 首页轮播图数据
+  List<BannerBean> _bannerList = new List();
+
   /// 首页文章列表数据
   List<ArticleBean> _articles = new List();
 
@@ -39,6 +43,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     setAppBarVisible(false);
 
     showLoading();
+    getBannerList();
     getTopArticleList();
 
     _scrollController.addListener(() {
@@ -54,6 +59,17 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
       } else if (_scrollController.offset >= 200 && !_isShowFAB) {
         setState(() {
           _isShowFAB = true;
+        });
+      }
+    });
+  }
+
+  /// 获取首页轮播图数据
+  Future<Null> getBannerList() async {
+    ApiService().getBannerList((BannerModel bannerModel) {
+      if (bannerModel.data.length > 0) {
+        setState(() {
+          _bannerList = bannerModel.data;
         });
       }
     });
@@ -138,14 +154,8 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getTopArticleList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             // 包含轮播和加载更多
@@ -174,12 +184,48 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     getTopArticleList();
   }
 
+  /// 构建轮播视图
+  Widget buildBannerView(BuildContext context) {
+    return Offstage(
+      offstage: _bannerList.length == 0,
+      child: Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          if (index >= _bannerList.length ||
+              _bannerList[index] == null ||
+              _bannerList[index].imagePath == null) {
+            return new ProgressView();
+          } else {
+            return InkWell(
+              child: new Container(
+                child: CachedNetworkImage(
+                  fit: BoxFit.fill,
+                  imageUrl: _bannerList[index].imagePath,
+                  placeholder: (context, url) => new ProgressView(),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                ),
+              ),
+              onTap: () {
+                RouteUtil.toWebView(
+                    context, _bannerList[index].title, _bannerList[index].url);
+              },
+            );
+          }
+        },
+        itemCount: _bannerList.length,
+        autoplay: true,
+        pagination: new SwiperPagination(),
+        // control: new SwiperControl(),
+      ),
+    );
+  }
+
+  /// ListView 中每一行的视图
   Widget itemView(BuildContext context, int index) {
     if (index == 0) {
       return Container(
         height: 200,
         color: Colors.transparent,
-        child: new HomeBannerScreen(),
+        child: buildBannerView(context),
       );
     }
 
@@ -240,8 +286,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                     offstage: item.tags.length == 0,
                     child: Container(
                       decoration: new BoxDecoration(
-                        border: new Border.all(
-                            color: Color(0xFF00BCD4), width: 0.5),
+                        border: new Border.all(color: Colors.cyan, width: 0.5),
                         borderRadius: new BorderRadius.vertical(
                             top: Radius.elliptical(2, 2),
                             bottom: Radius.elliptical(2, 2)),
@@ -250,8 +295,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                       margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
                       child: Text(
                         item.tags.length > 0 ? item.tags[0].name : "",
-                        style: TextStyle(
-                            fontSize: 10, color: const Color(0xFF00BCD4)),
+                        style: TextStyle(fontSize: 10, color: Colors.cyan),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -349,6 +393,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                 ],
               ),
             ),
+            Divider(height: 1)
           ],
         ),
       );

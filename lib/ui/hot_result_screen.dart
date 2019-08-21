@@ -120,14 +120,8 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getSearchArticleList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: _searchArticleList.length),
@@ -184,8 +178,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                     offstage: item.tags.length == 0,
                     child: Container(
                       decoration: new BoxDecoration(
-                        border: new Border.all(
-                            color: Color(0xFF00BCD4), width: 0.5),
+                        border: new Border.all(color: Colors.cyan, width: 0.5),
                         borderRadius: new BorderRadius.vertical(
                             top: Radius.elliptical(2, 2),
                             bottom: Radius.elliptical(2, 2)),
@@ -194,8 +187,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                       margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
                       child: Text(
                         item.tags.length > 0 ? item.tags[0].name : "",
-                        style: TextStyle(
-                            fontSize: 10, color: const Color(0xFF00BCD4)),
+                        style: TextStyle(fontSize: 10, color: Colors.cyan),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -301,6 +293,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                 ],
               ),
             ),
+            Divider(height: 1),
           ],
         ),
       );

@@ -198,108 +198,114 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
     if (index < _projectArticleList.length) {
       ProjectArticleBean item = _projectArticleList[index];
       return InkWell(
-          onTap: () {
-            RouteUtil.toWebView(context, item.title, item.link);
-          },
-          child: InkWell(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                  child: Container(
-                    width: 80,
-                    height: 130,
-                    child: CachedNetworkImage(
-                      fit: BoxFit.fill,
-                      imageUrl: item.envelopePic,
-                      placeholder: (context, url) => new ProgressView(),
-                      errorWidget: (context, url, error) =>
-                          new Icon(Icons.error),
+        onTap: () {
+          RouteUtil.toWebView(context, item.title, item.link);
+        },
+        child: InkWell(
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                    child: Container(
+                      width: 80,
+                      height: 130,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        imageUrl: item.envelopePic,
+                        placeholder: (context, url) => new ProgressView(),
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
-                        child: Text(
-                          item.title,
-                          style: TextStyle(fontSize: 16),
-                          maxLines: 2,
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: Text(
-                          item.desc,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(0, 8, 8, 8),
+                          child: Text(
+                            item.title,
+                            style: TextStyle(fontSize: 16),
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
                           ),
-                          maxLines: 2,
-                          textAlign: TextAlign.left,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              item.author,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                          child: Text(
+                            item.desc,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
                             ),
-                            Text(
-                              item.niceDate,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
-                            )
-                          ],
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: InkWell(
-                          onTap: () {
-                            addOrCancelCollect(item);
-                          },
-                          child: item.collect
-                              ? Image(
-                                  image:
-                                      AssetImage('assets/images/ic_like.png'),
-                                  width: 24,
-                                  height: 24,
-                                )
-                              : Image(
+                        Container(
+                          alignment: Alignment.topLeft,
+                          padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                item.author,
+                                style: TextStyle(
+                                  fontSize: 12,
                                   color: Colors.grey[600],
-                                  image: AssetImage(
-                                      'assets/images/ic_like_not.png'),
-                                  width: 24,
-                                  height: 24,
                                 ),
+                              ),
+                              Text(
+                                item.niceDate,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ));
+                        Container(
+                          alignment: Alignment.topRight,
+                          padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                          child: InkWell(
+                            onTap: () {
+                              addOrCancelCollect(item);
+                            },
+                            child: item.collect
+                                ? Image(
+                                    image:
+                                        AssetImage('assets/images/ic_like.png'),
+                                    width: 24,
+                                    height: 24,
+                                  )
+                                : Image(
+                                    color: Colors.grey[600],
+                                    image: AssetImage(
+                                        'assets/images/ic_like_not.png'),
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Divider(height: 1),
+            ],
+          ),
+        ),
+      );
     }
     return null;
   }
@@ -346,14 +352,8 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getProjectArticleList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: _projectArticleList.length + 1),

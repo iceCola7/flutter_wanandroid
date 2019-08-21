@@ -172,7 +172,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                             Radio(
                               value: 0,
                               groupValue: this.priorityValue,
-                              activeColor: Color(0xFF00BCD4),
+                              activeColor: Theme.of(context).primaryColor,
                               onChanged: (value) {
                                 setState(() {
                                   this.priorityValue = value;
@@ -190,7 +190,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                             Radio(
                               value: 1,
                               groupValue: this.priorityValue,
-                              activeColor: Color(0xFF00BCD4),
+                              activeColor: Theme.of(context).primaryColor,
                               onChanged: (value) {
                                 setState(() {
                                   this.priorityValue = value;
@@ -269,7 +269,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                             padding: EdgeInsets.all(16.0),
                             elevation: 0.5,
                             child: Text("保存"),
-                            color: Color(0xFF00BCD4),
+                            color: Theme.of(context).primaryColor,
                             textColor: Colors.white,
                             onPressed: () {
                               if (widget.editKey == 0) {

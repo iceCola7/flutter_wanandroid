@@ -171,7 +171,7 @@ class HotWordScreenState extends State<HotWordScreen> {
           padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
           child: Text(
             "热门搜索",
-            style: TextStyle(fontSize: 16.0, color: const Color(0xFF00BCD4)),
+            style: TextStyle(fontSize: 16.0, color: Colors.cyan),
           ),
         ),
         Padding(
@@ -190,8 +190,7 @@ class HotWordScreenState extends State<HotWordScreen> {
               Expanded(
                 child: Text(
                   "搜索历史",
-                  style:
-                      TextStyle(fontSize: 16.0, color: const Color(0xFF00BCD4)),
+                  style: TextStyle(fontSize: 16.0, color: Colors.cyan),
                 ),
               ),
               Container(
@@ -215,16 +214,10 @@ class HotWordScreenState extends State<HotWordScreen> {
             ],
           ),
         ),
-        ListView.separated(
+        ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             itemBuilder: itemHistoryView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.1,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             itemCount: _historyList.length),
       ],
@@ -236,41 +229,45 @@ class HotWordScreenState extends State<HotWordScreen> {
       HistoryBean item = _historyList[index];
       return InkWell(
           child: Container(
-        padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  RouteUtil.push(context, HotResultScreen(item.name));
-                },
-                child: Text(
-                  item.name,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.grey[600],
+              padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            RouteUtil.push(context, HotResultScreen(item.name));
+                          },
+                          child: Text(
+                            item.name,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: InkWell(
+                          onTap: () {
+                            db.deleteById(item.id);
+                            setState(() {
+                              _historyList.removeAt(index);
+                            });
+                          },
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.grey[600],
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-            ),
-            Container(
-              child: InkWell(
-                onTap: () {
-                  db.deleteById(item.id);
-                  setState(() {
-                    _historyList.removeAt(index);
-                  });
-                },
-                child: Icon(
-                  Icons.close,
-                  color: Colors.grey[600],
-                  size: 16,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ));
+                  Divider(height: 1),
+                ],
+              )));
     }
     return null;
   }

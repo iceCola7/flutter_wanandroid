@@ -88,39 +88,42 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
         onTap: () {
           RouteUtil.push(context, KnowledgeDetailScreen(new ValueKey(item)));
         },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(bottom: 8),
-                        child: Text(
-                          item.name,
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.left,
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            item.name,
+                            style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: itemChildrenView(item.children),
-                      )
-                    ],
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: itemChildrenView(item.children),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.grey,
-              )
-            ],
-          ),
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.grey,
+                )
+              ],
+            ),
+            Divider(height: 1),
+          ],
         ),
       );
     }
@@ -151,14 +154,8 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getKnowledgeTreeList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: _list.length + 1),
