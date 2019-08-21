@@ -5,7 +5,6 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 import 'knowledge_detail_screen.dart';
 
@@ -104,9 +103,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
                         padding: EdgeInsets.only(bottom: 8),
                         child: Text(
                           item.name,
-                          style: TextStyle(
-                            fontSize: 16
-                          ),
+                          style: TextStyle(fontSize: 16),
                           textAlign: TextAlign.left,
                         ),
                       ),

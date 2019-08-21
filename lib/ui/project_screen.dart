@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
+import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 项目页面
@@ -21,7 +22,6 @@ class ProjectScreen extends BaseWidget {
 
 class ProjectScreenState extends BaseWidgetState<ProjectScreen>
     with TickerProviderStateMixin {
-
   List<ProjectTreeBean> _projectTreeList = new List();
   TabController _tabController;
 
@@ -198,11 +198,16 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                  child: new Image.network(
-                    item.envelopePic,
+                  child: Container(
                     width: 80,
                     height: 130,
-                    fit: BoxFit.fill,
+                    child: CachedNetworkImage(
+                      fit: BoxFit.fill,
+                      imageUrl: item.envelopePic,
+                      placeholder: (context, url) => new ProgressView(),
+                      errorWidget: (context, url, error) =>
+                          new Icon(Icons.error),
+                    ),
                   ),
                 ),
                 Expanded(

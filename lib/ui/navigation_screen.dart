@@ -6,7 +6,6 @@ import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/common_util.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 导航页面

@@ -9,6 +9,7 @@ import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/home_banner_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 首页
@@ -276,12 +277,13 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                   Offstage(
                     offstage: item.envelopePic == "",
                     child: Container(
+                      width: 100,
+                      height: 80,
                       padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
                       child: CachedNetworkImage(
-                        width: 100,
-                        height: 80,
                         fit: BoxFit.cover,
                         imageUrl: item.envelopePic,
+                        placeholder: (context, url) => new ProgressView(),
                         errorWidget: (context, url, error) =>
                             new Icon(Icons.error),
                       ),

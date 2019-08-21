@@ -8,7 +8,6 @@ import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 公众号页面
@@ -21,7 +20,6 @@ class WeChatScreen extends BaseWidget {
 
 class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     with TickerProviderStateMixin {
-
   List<WXChaptersBean> _chaptersList = new List();
 
   TabController _tabController;

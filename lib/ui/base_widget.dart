@@ -142,8 +142,8 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   /// 暴露的正在加载页面方法，可以自己重写定制
   Widget attachLoadingWidget() {
     return Center(
-      child: CupertinoActivityIndicator(
-        radius: 15.0,
+      child: CircularProgressIndicator(
+        strokeWidth: 2.0,
       ),
     );
   }
