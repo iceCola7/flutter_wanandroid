@@ -69,22 +69,30 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     _tabController =
         new TabController(length: _chaptersList.length, vsync: this);
     return Scaffold(
-      appBar: AppBar(
-        title: TabBar(
-            indicatorColor: Colors.white,
-            labelStyle: TextStyle(fontSize: 16),
-            unselectedLabelStyle: TextStyle(fontSize: 16),
-            controller: _tabController,
-            isScrollable: true,
-            tabs: _chaptersList.map((WXChaptersBean item) {
-              return Tab(text: item.name);
-            }).toList()),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 50,
+            color: Theme.of(context).primaryColor,
+            child: TabBar(
+                indicatorColor: Colors.white,
+                labelStyle: TextStyle(fontSize: 16),
+                unselectedLabelStyle: TextStyle(fontSize: 16),
+                controller: _tabController,
+                isScrollable: true,
+                tabs: _chaptersList.map((WXChaptersBean item) {
+                  return Tab(text: item.name);
+                }).toList()),
+          ),
+          Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: _chaptersList.map((item) {
+                  return WXArticleScreen(item.id);
+                }).toList()),
+          )
+        ],
       ),
-      body: TabBarView(
-          controller: _tabController,
-          children: _chaptersList.map((item) {
-            return WXArticleScreen(item.id);
-          }).toList()),
     );
   }
 

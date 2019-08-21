@@ -71,22 +71,30 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
     _tabController =
         new TabController(length: _projectTreeList.length, vsync: this);
     return Scaffold(
-      appBar: AppBar(
-        title: TabBar(
-            indicatorColor: Colors.white,
-            labelStyle: TextStyle(fontSize: 16),
-            unselectedLabelStyle: TextStyle(fontSize: 16),
-            controller: _tabController,
-            isScrollable: true,
-            tabs: _projectTreeList.map((item) {
-              return Tab(text: item.name);
-            }).toList()),
+      body: Column(
+        children: <Widget>[
+          Container(
+            color: Theme.of(context).primaryColor,
+            height: 50,
+            child: TabBar(
+                indicatorColor: Colors.white,
+                labelStyle: TextStyle(fontSize: 16),
+                unselectedLabelStyle: TextStyle(fontSize: 16),
+                controller: _tabController,
+                isScrollable: true,
+                tabs: _projectTreeList.map((item) {
+                  return Tab(text: item.name);
+                }).toList()),
+          ),
+          Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: _projectTreeList.map((item) {
+                  return ProjectArticleScreen(item.id);
+                }).toList()),
+          )
+        ],
       ),
-      body: TabBarView(
-          controller: _tabController,
-          children: _projectTreeList.map((item) {
-            return ProjectArticleScreen(item.id);
-          }).toList()),
     );
   }
 
