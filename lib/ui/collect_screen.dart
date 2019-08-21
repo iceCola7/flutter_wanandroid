@@ -154,10 +154,10 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
                 Offstage(
                   offstage: item.envelopePic == '',
                   child: Container(
+                    width: 100,
+                    height: 80,
                     padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
                     child: CachedNetworkImage(
-                      width: 100,
-                      height: 80,
                       fit: BoxFit.cover,
                       imageUrl: item.envelopePic,
                       placeholder: (context, url) => new ProgressView(),
