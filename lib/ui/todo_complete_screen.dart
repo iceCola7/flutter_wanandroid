@@ -66,7 +66,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
 
   /// 获取更多已完成TODO列表数据
   Future<Null> getMoreDoneTodoList() async {
-    _page = 1;
+    _page++;
     ApiService().getDoneTodoList((TodoListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
@@ -90,6 +90,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
   void registerRefreshEvent() {
     Application.eventBus.on<RefreshTodoEvent>().listen((event) {
       todoType = event.todoType;
+      _todoBeanList.clear();
       showLoading();
       getDoneTodoList();
     });

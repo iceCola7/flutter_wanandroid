@@ -90,6 +90,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   void registerRefreshEvent() {
     Application.eventBus.on<RefreshTodoEvent>().listen((event) {
       todoType = event.todoType;
+      _todoBeanList.clear();
       showLoading();
       getNoTodoList();
     });
