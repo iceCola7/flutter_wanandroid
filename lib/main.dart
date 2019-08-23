@@ -15,7 +15,7 @@ class Main extends StatefulWidget {
   }
 }
 
-class MainState extends State<Main> {
+class MainState extends State<Main> with AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0; // 当前选中的索引
 
   final bottomBarTitles = ["首页", "知识体系", "公众号", "导航", "项目"];
@@ -98,4 +98,7 @@ class MainState extends State<Main> {
         ) ??
         false;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
