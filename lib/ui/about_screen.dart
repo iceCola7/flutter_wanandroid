@@ -51,11 +51,7 @@ class AboutScreen extends StatelessWidget {
                 ),
               ],
             ),
-            decoration: new BoxDecoration(
-              // color: Colors.white,
-              border: new Border(
-                  bottom: BorderSide(width: 0.5, color: Colors.grey[600])),
-            ),
+            decoration: Decorations.bottom,
           ),
           new ComArrowItem(version),
           new ComArrowItem(github),

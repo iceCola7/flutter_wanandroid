@@ -37,7 +37,7 @@ class TodoScreenState extends State<TodoScreen> {
             text,
             style: TextStyle(
                 color: index == _todoSelectedIndex
-                    ? Color(0xFF00BCD4)
+                    ? Colors.cyan
                     : ThemeUtils.dark ? Colors.white : Colors.black),
           ),
         ],

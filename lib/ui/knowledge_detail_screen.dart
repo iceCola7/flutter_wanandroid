@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_wanandroid/data/model/knowledge_detail_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 知识体系详情页面
@@ -168,14 +170,8 @@ class KnowledgeArticleScreenState
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getKnowledgeDetailList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.black26,
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: _list.length + 1),
@@ -208,104 +204,112 @@ class KnowledgeArticleScreenState
         onTap: () {
           RouteUtil.toWebView(context, item.title, item.link);
         },
-        child: Row(
+        child: Column(
           children: <Widget>[
-            Offstage(
-              offstage: item.envelopePic == '',
-              child: Container(
-                padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
-                child: new Image.network(
-                  item.envelopePic,
-                  width: 90,
-                  height: 80,
-                  fit: BoxFit.cover,
+            Row(
+              children: <Widget>[
+                Offstage(
+                  offstage: item.envelopePic == '',
+                  child: Container(
+                    width: 100,
+                    height: 80,
+                    padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: item.envelopePic,
+                      placeholder: (context, url) => new ProgressView(),
+                      errorWidget: (context, url, error) =>
+                          new Icon(Icons.error),
+                    ),
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              item.author,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Expanded(
+                              child: Text(
+                                item.niceDate,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(
+                                item.title,
+                                maxLines: 2,
+                                style: TextStyle(fontSize: 16),
+                                textAlign: TextAlign.left,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(
+                                item.chapterName,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[600],
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            InkWell(
+                              child: Container(
+                                child: item.collect
+                                    ? Image(
+                                        image: AssetImage(
+                                            'assets/images/ic_like.png'),
+                                        width: 24,
+                                        height: 24,
+                                      )
+                                    : Image(
+                                        color: Colors.grey[600],
+                                        image: AssetImage(
+                                            'assets/images/ic_like_not.png'),
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                              ),
+                              onTap: () {
+                                addOrCancelCollect(item);
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          item.author,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        Expanded(
-                          child: Text(
-                            item.niceDate,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            item.title,
-                            maxLines: 2,
-                            style: TextStyle(fontSize: 16),
-                            textAlign: TextAlign.left,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            item.chapterName,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        InkWell(
-                          child: Container(
-                            child: item.collect
-                                ? Image(
-                                    image:
-                                        AssetImage('assets/images/ic_like.png'),
-                                    width: 24,
-                                    height: 24,
-                                  )
-                                : Image(
-                                    color: Colors.grey[600],
-                                    image: AssetImage(
-                                        'assets/images/ic_like_not.png'),
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                          ),
-                          onTap: () {
-                            addOrCancelCollect(item);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
+            Divider(height: 1),
           ],
         ),
       );

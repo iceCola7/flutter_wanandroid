@@ -16,7 +16,6 @@ class ComArrowItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       child: Material(
-        // color: Colors.white,
         child: ListTile(
           onTap: () {
             if (model.isShowArrow == null || !model.isShowArrow) return;

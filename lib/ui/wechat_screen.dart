@@ -8,7 +8,6 @@ import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 公众号页面
@@ -21,7 +20,6 @@ class WeChatScreen extends BaseWidget {
 
 class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     with TickerProviderStateMixin {
-
   List<WXChaptersBean> _chaptersList = new List();
 
   TabController _tabController;
@@ -71,22 +69,30 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     _tabController =
         new TabController(length: _chaptersList.length, vsync: this);
     return Scaffold(
-      appBar: AppBar(
-        title: TabBar(
-            indicatorColor: Colors.white,
-            labelStyle: TextStyle(fontSize: 16),
-            unselectedLabelStyle: TextStyle(fontSize: 16),
-            controller: _tabController,
-            isScrollable: true,
-            tabs: _chaptersList.map((WXChaptersBean item) {
-              return Tab(text: item.name);
-            }).toList()),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 50,
+            color: Theme.of(context).primaryColor,
+            child: TabBar(
+                indicatorColor: Colors.white,
+                labelStyle: TextStyle(fontSize: 16),
+                unselectedLabelStyle: TextStyle(fontSize: 16),
+                controller: _tabController,
+                isScrollable: true,
+                tabs: _chaptersList.map((WXChaptersBean item) {
+                  return Tab(text: item.name);
+                }).toList()),
+          ),
+          Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: _chaptersList.map((item) {
+                  return WXArticleScreen(item.id);
+                }).toList()),
+          )
+        ],
       ),
-      body: TabBarView(
-          controller: _tabController,
-          children: _chaptersList.map((item) {
-            return WXArticleScreen(item.id);
-          }).toList()),
     );
   }
 
@@ -264,6 +270,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
                 ],
               ),
             ),
+            Divider(height: 1),
           ],
         ),
       );
@@ -313,14 +320,8 @@ class WXArticleScreenState extends State<WXArticleScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getWXArticleList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             // 包含轮播和加载更多

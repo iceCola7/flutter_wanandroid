@@ -105,7 +105,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     decoration: InputDecoration(
                       labelText: "用户名",
                       hintText: "请输入用户名",
-                      labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                      labelStyle: TextStyle(color: Colors.cyan),
                     ),
                     maxLines: 1,
                   ),
@@ -113,7 +113,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     controller: _psdController,
                     decoration: InputDecoration(
                       labelText: "密码",
-                      labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                      labelStyle: TextStyle(color: Colors.cyan),
                       hintText: "请输入密码",
                     ),
                     obscureText: true,
@@ -123,7 +123,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     controller: _psdAgainController,
                     decoration: InputDecoration(
                       labelText: "再次输入密码",
-                      labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                      labelStyle: TextStyle(color: Colors.cyan),
                       hintText: "请再次输入密码",
                     ),
                     obscureText: true,
@@ -138,7 +138,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                             padding: EdgeInsets.all(16.0),
                             elevation: 0.5,
                             child: Text("注册"),
-                            color: Color(0xFF00BCD4),
+                            color: Theme.of(context).primaryColor,
                             textColor: Colors.white,
                             onPressed: () {
                               _register();

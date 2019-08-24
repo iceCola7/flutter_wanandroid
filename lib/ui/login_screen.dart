@@ -147,7 +147,7 @@ class LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           labelText: "用户名",
                           hintText: "请输入用户名",
-                          labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                          labelStyle: TextStyle(color: Colors.cyan),
                         ),
                         maxLines: 1,
                       ),
@@ -159,7 +159,7 @@ class LoginScreenState extends State<LoginScreen> {
                         controller: _psdController,
                         decoration: InputDecoration(
                           labelText: "密码",
-                          labelStyle: TextStyle(color: Color(0xFF00BCD4)),
+                          labelStyle: TextStyle(color: Colors.cyan),
                           hintText: "请输入密码",
                         ),
                         obscureText: true,
@@ -177,7 +177,7 @@ class LoginScreenState extends State<LoginScreen> {
                               padding: EdgeInsets.all(16.0),
                               elevation: 0.5,
                               child: Text("登录"),
-                              color: Color(0xFF00BCD4),
+                              color: Theme.of(context).primaryColor,
                               textColor: Colors.white,
                               onPressed: () {
                                 _login();

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// 热词搜索页面
@@ -118,14 +120,8 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
       body: RefreshIndicator(
         displacement: 15,
         onRefresh: getSearchArticleList,
-        child: ListView.separated(
+        child: ListView.builder(
             itemBuilder: itemView,
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 0.5,
-                color: Colors.grey[600],
-              );
-            },
             physics: new AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: _searchArticleList.length),
@@ -182,8 +178,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                     offstage: item.tags.length == 0,
                     child: Container(
                       decoration: new BoxDecoration(
-                        border: new Border.all(
-                            color: Color(0xFF00BCD4), width: 0.5),
+                        border: new Border.all(color: Colors.cyan, width: 0.5),
                         borderRadius: new BorderRadius.vertical(
                             top: Radius.elliptical(2, 2),
                             bottom: Radius.elliptical(2, 2)),
@@ -192,8 +187,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                       margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
                       child: Text(
                         item.tags.length > 0 ? item.tags[0].name : "",
-                        style: TextStyle(
-                            fontSize: 10, color: const Color(0xFF00BCD4)),
+                        style: TextStyle(fontSize: 10, color: Colors.cyan),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -225,12 +219,15 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                   Offstage(
                     offstage: item.envelopePic == "",
                     child: Container(
+                      width: 100,
+                      height: 80,
                       padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
-                      child: new Image.network(
-                        item.envelopePic,
-                        width: 100,
-                        height: 80,
+                      child: CachedNetworkImage(
                         fit: BoxFit.cover,
+                        imageUrl: item.envelopePic,
+                        placeholder: (context, url) => new ProgressView(),
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
                       ),
                     ),
                   ),
@@ -296,6 +293,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                 ],
               ),
             ),
+            Divider(height: 1),
           ],
         ),
       );

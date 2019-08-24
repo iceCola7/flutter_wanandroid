@@ -4,6 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/widgets/progress_view.dart';
 
 class HomeBannerScreen extends StatefulWidget {
   @override
@@ -41,15 +42,14 @@ class HomeBannerState extends State<HomeBannerScreen> {
           if (index >= _bannerList.length ||
               _bannerList[index] == null ||
               _bannerList[index].imagePath == null) {
-            return new Container(
-              color: Colors.grey[100],
-            );
+            return new Container(height: 0);
           } else {
             return InkWell(
               child: new Container(
                 child: CachedNetworkImage(
                   fit: BoxFit.fill,
                   imageUrl: _bannerList[index].imagePath,
+                  placeholder: (context, url) => new ProgressView(),
                   errorWidget: (context, url, error) => new Icon(Icons.error),
                 ),
               ),

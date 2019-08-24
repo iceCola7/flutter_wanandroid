@@ -9,7 +9,7 @@ class RouteUtil {
   /// 跳转页面
   static void push(BuildContext context, Widget page) {
     if (context == null || page == null) return;
-    Navigator.push(context, new CupertinoPageRoute(builder: (context) => page));
+    Navigator.push(context, new CupertinoPageRoute<void>(builder: (context) => page));
   }
 
   /// 跳转到 WebView 打开
@@ -18,7 +18,7 @@ class RouteUtil {
     if (url.endsWith('.apk')) {
       launchInBrowser(url, title: title);
     } else {
-      Navigator.of(context).push(new CupertinoPageRoute(builder: (context) {
+      Navigator.of(context).push(new CupertinoPageRoute<void>(builder: (context) {
         return new WebViewScreen(
           title: title,
           url: url,

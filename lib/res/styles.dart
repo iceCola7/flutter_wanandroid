@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_wanandroid/res/dimens.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 class Decorations {
-  static Decoration bottom = BoxDecoration(
-      border: Border(bottom: BorderSide(width: 0.5, color: Colors.grey[600])));
+  static Decoration bottom = new BoxDecoration(
+    border: new Border(
+      bottom: BorderSide(
+        width: 0.5,
+        color: ThemeUtils.getThemeData().dividerColor,
+      ),
+    ),
+  );
 }
 
 /// 间隔

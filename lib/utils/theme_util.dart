@@ -33,6 +33,7 @@ class ThemeUtils {
         primaryColor: Color(0xFF35464E),
         primaryColorDark: Color(0xFF212A2F),
         accentColor: Color(0xFF35464E),
+        dividerColor: Color(0x1FFFFFFF),
       );
     } else {
       return new ThemeData(
@@ -40,6 +41,7 @@ class ThemeUtils {
         primaryColor: currentThemeColor,
         primaryColorDark: currentThemeColor,
         accentColor: currentThemeColor,
+        dividerColor: Color(0x1F000000),
       );
     }
   }
