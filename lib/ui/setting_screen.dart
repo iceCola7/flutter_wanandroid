@@ -26,7 +26,7 @@ class SettingScreenState extends State<SettingScreen> {
           new ExpansionTile(
             title: new Row(
               children: <Widget>[
-                Icon(Icons.color_lens, color: Colors.grey[600]),
+                Icon(Icons.color_lens, color: Theme.of(context).primaryColor),
                 Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text('主题'),

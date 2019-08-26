@@ -34,7 +34,6 @@ class DrawerScreenState extends State<DrawerScreen> {
     super.initState();
     this.registerLoginEvent();
 
-    User().getUserInfo();
     if (null != User.singleton.userName && User.singleton.userName.isNotEmpty) {
       isLogin = true;
       username = User.singleton.userName;
@@ -81,10 +80,8 @@ class DrawerScreenState extends State<DrawerScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
-            leading: Icon(
-              Icons.collections,
-              size: 22,
-            ),
+            leading: Icon(Icons.collections,
+                size: 22, color: Theme.of(context).primaryColor),
             onTap: () {
               if (isLogin) {
                 RouteUtil.push(context, CollectScreen());
@@ -100,10 +97,8 @@ class DrawerScreenState extends State<DrawerScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
-            leading: Icon(
-              Icons.description,
-              size: 22,
-            ),
+            leading: Icon(Icons.description,
+                size: 22, color: Theme.of(context).primaryColor),
             onTap: () {
               if (isLogin) {
                 RouteUtil.push(context, TodoScreen());
@@ -119,10 +114,8 @@ class DrawerScreenState extends State<DrawerScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
-            leading: Icon(
-              Icons.brightness_2,
-              size: 22,
-            ),
+            leading: Icon(Icons.brightness_2,
+                size: 22, color: Theme.of(context).primaryColor),
             onTap: () {
               setState(() {
                 changeTheme();
@@ -135,10 +128,8 @@ class DrawerScreenState extends State<DrawerScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
-            leading: Icon(
-              Icons.settings,
-              size: 22,
-            ),
+            leading: Icon(Icons.settings,
+                size: 22, color: Theme.of(context).primaryColor),
             onTap: () {
               RouteUtil.push(context, SettingScreen());
             },
@@ -149,10 +140,8 @@ class DrawerScreenState extends State<DrawerScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
-            leading: Icon(
-              Icons.info,
-              size: 22,
-            ),
+            leading: Icon(Icons.info,
+                size: 22, color: Theme.of(context).primaryColor),
             onTap: () {
               RouteUtil.push(context, AboutScreen());
             },
@@ -165,10 +154,8 @@ class DrawerScreenState extends State<DrawerScreen> {
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
               ),
-              leading: Icon(
-                Icons.power_settings_new,
-                size: 22,
-              ),
+              leading: Icon(Icons.power_settings_new,
+                  size: 22, color: Theme.of(context).primaryColor),
               onTap: () {
                 _logout(context);
               },

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/main.dart';
 import 'package:flutter_wanandroid/res/colors.dart';
@@ -62,7 +63,9 @@ class MyAppState extends State<MyApp> {
     this.registerThemeEvent();
   }
 
-  void _initAsync() async {}
+  void _initAsync() async {
+    await User().getUserInfo();
+  }
 
   /// 注册主题改变事件
   void registerThemeEvent() {

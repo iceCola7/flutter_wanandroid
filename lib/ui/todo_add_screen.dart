@@ -66,10 +66,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
 
   /// 构造分割线
   Widget buildDivider() {
-    return Container(
-      height: 0.5,
-      color: Colors.grey[600],
-    );
+    return new Divider();
   }
 
   /// 显示Loading
