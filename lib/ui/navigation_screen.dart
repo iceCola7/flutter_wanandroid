@@ -6,7 +6,7 @@ import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/common_util.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 
 /// 导航页面
 class NavigationScreen extends BaseWidget {
@@ -61,7 +61,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
           showEmpty();
         }
       } else {
-        Fluttertoast.showToast(msg: navigationModel.errorMsg);
+        T.show(msg: navigationModel.errorMsg);
       }
     }, (DioError error) {
       print(error.response);

@@ -7,8 +7,8 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/event/login_event.dart';
 import 'package:flutter_wanandroid/ui/register_screen.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 /// 登录页面
@@ -39,10 +39,10 @@ class LoginScreenState extends State<LoginScreen> {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             User().saveUserInfo(model, response);
             Application.eventBus.fire(new LoginEvent());
-            Fluttertoast.showToast(msg: "登录成功");
+            T.show(msg: "登录成功");
             Navigator.of(context).pop();
           } else {
-            Fluttertoast.showToast(msg: model.errorMsg);
+            T.show(msg: model.errorMsg);
           }
         }
       }, (DioError error) {
@@ -50,7 +50,7 @@ class LoginScreenState extends State<LoginScreen> {
         print(error.response);
       }, username, password);
     } else {
-      Fluttertoast.showToast(msg: "用户名或密码不能为空");
+      T.show(msg: "用户名或密码不能为空");
     }
   }
 

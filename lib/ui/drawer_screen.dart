@@ -15,7 +15,7 @@ import 'package:flutter_wanandroid/ui/todo_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 
 /// 侧滑页面
 class DrawerScreen extends StatefulWidget {
@@ -86,7 +86,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               if (isLogin) {
                 RouteUtil.push(context, CollectScreen());
               } else {
-                Fluttertoast.showToast(msg: "请先登录~");
+                T.show(msg: "请先登录~");
                 RouteUtil.push(context, LoginScreen());
               }
             },
@@ -103,7 +103,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               if (isLogin) {
                 RouteUtil.push(context, TodoScreen());
               } else {
-                Fluttertoast.showToast(msg: "请先登录~");
+                T.show(msg: "请先登录~");
                 RouteUtil.push(context, LoginScreen());
               }
             },
@@ -196,7 +196,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                     username = "未登录";
                   });
                 } else {
-                  Fluttertoast.showToast(msg: model.errorMsg);
+                  T.show(msg: model.errorMsg);
                 }
               }, (DioError error) {
                 print(error.response);

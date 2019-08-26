@@ -8,7 +8,7 @@ import 'package:flutter_wanandroid/ui/hot_result_screen.dart';
 import 'package:flutter_wanandroid/utils/common_util.dart';
 import 'package:flutter_wanandroid/utils/db_util.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 
 /// 搜索页面
 class HotWordScreen extends StatefulWidget {
@@ -107,7 +107,7 @@ class HotWordScreenState extends State<HotWordScreen> {
           _hotWordList.addAll(model.data);
         });
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       print(error.response);

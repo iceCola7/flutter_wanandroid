@@ -11,8 +11,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/todo_add_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 /// TODO 待办列表页面
@@ -56,7 +56,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
           showEmpty();
         }
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       print(error.response);
@@ -75,10 +75,10 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
           });
           rebuildData();
         } else {
-          Fluttertoast.showToast(msg: "没有更多数据了");
+          T.show(msg: "没有更多数据了");
         }
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       print(error.response);
@@ -352,13 +352,13 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     ApiService().deleteTodoById((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
-        Fluttertoast.showToast(msg: "删除成功");
+        T.show(msg: "删除成功");
         setState(() {
           _todoBeanList.removeAt(index);
         });
         rebuildData();
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       _dismissLoading(context);
@@ -374,13 +374,13 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     ApiService().updateTodoState((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
-        Fluttertoast.showToast(msg: "更新成功");
+        T.show(msg: "更新成功");
         setState(() {
           _todoBeanList.removeAt(index);
         });
         rebuildData();
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       _dismissLoading(context);

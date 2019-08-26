@@ -8,6 +8,7 @@ class Colours {
 
   static const Color transparent_80 = Color(0x80000000); //<!--204-->
   static const Color white_19 = Color(0X19FFFFFF);
+  static const Color transparent_ba = Color(0xBA000000);
 
   static const Color text_dark = Color(0xFF333333);
   static const Color text_normal = Color(0xFF666666);

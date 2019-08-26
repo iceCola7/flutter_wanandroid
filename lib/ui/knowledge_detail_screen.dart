@@ -9,8 +9,8 @@ import 'package:flutter_wanandroid/data/model/knowledge_detail_model.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 /// 知识体系详情页面
 class KnowledgeDetailScreen extends StatefulWidget {
@@ -104,7 +104,7 @@ class KnowledgeArticleScreenState
           showEmpty();
         }
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       print(error.response);
@@ -123,10 +123,10 @@ class KnowledgeArticleScreenState
             _list.addAll(model.data.datas);
           });
         } else {
-          Fluttertoast.showToast(msg: "没有更多数据了");
+          T.show(msg: "没有更多数据了");
         }
       } else {
-        Fluttertoast.showToast(msg: model.errorMsg);
+        T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
       print(error.response);
@@ -322,17 +322,17 @@ class KnowledgeArticleScreenState
   void addOrCancelCollect(item) {
     List<String> cookies = User.singleton.cookie;
     if (cookies == null || cookies.length == 0) {
-      Fluttertoast.showToast(msg: '请先登录~');
+      T.show(msg: '请先登录~');
     } else {
       if (item.collect) {
         ApiService().cancelCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
-            Fluttertoast.showToast(msg: '已取消收藏~');
+            T.show(msg: '已取消收藏~');
             setState(() {
               item.collect = false;
             });
           } else {
-            Fluttertoast.showToast(msg: '取消收藏失败~');
+            T.show(msg: '取消收藏失败~');
           }
         }, (DioError error) {
           print(error.response);
@@ -340,12 +340,12 @@ class KnowledgeArticleScreenState
       } else {
         ApiService().addCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
-            Fluttertoast.showToast(msg: '收藏成功~');
+            T.show(msg: '收藏成功~');
             setState(() {
               item.collect = true;
             });
           } else {
-            Fluttertoast.showToast(msg: '收藏失败~');
+            T.show(msg: '收藏失败~');
           }
         }, (DioError error) {
           print(error.response);

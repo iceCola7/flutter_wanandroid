@@ -41,7 +41,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
     return Scaffold(
       appBar: _attachBaseAppBar(),
       body: Container(
-        color: Colors.white, // 背景颜色
         child: Stack(
           children: <Widget>[
             attachContentWidget(context),
@@ -92,7 +91,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   Widget attachErrorWidget() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 80),
-      color: Colors.white,
       width: double.infinity,
       height: double.infinity,
       child: Center(
@@ -160,7 +158,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   Widget attachEmptyWidget() {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
-      color: Colors.white,
       width: double.infinity,
       height: double.infinity,
       child: Center(
@@ -191,7 +188,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置错误提示信息
-  void setErrorContent(String content) {
+  void setErrorContent(String content) async {
     if (content != null) {
       setState(() {
         _errorContentMsg = content;
@@ -200,7 +197,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置空页面信息
-  void setEmptyContent(String content) {
+  void setEmptyContent(String content) async {
     if (content != null) {
       setState(() {
         _emptyContentMsg = content;
@@ -209,7 +206,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置错误页面图片
-  void setErrorImg(String imgPath) {
+  void setErrorImg(String imgPath) async {
     if (imgPath != null) {
       setState(() {
         _errorImgPath = imgPath;
@@ -218,7 +215,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置空页面图片
-  void setEmptyImg(String imgPath) {
+  void setEmptyImg(String imgPath) async {
     if (imgPath != null) {
       setState(() {
         _emptyImgPath = imgPath;
@@ -227,14 +224,14 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置导航栏显示或者隐藏
-  void setAppBarVisible(bool visible) {
+  void setAppBarVisible(bool visible) async {
     setState(() {
       _isAppBarShow = visible;
     });
   }
 
   /// 显示展示的内容
-  void showContent() {
+  void showContent() async {
     setState(() {
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = false;
@@ -243,7 +240,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示正在加载
-  void showLoading() {
+  void showLoading() async {
     setState(() {
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = true;
@@ -252,7 +249,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示空数据页面
-  void showEmpty() {
+  void showEmpty() async {
     setState(() {
       _isEmptyWidgetShow = true;
       _isLoadingWidgetShow = false;
@@ -261,7 +258,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示错误页面
-  void showError() {
+  void showError() async {
     setState(() {
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = false;

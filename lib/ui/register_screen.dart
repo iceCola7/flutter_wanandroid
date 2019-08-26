@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
+import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 /// 注册页面
 class RegisterScreen extends StatefulWidget {
@@ -23,17 +23,17 @@ class RegisterScreenState extends State<RegisterScreen> {
     String password = _psdController.text;
     String passwordAgain = _psdAgainController.text;
     if (password != passwordAgain) {
-      Fluttertoast.showToast(msg: "两次密码输入不一致！");
+      T.show(msg: "两次密码输入不一致！");
     } else {
       _showLoading(context);
       ApiService().register((UserModel _userModel) {
         _dismissLoading(context);
         if (_userModel != null) {
           if (_userModel.errorCode == 0) {
-            Fluttertoast.showToast(msg: "注册成功！");
+            T.show(msg: "注册成功！");
             Navigator.of(context).pop();
           } else {
-            Fluttertoast.showToast(msg: _userModel.errorMsg);
+            T.show(msg: _userModel.errorMsg);
           }
         }
       }, (DioError error) {
