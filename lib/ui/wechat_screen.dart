@@ -9,6 +9,8 @@ import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 公众号页面
 class WeChatScreen extends BaseWidget {
@@ -28,6 +30,8 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
   void initState() {
     super.initState();
     setAppBarVisible(false);
+
+    showLoading();
     getWXChaptersList();
   }
 
@@ -40,13 +44,13 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
             _chaptersList.addAll(wxChaptersModel.data);
           });
         } else {
-          showError();
+          showEmpty();
         }
       } else {
+        showError();
         T.show(msg: wxChaptersModel.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     });
   }
@@ -59,9 +63,7 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   @override
@@ -124,11 +126,15 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   bool _isShowFAB = false;
   int _page = 1;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   Future<Null> getWXArticleList() async {
     _page = 1;
     int _id = widget.id;
     ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
       if (wxArticleModel.errorCode == Constants.STATUS_SUCCESS) {
+        _refreshController.refreshCompleted(resetFooterState: true);
         setState(() {
           _wxArticleList.clear();
           _wxArticleList.addAll(wxArticleModel.data.datas);
@@ -136,9 +142,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
       } else {
         T.show(msg: wxArticleModel.errorMsg);
       }
-    }, (DioError error) {
-      print(error.response);
-    }, _id, _page);
+    }, (DioError error) {}, _id, _page);
   }
 
   Future<Null> getMoreWXArticleList() async {
@@ -147,24 +151,27 @@ class WXArticleScreenState extends State<WXArticleScreen> {
     ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
       if (wxArticleModel.errorCode == Constants.STATUS_SUCCESS) {
         if (wxArticleModel.data.datas.length > 0) {
+          _refreshController.loadComplete();
           setState(() {
             _wxArticleList.addAll(wxArticleModel.data.datas);
           });
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: wxArticleModel.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
+      _refreshController.loadFailed();
     }, _id, _page);
   }
 
   @override
   void dispose() {
-    super.dispose();
+    _refreshController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -177,7 +184,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreWXArticleList();
+        // getMoreWXArticleList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -189,6 +196,38 @@ class WXArticleScreenState extends State<WXArticleScreen> {
         });
       }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
+        onRefresh: getWXArticleList,
+        onLoading: getMoreWXArticleList,
+        child: ListView.builder(
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _wxArticleList.length,
+        ),
+      ),
+      floatingActionButton: !_isShowFAB
+          ? null
+          : FloatingActionButton(
+              heroTag: "wechat",
+              child: Icon(Icons.arrow_upward),
+              onPressed: () {
+                /// 回到顶部时要执行的动画
+                _scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 2000), curve: Curves.ease);
+              },
+            ),
+    );
   }
 
   Widget itemView(BuildContext context, int index) {
@@ -312,35 +351,5 @@ class WXArticleScreenState extends State<WXArticleScreen> {
         }, item.id);
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
-        onRefresh: getWXArticleList,
-        child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            // 包含轮播和加载更多
-            itemCount: _wxArticleList.length + 1),
-      ),
-      floatingActionButton: !_isShowFAB
-          ? null
-          : FloatingActionButton(
-              heroTag: "wechat",
-              child: Icon(
-                Icons.arrow_upward,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                /// 回到顶部时要执行的动画
-                _scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 2000), curve: Curves.ease);
-              },
-            ),
-    );
   }
 }

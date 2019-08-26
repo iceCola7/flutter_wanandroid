@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/common/user.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 收藏页面
 class CollectScreen extends BaseWidget {
@@ -31,6 +34,9 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
   /// 页码，从0开始
   int _page = 0;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +48,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreCollectionList();
+        // getMoreCollectionList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -63,6 +69,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
+          _refreshController.refreshCompleted(resetFooterState: true);
           setState(() {
             _collectList.clear();
             _collectList.addAll(model.data.datas);
@@ -71,14 +78,11 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
           showEmpty();
         }
       } else {
-        Navigator.pop(context);
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
-      setState(() {
-        showError();
-      });
+      showError();
     }, _page);
   }
 
@@ -88,49 +92,50 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
     ApiService().getCollectionList((CollectionModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
-          showContent();
+          _refreshController.loadComplete();
           setState(() {
             _collectList.addAll(model.data.datas);
           });
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
-      setState(() {
-        showError();
-      });
+      _refreshController.loadFailed();
     }, _page);
   }
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text("收藏"),
-    );
+    return AppBar(title: Text("收藏"));
   }
 
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getCollectionList,
+        onLoading: getMoreCollectionList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            // 包含轮播和加载更多
-            itemCount: _collectList.length + 1),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _collectList.length,
+        ),
       ),
       floatingActionButton: !_isShowFAB
           ? null
           : FloatingActionButton(
               heroTag: "collect",
-              child: Icon(Icons.arrow_upward, color: Colors.white),
+              child: Icon(Icons.arrow_upward),
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,
@@ -278,5 +283,12 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
   void onClickErrorWidget() {
     showLoading();
     getCollectionList();
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 }

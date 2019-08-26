@@ -13,6 +13,8 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 /// TODO 待办列表页面
@@ -40,6 +42,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   /// 重新构建的数据集合
   Map<String, List<TodoBean>> map = Map();
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   /// 获取待办TODO列表数据
   Future<Null> getNoTodoList() async {
     _page = 1;
@@ -47,6 +52,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
+          _refreshController.refreshCompleted(resetFooterState: true);
           setState(() {
             _todoBeanList.clear();
             _todoBeanList.addAll(model.data.datas);
@@ -56,10 +62,10 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     }, todoType, _page);
   }
@@ -70,19 +76,20 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     ApiService().getNoTodoList((TodoListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
+          _refreshController.loadComplete();
           setState(() {
             _todoBeanList.addAll(model.data.datas);
           });
           rebuildData();
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
-      showError();
+      _refreshController.loadFailed();
     }, todoType, _page);
   }
 
@@ -110,7 +117,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreNoTodoList();
+        // getMoreNoTodoList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -126,9 +133,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   /// 显示Loading
@@ -170,14 +175,20 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getNoTodoList,
+        onLoading: getMoreNoTodoList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _todoBeanList.length + 1),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _todoBeanList.length,
+        ),
       ),
       // floatingActionButton: fabWidget(),
     );
@@ -325,10 +336,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
         ? null
         : FloatingActionButton(
             heroTag: "todo_list",
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               RouteUtil.push(
                   context,

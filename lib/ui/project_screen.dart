@@ -11,6 +11,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 项目页面
 class ProjectScreen extends BaseWidget {
@@ -29,6 +31,8 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
   void initState() {
     super.initState();
     setAppBarVisible(false);
+
+    showLoading();
     getProjectTreeList();
   }
 
@@ -45,10 +49,10 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: projectTreeModel.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     });
   }
@@ -61,9 +65,7 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   @override
@@ -126,11 +128,15 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
   bool _isShowFAB = false;
   int _page = 1;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   Future<Null> getProjectArticleList() async {
     _page = 1;
     int _id = widget.id;
     ApiService().getProjectArticleList((ProjectArticleListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
+        _refreshController.refreshCompleted(resetFooterState: true);
         setState(() {
           _projectArticleList.clear();
           _projectArticleList.addAll(model.data.datas);
@@ -138,9 +144,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
       } else {
         T.show(msg: model.errorMsg);
       }
-    }, (DioError error) {
-      print(error.response);
-    }, _id, _page);
+    }, (DioError error) {}, _id, _page);
   }
 
   Future<Null> getMoreProjectArticleList() async {
@@ -150,24 +154,26 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
     ApiService().getProjectArticleList((ProjectArticleListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
+          _refreshController.loadComplete();
           setState(() {
             _projectArticleList.addAll(model.data.datas);
           });
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
-        T.show(msg: model.errorMsg);
+        _refreshController.loadFailed();
       }
     }, (DioError error) {
-      print(error.response);
+      _refreshController.loadFailed();
     }, _id, _page);
   }
 
   @override
   void dispose() {
-    super.dispose();
+    _refreshController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -180,7 +186,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreProjectArticleList();
+        // getMoreProjectArticleList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -192,6 +198,38 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
         });
       }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
+        onRefresh: getProjectArticleList,
+        onLoading: getMoreProjectArticleList,
+        child: ListView.builder(
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _projectArticleList.length,
+        ),
+      ),
+      floatingActionButton: !_isShowFAB
+          ? null
+          : FloatingActionButton(
+              heroTag: "project",
+              child: Icon(Icons.arrow_upward),
+              onPressed: () {
+                /// 回到顶部时要执行的动画
+                _scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 2000), curve: Curves.ease);
+              },
+            ),
+    );
   }
 
   Widget itemView(BuildContext context, int index) {
@@ -344,31 +382,5 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
         }, item.id);
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
-        onRefresh: getProjectArticleList,
-        child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _projectArticleList.length + 1),
-      ),
-      floatingActionButton: !_isShowFAB
-          ? null
-          : FloatingActionButton(
-              heroTag: "project",
-              child: Icon(Icons.arrow_upward),
-              onPressed: () {
-                /// 回到顶部时要执行的动画
-                _scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 2000), curve: Curves.ease);
-              },
-            ),
-    );
   }
 }

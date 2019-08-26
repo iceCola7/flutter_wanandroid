@@ -12,6 +12,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 首页
 class HomeScreen extends BaseWidget {
@@ -37,6 +39,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   /// 页码，从0开始
   int _page = 0;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +55,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreArticleList();
+        // getMoreArticleList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -86,9 +91,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         _articles.addAll(topArticleModel.data);
       }
       getArticleList();
-    }, (DioError error) {
-      print(error.response);
-    });
+    }, (DioError error) {});
   }
 
   /// 获取文章列表数据
@@ -97,22 +100,20 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     ApiService().getArticleList((ArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
+          showContent();
+          _refreshController.refreshCompleted(resetFooterState: true);
           setState(() {
             _articles.addAll(model.data.datas);
           });
-          showContent();
         } else {
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      /// 发生错误
-      print(error.response);
-      setState(() {
-        showError();
-      });
+      showError();
     }, _page);
   }
 
@@ -122,52 +123,50 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     ApiService().getArticleList((ArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
+          _refreshController.loadComplete();
           setState(() {
             _articles.addAll(model.data.datas);
           });
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      /// 发生错误
-      print(error.response);
-      setState(() {
-        showError();
-      });
+      _refreshController.loadFailed();
     }, _page);
   }
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getTopArticleList,
+        onLoading: getMoreArticleList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            // 包含轮播和加载更多
-            itemCount: _articles.length + 2),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _articles.length + 1,
+        ),
       ),
       floatingActionButton: !_isShowFAB
           ? null
           : FloatingActionButton(
               heroTag: "home",
-              child: Icon(
-                Icons.arrow_upward,
-                color: Colors.white,
-              ),
+              child: Icon(Icons.arrow_upward),
               onPressed: () {
                 /// 回到顶部时要执行的动画
                 _scrollController.animateTo(0,
@@ -438,7 +437,8 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
 
   @override
   void dispose() {
-    super.dispose();
+    _refreshController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 }

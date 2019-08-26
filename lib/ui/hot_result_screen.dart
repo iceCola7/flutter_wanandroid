@@ -10,6 +10,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 热词搜索页面
 class HotResultScreen extends BaseWidget {
@@ -34,6 +36,9 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
 
   int _page = 0;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +50,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreSearchArticleList();
+        // getMoreSearchArticleList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -61,8 +66,9 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
 
   @override
   void dispose() {
-    super.dispose();
+    _refreshController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   Future<Null> getSearchArticleList() async {
@@ -71,6 +77,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
+          _refreshController.refreshCompleted(resetFooterState: true);
           setState(() {
             _searchArticleList.clear();
             _searchArticleList.addAll(model.data.datas);
@@ -79,10 +86,10 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     }, _page, widget.keyword);
   }
@@ -92,39 +99,44 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
     ApiService().getSearchArticleList((SearchArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
+          _refreshController.loadComplete();
           setState(() {
             _searchArticleList.addAll(model.data.datas);
           });
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
-      showError();
+      _refreshController.loadFailed();
     }, _page, widget.keyword);
   }
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(widget.keyword),
-    );
+    return AppBar(title: Text(widget.keyword));
   }
 
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getSearchArticleList,
+        onLoading: getMoreSearchArticleList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _searchArticleList.length),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _searchArticleList.length,
+        ),
       ),
       floatingActionButton: !_isShowFAB
           ? null

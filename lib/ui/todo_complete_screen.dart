@@ -13,6 +13,8 @@ import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 /// TODO 已完成列表页面
@@ -40,6 +42,9 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
   /// 重新构建的数据集合
   Map<String, List<TodoBean>> map = Map();
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   /// 获取已完成TODO列表数据
   Future<Null> getDoneTodoList() async {
     _page = 1;
@@ -47,6 +52,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
+          _refreshController.refreshCompleted(resetFooterState: true);
           setState(() {
             _todoBeanList.clear();
             _todoBeanList.addAll(model.data.datas);
@@ -56,10 +62,10 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     }, todoType, _page);
   }
@@ -70,19 +76,20 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
     ApiService().getDoneTodoList((TodoListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
+          _refreshController.loadComplete();
           setState(() {
             _todoBeanList.addAll(model.data.datas);
           });
           rebuildData();
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
-      showError();
+      _refreshController.loadFailed();
     }, todoType, _page);
   }
 
@@ -110,7 +117,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
       /// 滑动到底部，加载更多
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreDoneTodoList();
+        // getMoreDoneTodoList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -126,9 +133,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   /// 显示Loading
@@ -170,14 +175,20 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getDoneTodoList,
+        onLoading: getMoreDoneTodoList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _todoBeanList.length + 1),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _todoBeanList.length,
+        ),
       ),
       // floatingActionButton: fabWidget()
     );
@@ -327,10 +338,7 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
         ? null
         : FloatingActionButton(
             heroTag: "todo_done_list",
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               RouteUtil.push(
                   context,

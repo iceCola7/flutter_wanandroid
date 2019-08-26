@@ -76,9 +76,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   Widget itemView(BuildContext context, int index) {

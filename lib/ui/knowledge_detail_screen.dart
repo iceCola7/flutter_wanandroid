@@ -11,6 +11,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 知识体系详情页面
 class KnowledgeDetailScreen extends StatefulWidget {
@@ -90,6 +92,9 @@ class KnowledgeArticleScreenState
   /// 是否显示悬浮按钮
   bool _isShowFAB = false;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   Future<Null> getKnowledgeDetailList() async {
     _page = 0;
     int _id = widget.id;
@@ -97,17 +102,19 @@ class KnowledgeArticleScreenState
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
+          _refreshController.refreshCompleted(resetFooterState: true);
           setState(() {
-            _list = model.data.datas;
+            _list.clear();
+            _list.addAll(model.data.datas);
           });
         } else {
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     }, _page, _id);
   }
@@ -118,19 +125,19 @@ class KnowledgeArticleScreenState
     ApiService().getKnowledgeDetailList((KnowledgeDetailModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
-          showContent();
+          _refreshController.loadComplete();
           setState(() {
             _list.addAll(model.data.datas);
           });
         } else {
-          T.show(msg: "没有更多数据了");
+          _refreshController.loadNoData();
         }
       } else {
+        _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
-      showError();
+      _refreshController.loadFailed();
     }, _page, _id);
   }
 
@@ -138,12 +145,14 @@ class KnowledgeArticleScreenState
   void initState() {
     super.initState();
     setAppBarVisible(false);
+
     showLoading();
     getKnowledgeDetailList();
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMoreKnowledgeDetailList();
+        // getMoreKnowledgeDetailList();
       }
       if (_scrollController.offset < 200 && _isShowFAB) {
         setState(() {
@@ -159,22 +168,26 @@ class KnowledgeArticleScreenState
 
   @override
   AppBar attachAppBar() {
-    return new AppBar(
-      title: Text(""),
-    );
+    return new AppBar(title: Text(""));
   }
 
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getKnowledgeDetailList,
+        onLoading: getMoreKnowledgeDetailList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _list.length + 1),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _list.length,
+        ),
       ),
       floatingActionButton: !_isShowFAB
           ? null

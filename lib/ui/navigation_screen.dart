@@ -7,6 +7,8 @@ import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/common_util.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
+import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 导航页面
 class NavigationScreen extends BaseWidget {
@@ -25,11 +27,15 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
   /// 是否显示悬浮按钮
   bool _isShowFAB = false;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
     setAppBarVisible(false);
 
+    showLoading();
     getNavigationList();
 
     _scrollController.addListener(() {
@@ -53,6 +59,7 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
       if (navigationModel.errorCode == Constants.STATUS_SUCCESS) {
         if (navigationModel.data.length > 0) {
           showContent();
+          _refreshController.refreshCompleted();
           setState(() {
             _navigationList.clear();
             _navigationList.addAll(navigationModel.data);
@@ -61,38 +68,42 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
           showEmpty();
         }
       } else {
+        showError();
         T.show(msg: navigationModel.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
       showError();
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
+    _refreshController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   AppBar attachAppBar() {
-    return AppBar(
-      title: Text(""),
-    );
+    return AppBar(title: Text(""));
   }
 
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getNavigationList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _navigationList.length + 1),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _navigationList.length,
+        ),
       ),
       floatingActionButton: !_isShowFAB
           ? null
