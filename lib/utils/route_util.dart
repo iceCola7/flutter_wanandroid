@@ -1,4 +1,3 @@
-import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/webview_screen.dart';
@@ -15,7 +14,7 @@ class RouteUtil {
 
   /// 跳转到 WebView 打开
   static void toWebView(BuildContext context, String title, String url) async {
-    if (context == null || ObjectUtil.isEmpty(url)) return;
+    if (context == null || url.isEmpty) return;
     if (url.endsWith('.apk')) {
       launchInBrowser(url, title: title);
     } else {

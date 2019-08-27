@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/common/router_config.dart';
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/event/theme_change_event.dart';
-import 'package:flutter_wanandroid/main.dart';
 import 'package:flutter_wanandroid/res/colors.dart';
 import 'package:flutter_wanandroid/ui/splash_screen.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
@@ -19,6 +19,7 @@ void main() async {
   await getTheme();
 
   runApp(MyApp());
+
   if (Platform.isAndroid) {
     // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，
     // 是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
@@ -83,12 +84,10 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "玩Android",
+      title: AppConfig.appName,
       debugShowCheckedModeBanner: false,
       theme: themeData,
-      routes: <String, WidgetBuilder>{
-        "main": (BuildContext context) => new Main(),
-      },
+      routes: Router.generateRoute(),
       home: new SplashScreen(),
     );
   }
