@@ -1,5 +1,7 @@
 import 'dart:convert' show json;
 
+import 'package:flutter_wanandroid/utils/string_util.dart';
+
 class ArticleModel {
   int errorCode;
   String errorMsg;
@@ -16,7 +18,9 @@ class ArticleModel {
   ArticleModel.fromJson(jsonRes) {
     errorCode = jsonRes['errorCode'];
     errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null ? null : new ArticleListBean.fromJson(jsonRes['data']);
+    data = jsonRes['data'] == null
+        ? null
+        : new ArticleListBean.fromJson(jsonRes['data']);
   }
 
   @override
@@ -158,15 +162,15 @@ class ArticleBean {
     fresh = jsonRes['fresh'];
     apkLink = jsonRes['apkLink'];
     author = jsonRes['author'];
-    chapterName = jsonRes['chapterName'];
-    desc = jsonRes['desc'];
+    chapterName = StringUtil.urlDecoder(jsonRes['chapterName']);
+    desc = StringUtil.urlDecoder(jsonRes['desc']);
     envelopePic = jsonRes['envelopePic'];
     link = jsonRes['link'];
     niceDate = jsonRes['niceDate'];
     origin = jsonRes['origin'];
     projectLink = jsonRes['projectLink'];
     superChapterName = jsonRes['superChapterName'];
-    title = jsonRes['title'];
+    title = StringUtil.urlDecoder(jsonRes['title']);
     tags = jsonRes['tags'] == null ? null : [];
     top = 0;
 

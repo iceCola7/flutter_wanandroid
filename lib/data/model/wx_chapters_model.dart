@@ -1,5 +1,7 @@
 import 'dart:convert' show json;
 
+import 'package:flutter_wanandroid/utils/string_util.dart';
+
 class WXChaptersModel {
   int errorCode;
   String errorMsg;
@@ -56,7 +58,7 @@ class WXChaptersBean {
     parentChapterId = jsonRes['parentChapterId'];
     visible = jsonRes['visible'];
     userControlSetTop = jsonRes['userControlSetTop'];
-    name = jsonRes['name'];
+    name = StringUtil.urlDecoder(jsonRes['name']);
     children = jsonRes['children'] == null ? null : [];
 
     for (var childrenItem in children == null ? [] : jsonRes['children']) {

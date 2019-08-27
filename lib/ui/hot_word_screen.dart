@@ -76,16 +76,23 @@ class HotWordScreenState extends State<HotWordScreen> {
     focusNode.unfocus();
     if (editingController.text == null || editingController.text == "") {
     } else {
-      saveHistory(editingController.text);
-      RouteUtil.push(context, HotResultScreen(editingController.text));
+      saveHistory(editingController.text).then((value) {
+        RouteUtil.push(context, HotResultScreen(editingController.text));
+      });
     }
   }
 
   /// 保存搜索记录
   Future<Null> saveHistory(String text) async {
+    int _id = -1;
+    _historyList.forEach((bean) {
+      if (bean.name == text) _id = bean.id;
+    });
+    if (_id != -1) await db.deleteById(_id);
     HistoryBean bean = HistoryBean();
     bean.name = text;
-    db.insertItem(bean);
+    await db.insertItem(bean);
+    await getHistoryList();
   }
 
   /// 获取历史搜索记录
@@ -121,21 +128,30 @@ class HotWordScreenState extends State<HotWordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          autofocus: true,
-          style: TextStyle(color: Colors.white),
-          decoration: new InputDecoration(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        // 触摸收起键盘
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: new Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: TextField(
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.white70),
               border: InputBorder.none,
-              hintText: "发现更多干货"),
-          focusNode: focusNode,
-          controller: editingController,
+              hintText: "发现更多干货",
+            ),
+            focusNode: focusNode,
+            controller: editingController,
+          ),
+          actions: actions,
         ),
-        actions: actions,
+        body: contentView(_hotWordList),
       ),
-      body: contentView(_hotWordList),
     );
   }
 
@@ -145,7 +161,6 @@ class HotWordScreenState extends State<HotWordScreen> {
       widgets.add(new InkWell(
         child: new Chip(
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          // backgroundColor: Color(0xfff1f1f1),
           label: new Text(
             item.name,
             style: TextStyle(
@@ -158,8 +173,9 @@ class HotWordScreenState extends State<HotWordScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         ),
         onTap: () {
-          saveHistory(item.name);
-          RouteUtil.push(context, HotResultScreen(item.name));
+          saveHistory(item.name).then((value) {
+            RouteUtil.push(context, HotResultScreen(item.name));
+          });
         },
       ));
     }
@@ -228,46 +244,48 @@ class HotWordScreenState extends State<HotWordScreen> {
     if (index < _historyList.length) {
       HistoryBean item = _historyList[index];
       return InkWell(
-          child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
               padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
-              child: Column(
+              child: Row(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            RouteUtil.push(context, HotResultScreen(item.name));
-                          },
-                          child: Text(
-                            item.name,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.grey[600],
-                            ),
-                          ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        RouteUtil.push(context, HotResultScreen(item.name));
+                      },
+                      child: Text(
+                        item.name,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey[600],
                         ),
                       ),
-                      Container(
-                        child: InkWell(
-                          onTap: () {
-                            db.deleteById(item.id);
-                            setState(() {
-                              _historyList.removeAt(index);
-                            });
-                          },
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.grey[600],
-                            size: 16,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  Divider(height: 1),
+                  Container(
+                    child: InkWell(
+                      onTap: () {
+                        db.deleteById(item.id);
+                        setState(() {
+                          _historyList.removeAt(index);
+                        });
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.grey[600],
+                        size: 16,
+                      ),
+                    ),
+                  ),
                 ],
-              )));
+              ),
+            ),
+            Divider(height: 1),
+          ],
+        ),
+      );
     }
     return null;
   }

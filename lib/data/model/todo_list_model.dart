@@ -1,5 +1,7 @@
 import 'dart:convert' show json;
 
+import 'package:flutter_wanandroid/utils/string_util.dart';
+
 class TodoListModel {
   int errorCode;
   String errorMsg;
@@ -94,13 +96,13 @@ class TodoBean {
   TodoBean.fromJson(jsonRes) {
     completeDate = jsonRes['completeDate'];
     completeDateStr = jsonRes['completeDateStr'];
-    content = jsonRes['content'];
+    content = StringUtil.urlDecoder(jsonRes['content']);
     date = jsonRes['date'];
     dateStr = jsonRes['dateStr'];
     id = jsonRes['id'];
     priority = jsonRes['priority'];
     status = jsonRes['status'];
-    title = jsonRes['title'];
+    title = StringUtil.urlDecoder(jsonRes['title']);
     type = jsonRes['type'];
     userId = jsonRes['userId'];
   }

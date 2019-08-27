@@ -1,5 +1,7 @@
 import 'dart:convert' show json;
 
+import 'package:flutter_wanandroid/utils/string_util.dart';
+
 class BannerModel {
   int errorCode;
   String errorMsg;
@@ -54,7 +56,7 @@ class BannerBean {
     isVisible = jsonRes['isVisible'];
     order = jsonRes['order'];
     type = jsonRes['type'];
-    desc = jsonRes['desc'];
+    desc = StringUtil.urlDecoder(jsonRes['desc']);
     imagePath = jsonRes['imagePath'];
     title = jsonRes['title'];
     url = jsonRes['url'];

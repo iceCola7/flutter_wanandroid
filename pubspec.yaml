@@ -61,6 +61,10 @@ dependencies:
   share: ^0.6.1+1
   # 上拉加载和下拉刷新的组件 https://github.com/peng8350/flutter_pulltorefresh
   pull_to_refresh: ^1.5.4
+  # 解析html标签 https://github.com/Sub6Resources/flutter_html
+  flutter_html: ^0.10.4
+  # Html Encoder/Decoder https://pub.dev/packages/html_unescape
+  html_unescape: ^1.0.1+3
 
 dev_dependencies:
   flutter_test:

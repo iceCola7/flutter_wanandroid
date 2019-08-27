@@ -1,5 +1,7 @@
 import 'dart:convert' show json;
 
+import 'package:flutter_wanandroid/utils/string_util.dart';
+
 class NavigationModel {
   int errorCode;
   String errorMsg;
@@ -118,15 +120,15 @@ class NavigationArticleBean {
     fresh = jsonRes['fresh'];
     apkLink = jsonRes['apkLink'];
     author = jsonRes['author'];
-    chapterName = jsonRes['chapterName'];
-    desc = jsonRes['desc'];
+    chapterName = StringUtil.urlDecoder(jsonRes['chapterName']);
+    desc = StringUtil.urlDecoder(jsonRes['desc']);
     envelopePic = jsonRes['envelopePic'];
     link = jsonRes['link'];
     niceDate = jsonRes['niceDate'];
     origin = jsonRes['origin'];
     projectLink = jsonRes['projectLink'];
     superChapterName = jsonRes['superChapterName'];
-    title = jsonRes['title'];
+    title = StringUtil.urlDecoder(jsonRes['title']);
     tags = jsonRes['tags'] == null ? null : [];
 
     for (var tagsItem in tags == null ? [] : jsonRes['tags']) {

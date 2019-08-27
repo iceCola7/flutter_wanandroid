@@ -1,3 +1,5 @@
+import 'package:flutter_wanandroid/utils/string_util.dart';
+
 class SearchArticleModel {
   String errorMsg;
   int errorCode;
@@ -79,15 +81,16 @@ class SearchArticleBean {
     SearchArticleBean datasListBean = new SearchArticleBean();
     datasListBean.apkLink = map['apkLink'];
     datasListBean.author = map['author'];
-    datasListBean.chapterName = map['chapterName'];
-    datasListBean.desc = map['desc'];
+    datasListBean.chapterName = StringUtil.urlDecoder(map['chapterName']);
+    datasListBean.desc = StringUtil.urlDecoder(map['desc']);
     datasListBean.envelopePic = map['envelopePic'];
     datasListBean.link = map['link'];
     datasListBean.niceDate = map['niceDate'];
     datasListBean.origin = map['origin'];
     datasListBean.projectLink = map['projectLink'];
-    datasListBean.superChapterName = map['superChapterName'];
-    datasListBean.title = map['title'];
+    datasListBean.superChapterName =
+        StringUtil.urlDecoder(map['superChapterName']);
+    datasListBean.title = StringUtil.urlDecoder(map['title']);
     datasListBean.collect = map['collect'];
     datasListBean.fresh = map['fresh'];
     datasListBean.chapterId = map['chapterId'];

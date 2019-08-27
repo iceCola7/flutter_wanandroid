@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
@@ -251,11 +252,10 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                         Container(
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                          child: Text(
-                            item.title,
-                            maxLines: 2,
-                            style: TextStyle(fontSize: 16),
-                            textAlign: TextAlign.left,
+                          child: Html(
+                            useRichText: false,
+                            defaultTextStyle: TextStyle(fontSize: 16),
+                            data: item.title,
                           ),
                         ),
                         Container(
@@ -265,9 +265,12 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  item.superChapterName +
-                                      " / " +
-                                      item.chapterName,
+                                  (item.superChapterName.isNotEmpty
+                                          ? '${item.superChapterName} / '
+                                          : '') +
+                                      (item.chapterName.isNotEmpty
+                                          ? item.chapterName
+                                          : ''),
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey[600],
