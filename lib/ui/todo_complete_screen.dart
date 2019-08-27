@@ -109,9 +109,15 @@ class TodoCompleteScreenState extends BaseWidgetState<TodoCompleteScreen> {
     setAppBarVisible(false);
 
     this.registerRefreshEvent();
+  }
 
-    showLoading();
-    getDoneTodoList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getDoneTodoList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多

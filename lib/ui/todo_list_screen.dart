@@ -98,8 +98,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     Application.eventBus.on<RefreshTodoEvent>().listen((event) {
       todoType = event.todoType;
       _todoBeanList.clear();
-      showLoading();
-      getNoTodoList();
+      showLoading().then((value) {
+        getNoTodoList();
+      });
     });
   }
 
@@ -109,9 +110,15 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
     setAppBarVisible(false);
 
     this.registerRefreshEvent();
+  }
 
-    showLoading();
-    getNoTodoList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getNoTodoList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
@@ -350,8 +357,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getNoTodoList();
+    showLoading().then((value) {
+      getNoTodoList();
+    });
   }
 
   /// 根据ID删除TODO

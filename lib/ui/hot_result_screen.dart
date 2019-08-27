@@ -43,9 +43,15 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
   @override
   void initState() {
     super.initState();
+  }
 
-    showLoading();
-    getSearchArticleList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getSearchArticleList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多

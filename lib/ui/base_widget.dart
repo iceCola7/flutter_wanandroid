@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// 封装一个通用的Widget
 abstract class BaseWidget extends StatefulWidget {
   BaseWidgetState baseWidgetState;
 
@@ -32,11 +33,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   FontWeight _fontWidget = FontWeight.w600;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _attachBaseAppBar(),
@@ -54,16 +50,12 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   /// 悬浮按钮
   Widget fabWidget() {
     return null;
   }
 
+  /// 内容视图
   Widget attachContentWidget(BuildContext context);
 
   PreferredSizeWidget _attachBaseAppBar() {
@@ -72,7 +64,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
         offstage: !_isAppBarShow,
         child: attachAppBar(),
       ),
-      preferredSize: Size.fromHeight(50),
+      preferredSize: Size.fromHeight(56),
     );
   }
 
@@ -104,22 +96,25 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
             ),
             Container(
               margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: Text(_errorContentMsg,
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: _fontWidget,
-                  )),
+              child: Text(
+                _errorContentMsg,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: _fontWidget,
+                ),
+              ),
             ),
             Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: OutlineButton(
-                  child: Text("重新加载",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: _fontWidget,
-                      )),
-                  onPressed: () => {onClickErrorWidget()},
-                ))
+              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: OutlineButton(
+                child: Text("重新加载",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: _fontWidget,
+                    )),
+                onPressed: () => {onClickErrorWidget()},
+              ),
+            ),
           ],
         ),
       ),
@@ -188,7 +183,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置错误提示信息
-  void setErrorContent(String content) async {
+  Future<Null> setErrorContent(String content) async {
     if (content != null) {
       setState(() {
         _errorContentMsg = content;
@@ -197,7 +192,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置空页面信息
-  void setEmptyContent(String content) async {
+  Future<Null> setEmptyContent(String content) async {
     if (content != null) {
       setState(() {
         _emptyContentMsg = content;
@@ -206,7 +201,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置错误页面图片
-  void setErrorImg(String imgPath) async {
+  Future<Null> setErrorImg(String imgPath) async {
     if (imgPath != null) {
       setState(() {
         _errorImgPath = imgPath;
@@ -215,7 +210,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置空页面图片
-  void setEmptyImg(String imgPath) async {
+  Future<Null> setEmptyImg(String imgPath) async {
     if (imgPath != null) {
       setState(() {
         _emptyImgPath = imgPath;
@@ -224,14 +219,14 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置导航栏显示或者隐藏
-  void setAppBarVisible(bool visible) async {
+  Future<Null> setAppBarVisible(bool visible) async {
     setState(() {
       _isAppBarShow = visible;
     });
   }
 
   /// 显示展示的内容
-  void showContent() async {
+  Future<Null> showContent() async {
     setState(() {
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = false;
@@ -240,7 +235,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示正在加载
-  void showLoading() async {
+  Future<Null> showLoading() async {
     setState(() {
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = true;
@@ -249,7 +244,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示空数据页面
-  void showEmpty() async {
+  Future<Null> showEmpty() async {
     setState(() {
       _isEmptyWidgetShow = true;
       _isLoadingWidgetShow = false;
@@ -258,7 +253,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示错误页面
-  void showError() async {
+  Future<Null> showError() async {
     setState(() {
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = false;

@@ -145,9 +145,15 @@ class KnowledgeArticleScreenState
   void initState() {
     super.initState();
     setAppBarVisible(false);
+  }
 
-    showLoading();
-    getKnowledgeDetailList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getKnowledgeDetailList();
+    });
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -205,8 +211,9 @@ class KnowledgeArticleScreenState
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getKnowledgeDetailList();
+    showLoading().then((value) {
+      getKnowledgeDetailList();
+    });
   }
 
   Widget itemView(BuildContext context, int index) {

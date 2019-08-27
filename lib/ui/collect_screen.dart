@@ -40,9 +40,15 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
   @override
   void initState() {
     super.initState();
+  }
 
-    showLoading();
-    getCollectionList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getCollectionList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
@@ -281,8 +287,9 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getCollectionList();
+    showLoading().then((value) {
+      getCollectionList();
+    });
   }
 
   @override

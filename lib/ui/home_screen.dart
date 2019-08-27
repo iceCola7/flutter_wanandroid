@@ -46,10 +46,15 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   void initState() {
     super.initState();
     setAppBarVisible(false);
+  }
 
-    showLoading();
-    getBannerList();
-    getTopArticleList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    showLoading().then((value) {
+      getBannerList();
+      getTopArticleList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
@@ -100,10 +105,11 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     ApiService().getArticleList((ArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
-          showContent();
-          _refreshController.refreshCompleted(resetFooterState: true);
-          setState(() {
-            _articles.addAll(model.data.datas);
+          showContent().then((value) {
+            _refreshController.refreshCompleted(resetFooterState: true);
+            setState(() {
+              _articles.addAll(model.data.datas);
+            });
           });
         } else {
           showEmpty();
@@ -178,8 +184,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getTopArticleList();
+    showLoading().then((value) {
+      getTopArticleList();
+    });
   }
 
   /// 构建轮播视图

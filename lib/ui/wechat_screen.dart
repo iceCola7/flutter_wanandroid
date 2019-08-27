@@ -30,9 +30,15 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
   void initState() {
     super.initState();
     setAppBarVisible(false);
+  }
 
-    showLoading();
-    getWXChaptersList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getWXChaptersList();
+    });
   }
 
   Future<Null> getWXChaptersList() async {
@@ -100,8 +106,9 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getWXChaptersList();
+    showLoading().then((value) {
+      getWXChaptersList();
+    });
   }
 }
 
@@ -177,6 +184,11 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     getWXArticleList();
 

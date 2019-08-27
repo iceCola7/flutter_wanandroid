@@ -35,6 +35,11 @@ class HotWordScreenState extends State<HotWordScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     getSearchHotList();
 

@@ -28,8 +28,12 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
   @override
   void initState() {
     super.initState();
-
     setAppBarVisible(false);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     getKnowledgeTreeList();
 
@@ -70,8 +74,8 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -153,10 +157,11 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
         displacement: 15,
         onRefresh: getKnowledgeTreeList,
         child: ListView.builder(
-            itemBuilder: itemView,
-            physics: new AlwaysScrollableScrollPhysics(),
-            controller: _scrollController,
-            itemCount: _list.length + 1),
+          itemBuilder: itemView,
+          physics: new AlwaysScrollableScrollPhysics(),
+          controller: _scrollController,
+          itemCount: _list.length,
+        ),
       ),
       floatingActionButton: !_isShowFAB
           ? null

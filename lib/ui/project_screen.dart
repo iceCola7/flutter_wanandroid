@@ -31,9 +31,15 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
   void initState() {
     super.initState();
     setAppBarVisible(false);
+  }
 
-    showLoading();
-    getProjectTreeList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getProjectTreeList();
+    });
   }
 
   Future<Null> getProjectTreeList() async {
@@ -102,8 +108,9 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getProjectTreeList();
+    showLoading().then((value) {
+      getProjectTreeList();
+    });
   }
 }
 
@@ -179,6 +186,11 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     getProjectArticleList();
 
