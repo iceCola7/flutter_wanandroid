@@ -143,7 +143,7 @@ class HotWordScreenState extends State<HotWordScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: TextField(
-            autofocus: true,
+            autofocus: false,
             style: TextStyle(color: Colors.white),
             decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.white70),

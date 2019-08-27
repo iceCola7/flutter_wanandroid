@@ -142,7 +142,7 @@ class LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
                       child: TextField(
                         focusNode: _userNameFocusNode,
-                        autofocus: true,
+                        autofocus: false,
                         controller: _userNameController,
                         decoration: InputDecoration(
                           labelText: "用户名",

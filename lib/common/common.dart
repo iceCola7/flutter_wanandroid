@@ -9,7 +9,6 @@ class Constants {
   static const String THEME_COLOR_KEY = 'theme_color_key';
 
   static const String DARK_KEY = 'dark_key';
-
 }
 
 class AppConfig {

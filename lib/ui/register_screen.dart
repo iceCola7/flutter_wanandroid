@@ -100,7 +100,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   TextField(
-                    autofocus: true,
+                    autofocus: false,
                     controller: _userNameController,
                     decoration: InputDecoration(
                       labelText: "用户名",

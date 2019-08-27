@@ -66,6 +66,9 @@ dependencies:
   # Html Encoder/Decoder https://pub.dev/packages/html_unescape
   html_unescape: ^1.0.1+3
 
+  device_info: ^0.4.0+1
+  package_info: ^0.4.0+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
