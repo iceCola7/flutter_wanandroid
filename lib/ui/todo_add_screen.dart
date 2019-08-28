@@ -290,7 +290,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
   }
 
   /// 保存TODO
-  Future<Null> _saveTodo() async {
+  Future _saveTodo() async {
     title = _titleController.text;
     content = _contentController.text;
 
@@ -310,7 +310,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       'type': widget.todoType,
       'priority': priorityValue
     };
-    ApiService().addTodo((BaseModel model) {
+    apiService.addTodo((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         T.show(msg: '保存成功');
@@ -326,7 +326,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
   }
 
   /// 更新TODO
-  Future<Null> _updateTodo() async {
+  Future _updateTodo() async {
     int _id = widget.bean.id;
     int _status = widget.bean.status;
 
@@ -350,7 +350,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       'priority': priorityValue,
       'status': _status
     };
-    ApiService().updateTodo((BaseModel model) {
+    apiService.updateTodo((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         T.show(msg: '更新成功');

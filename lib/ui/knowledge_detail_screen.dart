@@ -95,10 +95,10 @@ class KnowledgeArticleScreenState
   RefreshController _refreshController =
       new RefreshController(initialRefresh: false);
 
-  Future<Null> getKnowledgeDetailList() async {
+  Future getKnowledgeDetailList() async {
     _page = 0;
     int _id = widget.id;
-    ApiService().getKnowledgeDetailList((KnowledgeDetailModel model) {
+    apiService.getKnowledgeDetailList((KnowledgeDetailModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
@@ -119,10 +119,10 @@ class KnowledgeArticleScreenState
     }, _page, _id);
   }
 
-  Future<Null> getMoreKnowledgeDetailList() async {
+  Future getMoreKnowledgeDetailList() async {
     _page++;
     int _id = widget.id;
-    ApiService().getKnowledgeDetailList((KnowledgeDetailModel model) {
+    apiService.getKnowledgeDetailList((KnowledgeDetailModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -345,7 +345,7 @@ class KnowledgeArticleScreenState
       T.show(msg: '请先登录~');
     } else {
       if (item.collect) {
-        ApiService().cancelCollection((BaseModel model) {
+        apiService.cancelCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '已取消收藏~');
             setState(() {
@@ -358,7 +358,7 @@ class KnowledgeArticleScreenState
           print(error.response);
         }, item.id);
       } else {
-        ApiService().addCollection((BaseModel model) {
+        apiService.addCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '收藏成功~');
             setState(() {

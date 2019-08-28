@@ -54,8 +54,8 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
     });
   }
 
-  Future<Null> getNavigationList() async {
-    ApiService().getNavigationList((NavigationModel navigationModel) {
+  Future getNavigationList() async {
+    apiService.getNavigationList((NavigationModel navigationModel) {
       if (navigationModel.errorCode == Constants.STATUS_SUCCESS) {
         if (navigationModel.data.length > 0) {
           showContent();

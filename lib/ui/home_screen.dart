@@ -75,8 +75,8 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   }
 
   /// 获取首页轮播图数据
-  Future<Null> getBannerList() async {
-    ApiService().getBannerList((BannerModel bannerModel) {
+  Future getBannerList() async {
+    apiService.getBannerList((BannerModel bannerModel) {
       if (bannerModel.data.length > 0) {
         setState(() {
           _bannerList = bannerModel.data;
@@ -86,8 +86,8 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   }
 
   /// 获取置顶文章数据
-  Future<Null> getTopArticleList() async {
-    ApiService().getTopArticleList((TopArticleModel topArticleModel) {
+  Future getTopArticleList() async {
+    apiService.getTopArticleList((TopArticleModel topArticleModel) {
       if (topArticleModel.errorCode == Constants.STATUS_SUCCESS) {
         topArticleModel.data.forEach((v) {
           v.top = 1;
@@ -100,9 +100,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   }
 
   /// 获取文章列表数据
-  Future<Null> getArticleList() async {
+  Future getArticleList() async {
     _page = 0;
-    ApiService().getArticleList((ArticleModel model) {
+    apiService.getArticleList((ArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent().then((value) {
@@ -124,9 +124,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   }
 
   /// 获取更多文章列表数据
-  Future<Null> getMoreArticleList() async {
+  Future getMoreArticleList() async {
     _page++;
-    ApiService().getArticleList((ArticleModel model) {
+    apiService.getArticleList((ArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -413,7 +413,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
       T.show(msg: '请先登录~');
     } else {
       if (item.collect) {
-        ApiService().cancelCollection((BaseModel model) {
+        apiService.cancelCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '已取消收藏~');
             setState(() {
@@ -426,7 +426,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
           print(error.response);
         }, item.id);
       } else {
-        ApiService().addCollection((BaseModel model) {
+        apiService.addCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '收藏成功~');
             setState(() {

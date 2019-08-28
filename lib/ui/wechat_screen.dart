@@ -41,8 +41,8 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
     });
   }
 
-  Future<Null> getWXChaptersList() async {
-    ApiService().getWXChaptersList((WXChaptersModel wxChaptersModel) {
+  Future getWXChaptersList() async {
+    apiService.getWXChaptersList((WXChaptersModel wxChaptersModel) {
       if (wxChaptersModel.errorCode == Constants.STATUS_SUCCESS) {
         if (wxChaptersModel.data.length > 0) {
           showContent();
@@ -136,10 +136,10 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   RefreshController _refreshController =
       new RefreshController(initialRefresh: false);
 
-  Future<Null> getWXArticleList() async {
+  Future getWXArticleList() async {
     _page = 1;
     int _id = widget.id;
-    ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
+    apiService.getWXArticleList((WXArticleModel wxArticleModel) {
       if (wxArticleModel.errorCode == Constants.STATUS_SUCCESS) {
         _refreshController.refreshCompleted(resetFooterState: true);
         setState(() {
@@ -152,10 +152,10 @@ class WXArticleScreenState extends State<WXArticleScreen> {
     }, (DioError error) {}, _id, _page);
   }
 
-  Future<Null> getMoreWXArticleList() async {
+  Future getMoreWXArticleList() async {
     _page++;
     int _id = widget.id;
-    ApiService().getWXArticleList((WXArticleModel wxArticleModel) {
+    apiService.getWXArticleList((WXArticleModel wxArticleModel) {
       if (wxArticleModel.errorCode == Constants.STATUS_SUCCESS) {
         if (wxArticleModel.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -336,7 +336,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
       T.show(msg: '请先登录~');
     } else {
       if (item.collect) {
-        ApiService().cancelCollection((BaseModel model) {
+        apiService.cancelCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '已取消收藏~');
             setState(() {
@@ -349,7 +349,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
           print(error.response);
         }, item.id);
       } else {
-        ApiService().addCollection((BaseModel model) {
+        apiService.addCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '收藏成功~');
             setState(() {

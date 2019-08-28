@@ -29,8 +29,8 @@ class HomeBannerState extends State<HomeBannerScreen> {
     _getBannerList();
   }
 
-  Future<Null> _getBannerList() async {
-    ApiService().getBannerList((BannerModel bannerModel) {
+  Future _getBannerList() async {
+    apiService.getBannerList((BannerModel bannerModel) {
       if (bannerModel.data.length > 0) {
         setState(() {
           _bannerList = bannerModel.data;

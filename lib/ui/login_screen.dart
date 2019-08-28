@@ -26,14 +26,14 @@ class LoginScreenState extends State<LoginScreen> {
   final FocusNode _userNameFocusNode = FocusNode();
   final FocusNode _psdFocusNode = FocusNode();
 
-  Future<Null> _login() async {
+  Future _login() async {
     String username = _userNameController.text;
     String password = _psdController.text;
 
     if ((null != username && username.length > 0) &&
         (null != password && password.length > 0)) {
       _showLoading(context);
-      ApiService().login((UserModel model, Response response) {
+      apiService.login((UserModel model, Response response) {
         _dismissLoading(context);
         if (null != model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {

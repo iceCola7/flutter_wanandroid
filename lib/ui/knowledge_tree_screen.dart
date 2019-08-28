@@ -53,8 +53,8 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
     });
   }
 
-  Future<Null> getKnowledgeTreeList() async {
-    ApiService().getKnowledgeTreeList((KnowledgeTreeModel knowledgeTreeModel) {
+  Future getKnowledgeTreeList() async {
+    apiService.getKnowledgeTreeList((KnowledgeTreeModel knowledgeTreeModel) {
       if (knowledgeTreeModel.errorCode == Constants.STATUS_SUCCESS) {
         if (knowledgeTreeModel.data.length > 0) {
           showContent();

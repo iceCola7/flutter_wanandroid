@@ -18,7 +18,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _psdController = TextEditingController();
   TextEditingController _psdAgainController = TextEditingController();
 
-  Future<Null> _register() async {
+  Future _register() async {
     String username = _userNameController.text;
     String password = _psdController.text;
     String passwordAgain = _psdAgainController.text;
@@ -26,7 +26,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       T.show(msg: "两次密码输入不一致！");
     } else {
       _showLoading(context);
-      ApiService().register((UserModel _userModel) {
+      apiService.register((UserModel _userModel) {
         _dismissLoading(context);
         if (_userModel != null) {
           if (_userModel.errorCode == 0) {

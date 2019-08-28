@@ -42,8 +42,8 @@ class ProjectScreenState extends BaseWidgetState<ProjectScreen>
     });
   }
 
-  Future<Null> getProjectTreeList() async {
-    ApiService().getProjectTreeList((ProjectTreeModel projectTreeModel) {
+  Future getProjectTreeList() async {
+    apiService.getProjectTreeList((ProjectTreeModel projectTreeModel) {
       if (projectTreeModel.errorCode == Constants.STATUS_SUCCESS) {
         if (projectTreeModel.data.length > 0) {
           showContent();
@@ -141,7 +141,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
   Future<Null> getProjectArticleList() async {
     _page = 1;
     int _id = widget.id;
-    ApiService().getProjectArticleList((ProjectArticleListModel model) {
+    apiService.getProjectArticleList((ProjectArticleListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         _refreshController.refreshCompleted(resetFooterState: true);
         setState(() {
@@ -158,7 +158,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
     _page++;
     int _id = widget.id;
 
-    ApiService().getProjectArticleList((ProjectArticleListModel model) {
+    apiService.getProjectArticleList((ProjectArticleListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -367,7 +367,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
       T.show(msg: '请先登录~');
     } else {
       if (item.collect) {
-        ApiService().cancelCollection((BaseModel model) {
+        apiService.cancelCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '已取消收藏~');
             setState(() {
@@ -380,7 +380,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
           print(error.response);
         }, item.id);
       } else {
-        ApiService().addCollection((BaseModel model) {
+        apiService.addCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '收藏成功~');
             setState(() {

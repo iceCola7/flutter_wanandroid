@@ -16,7 +16,11 @@ import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
-import 'package:flutter_wanandroid/net/dio_manager.dart';
+import 'package:flutter_wanandroid/net/index.dart';
+
+ApiService _apiService = new ApiService();
+
+ApiService get apiService => _apiService;
 
 class ApiService {
   Options _getOptions() {
@@ -27,16 +31,14 @@ class ApiService {
 
   ///  获取首页轮播数据
   void getBannerList(Function callback) async {
-    DioManager.singleton.dio
-        .get(Apis.HOME_BANNER, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.HOME_BANNER, options: _getOptions()).then((response) {
       callback(BannerModel(response.data));
     });
   }
 
   /// 获取首页置顶文章数据
   void getTopArticleList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.HOME_TOP_ARTICLE_LIST, options: _getOptions())
         .then((response) {
       callback(TopArticleModel(response.data));
@@ -48,7 +50,7 @@ class ApiService {
   /// 获取首页文章列表数据
   void getArticleList(
       Function callback, Function errorCallback, int _page) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.HOME_ARTICLE_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
       callback(ArticleModel(response.data));
@@ -59,9 +61,7 @@ class ApiService {
 
   /// 获取知识体系数据
   void getKnowledgeTreeList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio
-        .get(Apis.KNOWLEDGE_TREE_LIST, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.KNOWLEDGE_TREE_LIST, options: _getOptions()).then((response) {
       callback(KnowledgeTreeModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -71,7 +71,7 @@ class ApiService {
   /// 获取知识体系详情数据
   void getKnowledgeDetailList(
       Function callback, Function errorCallback, int _page, int _id) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.KNOWLEDGE_DETAIL_LIST + "/$_page/json?cid=$_id",
             options: _getOptions())
         .then((response) {
@@ -83,9 +83,7 @@ class ApiService {
 
   /// 获取公众号名称
   void getWXChaptersList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio
-        .get(Apis.WX_CHAPTERS_LIST, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.WX_CHAPTERS_LIST, options: _getOptions()).then((response) {
       callback(WXChaptersModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -95,7 +93,7 @@ class ApiService {
   /// 获取公众号文章列表数据
   void getWXArticleList(
       Function callback, Function errorCallback, int _id, int _page) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.WX_ARTICLE_LIST + "/$_id/$_page/json", options: _getOptions())
         .then((response) {
       callback(WXArticleModel(response.data));
@@ -106,9 +104,7 @@ class ApiService {
 
   /// 获取导航列表数据
   void getNavigationList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio
-        .get(Apis.NAVIGATION_LIST, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.NAVIGATION_LIST, options: _getOptions()).then((response) {
       callback(NavigationModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -117,9 +113,7 @@ class ApiService {
 
   /// 获取项目分类列表数据
   void getProjectTreeList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio
-        .get(Apis.PROJECT_TREE_LIST, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.PROJECT_TREE_LIST, options: _getOptions()).then((response) {
       callback(ProjectTreeModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -129,7 +123,7 @@ class ApiService {
   /// 获取项目文章列表数据
   void getProjectArticleList(
       Function callback, Function errorCallback, int _id, int _page) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.PROJECT_ARTICLE_LIST + "/$_page/json?cid=$_id",
             options: _getOptions())
         .then((response) {
@@ -141,9 +135,7 @@ class ApiService {
 
   /// 获取搜索热词列表数据
   void getSearchHotList(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio
-        .get(Apis.SEARCH_HOT_LIST, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.SEARCH_HOT_LIST, options: _getOptions()).then((response) {
       callback(HotWordModel.fromMap(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -154,7 +146,7 @@ class ApiService {
   void getSearchArticleList(Function callback, Function errorCallback,
       int _page, String _keyword) async {
     FormData formData = new FormData.from({"k": _keyword});
-    DioManager.singleton.dio
+    dio
         .post(Apis.SEARCH_ARTICLE_LIST + "/$_page/json",
             data: formData, options: _getOptions())
         .then((response) {
@@ -169,7 +161,7 @@ class ApiService {
       String _password) async {
     FormData formData =
         new FormData.from({"username": _username, "password": _password});
-    DioManager.singleton.dio
+    dio
         .post(Apis.USER_LOGIN, data: formData, options: _getOptions())
         .then((response) {
       callback(UserModel(response.data), response);
@@ -186,7 +178,7 @@ class ApiService {
       "password": _password,
       "repassword": _password
     });
-    DioManager.singleton.dio
+    dio
         .post(Apis.USER_REGISTER, data: formData, options: null)
         .then((response) {
       callback(UserModel(response.data));
@@ -198,7 +190,7 @@ class ApiService {
   /// 获取收藏列表
   void getCollectionList(
       Function callback, Function errorCallback, int _page) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.COLLECTION_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
       callback(CollectionModel(response.data));
@@ -209,7 +201,7 @@ class ApiService {
 
   /// 新增收藏(收藏站内文章)
   void addCollection(Function callback, Function errorCallback, int _id) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.ADD_COLLECTION + "/$_id/json", options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));
@@ -221,7 +213,7 @@ class ApiService {
   /// 取消收藏
   void cancelCollection(
       Function callback, Function errorCallback, int _id) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.CANCEL_COLLECTION + "/$_id/json", options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));
@@ -232,7 +224,7 @@ class ApiService {
 
   /// 退出登录
   void logout(Function callback, Function errorCallback) async {
-    DioManager.singleton.dio.get(Apis.USER_LOGOUT).then((response) {
+    dio.get(Apis.USER_LOGOUT).then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -241,7 +233,7 @@ class ApiService {
 
   /// 获取TODO列表数据
   void getTodoList(Function callback, Function errorCallback, int _page) async {
-    DioManager.singleton.dio
+    dio
         .get(Apis.TODO_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
       callback(TodoListModel(response.data));
@@ -253,7 +245,7 @@ class ApiService {
   /// 获取未完成TODO列表
   void getNoTodoList(
       Function callback, Function errorCallback, int _type, int _page) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.NO_TODO_LIST + "/$_type/json/$_page", options: _getOptions())
         .then((response) {
       callback(TodoListModel(response.data));
@@ -265,7 +257,7 @@ class ApiService {
   /// 获取已完成TODO列表
   void getDoneTodoList(
       Function callback, Function errorCallback, int _type, int _page) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.DONE_TODO_LIST + "/$_type/json/$_page",
             options: _getOptions())
         .then((response) {
@@ -277,7 +269,7 @@ class ApiService {
 
   /// 新增一个TODO
   void addTodo(Function callback, Function errorCallback, params) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.ADD_TODO, queryParameters: params, options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));
@@ -289,7 +281,7 @@ class ApiService {
   /// 根据ID更新TODO
   void updateTodo(
       Function callback, Function errorCallback, int _id, params) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.UPDATE_TODO + "/$_id/json",
             queryParameters: params, options: _getOptions())
         .then((response) {
@@ -302,7 +294,7 @@ class ApiService {
   /// 仅更新完成状态Todo
   void updateTodoState(
       Function callback, Function errorCallback, int _id, params) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.UPDATE_TODO_STATE + "/$_id/json",
             queryParameters: params, options: _getOptions())
         .then((response) {
@@ -315,7 +307,7 @@ class ApiService {
   /// 根据ID删除TODO
   void deleteTodoById(
       Function callback, Function errorCallback, int _id) async {
-    DioManager.singleton.dio
+    dio
         .post(Apis.DELETE_TODO_BY_ID + "/$_id/json", options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));

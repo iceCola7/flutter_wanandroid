@@ -78,9 +78,9 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
     super.dispose();
   }
 
-  Future<Null> getSearchArticleList() async {
+  Future getSearchArticleList() async {
     _page = 0;
-    ApiService().getSearchArticleList((SearchArticleModel model) {
+    apiService.getSearchArticleList((SearchArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
@@ -101,9 +101,9 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
     }, _page, widget.keyword);
   }
 
-  Future<Null> getMoreSearchArticleList() async {
+  Future getMoreSearchArticleList() async {
     _page++;
-    ApiService().getSearchArticleList((SearchArticleModel model) {
+    apiService.getSearchArticleList((SearchArticleModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -329,7 +329,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
       T.show(msg: '请先登录~');
     } else {
       if (item.collect) {
-        ApiService().cancelCollection((BaseModel model) {
+        apiService.cancelCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '已取消收藏~');
             setState(() {
@@ -342,7 +342,7 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
           print(error.response);
         }, item.id);
       } else {
-        ApiService().addCollection((BaseModel model) {
+        apiService.addCollection((BaseModel model) {
           if (model.errorCode == Constants.STATUS_SUCCESS) {
             T.show(msg: '收藏成功~');
             setState(() {

@@ -88,7 +88,7 @@ class HotWordScreenState extends State<HotWordScreen> {
   }
 
   /// 保存搜索记录
-  Future<Null> saveHistory(String text) async {
+  Future saveHistory(String text) async {
     int _id = -1;
     _historyList.forEach((bean) {
       if (bean.name == text) _id = bean.id;
@@ -101,7 +101,7 @@ class HotWordScreenState extends State<HotWordScreen> {
   }
 
   /// 获取历史搜索记录
-  Future<Null> getHistoryList() async {
+  Future getHistoryList() async {
     var list = await db.queryList();
     setState(() {
       _historyList.clear();
@@ -111,8 +111,8 @@ class HotWordScreenState extends State<HotWordScreen> {
   }
 
   /// 获取搜索热词
-  Future<Null> getSearchHotList() async {
-    ApiService().getSearchHotList((HotWordModel model) {
+  Future getSearchHotList() async {
+    apiService.getSearchHotList((HotWordModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         setState(() {
           _hotWordList.clear();

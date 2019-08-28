@@ -46,9 +46,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
       new RefreshController(initialRefresh: false);
 
   /// 获取待办TODO列表数据
-  Future<Null> getNoTodoList() async {
+  Future getNoTodoList() async {
     _page = 1;
-    ApiService().getNoTodoList((TodoListModel model) {
+    apiService.getNoTodoList((TodoListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
@@ -71,9 +71,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   }
 
   /// 获取更多待办TODO列表数据
-  Future<Null> getMoreNoTodoList() async {
+  Future getMoreNoTodoList() async {
     _page++;
-    ApiService().getNoTodoList((TodoListModel model) {
+    apiService.getNoTodoList((TodoListModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -363,9 +363,9 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   }
 
   /// 根据ID删除TODO
-  Future<Null> deleteTodoById(int _id, int index) async {
+  Future deleteTodoById(int _id, int index) async {
     _showLoading(context);
-    ApiService().deleteTodoById((BaseModel model) {
+    apiService.deleteTodoById((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         T.show(msg: "删除成功");
@@ -383,11 +383,11 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   }
 
   /// 仅更新完成状态Todo
-  Future<Null> updateTodoState(int _id, int index) async {
+  Future updateTodoState(int _id, int index) async {
     // status: 0或1，传1代表未完成到已完成，反之则反之。
     var params = {'status': 1};
     _showLoading(context);
-    ApiService().updateTodoState((BaseModel model) {
+    apiService.updateTodoState((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         T.show(msg: "更新成功");

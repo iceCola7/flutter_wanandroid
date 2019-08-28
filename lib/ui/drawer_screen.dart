@@ -187,7 +187,7 @@ class DrawerScreenState extends State<DrawerScreen> {
           ),
           new FlatButton(
             onPressed: () => {
-              ApiService().logout((BaseModel model) {
+              apiService.logout((BaseModel model) {
                 Navigator.of(context).pop(true);
                 if (model.errorCode == Constants.STATUS_SUCCESS) {
                   User.singleton.clearUserInfo();
