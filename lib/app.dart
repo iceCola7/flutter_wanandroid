@@ -13,6 +13,12 @@ import 'package:flutter_wanandroid/ui/splash_screen.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
+import 'net/index.dart';
+
+/// 在拿不到context的地方通过navigatorKey进行路由跳转：
+/// https://stackoverflow.com/questions/52962112/how-to-navigate-without-context-in-flutter-app
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 void main() async {
   await SPUtil.getInstance();
 
@@ -66,6 +72,7 @@ class MyAppState extends State<MyApp> {
 
   void _initAsync() async {
     await User().getUserInfo();
+    await DioManager.init();
   }
 
   /// 注册主题改变事件
@@ -88,6 +95,7 @@ class MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: themeData,
       routes: Router.generateRoute(),
+      navigatorKey: navigatorKey,
       home: new SplashScreen(),
     );
   }

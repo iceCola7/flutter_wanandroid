@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/ui/page_index.dart';
+import 'package:flutter_wanandroid/ui/index.dart';
 
 /// 存放路由的配置
 
