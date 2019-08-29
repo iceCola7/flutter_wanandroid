@@ -15,9 +15,9 @@ Dio get dio => _dio;
 class DioManager {
   static Future init() async {
     dio.options.baseUrl = Apis.BASE_HOST;
-    dio.options.connectTimeout = 5 * 1000;
-    dio.options.sendTimeout = 5 * 1000;
-    dio.options.receiveTimeout = 3 * 1000;
+    dio.options.connectTimeout = 30 * 1000;
+    dio.options.sendTimeout = 30 * 1000;
+    dio.options.receiveTimeout = 30 * 1000;
     (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
       client.badCertificateCallback =
