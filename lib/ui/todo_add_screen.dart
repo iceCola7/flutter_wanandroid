@@ -294,12 +294,16 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
     title = _titleController.text;
     content = _contentController.text;
 
-    if (title == '') {
+    if (title.isEmpty) {
       T.show(msg: '请输入标题');
       return;
     }
-    if (content == '') {
+    if (content.isEmpty) {
       T.show(msg: '请输入详情');
+      return;
+    }
+    if (selectedDate.isEmpty) {
+      T.show(msg: '请选择日期');
       return;
     }
     _showLoading(context);
@@ -321,7 +325,6 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       }
     }, (DioError error) {
       _dismissLoading(context);
-      print(error.response);
     }, params);
   }
 
@@ -333,12 +336,16 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
     title = _titleController.text;
     content = _contentController.text;
 
-    if (title == '') {
+    if (title.isEmpty) {
       T.show(msg: '请输入标题');
       return;
     }
-    if (content == '') {
+    if (content.isEmpty) {
       T.show(msg: '请输入详情');
+      return;
+    }
+    if (selectedDate.isEmpty) {
+      T.show(msg: '请选择日期');
       return;
     }
     _showLoading(context);
@@ -361,7 +368,6 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
       }
     }, (DioError error) {
       _dismissLoading(context);
-      print(error.response);
     }, _id, params);
   }
 }

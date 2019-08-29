@@ -15,8 +15,10 @@ class WanAndroidErrorInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  onError(DioError err) {
-    return err;
+  onError(DioError error) {
+    String errorMsg = DioManager.parseError(error);
+    T.show(msg: errorMsg);
+    return error;
   }
 
   @override
@@ -24,15 +26,11 @@ class WanAndroidErrorInterceptor extends InterceptorsWrapper {
     var data = response.data;
 
     if (data is String) {
-      try {
-        data = json.decode(data);
-      } catch (e) {}
+      data = json.decode(data);
     }
-
     if (data is Map) {
       int errorCode = data['errorCode'] ?? 0;
       String errorMsg = data['errorMsg'] ?? '请求失败[$errorCode]';
-
       if (errorCode == 0) {
         return response;
       } else if (errorCode == -1001 /*未登录错误码*/) {
@@ -44,6 +42,7 @@ class WanAndroidErrorInterceptor extends InterceptorsWrapper {
         return dio.reject(errorMsg);
       }
     }
+
     return response;
   }
 

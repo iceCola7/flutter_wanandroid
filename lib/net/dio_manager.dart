@@ -37,13 +37,29 @@ class DioManager {
     dio.interceptors.add(CookieManager(cj));
   }
 
-  static String parseError(error, {String defErrorString = '网络连接超时或者服务器未响应'}) {
+  static String parseError(error, {String defErrorString = '网络连接超时~'}) {
     String errStr;
     if (error is DioError) {
       if (error.type == DioErrorType.CONNECT_TIMEOUT ||
           error.type == DioErrorType.SEND_TIMEOUT ||
           error.type == DioErrorType.RECEIVE_TIMEOUT) {
         errStr = defErrorString;
+      } else if (error.type == DioErrorType.RESPONSE) {
+        int statusCode = error.response.statusCode;
+        String msg = error.response.statusMessage;
+
+        /// TODO 异常状态码的处理
+        switch (statusCode) {
+          case 500:
+            errStr = '服务器异常~';
+            break;
+          case 404:
+            errStr = '未找到资源~';
+            break;
+          default:
+            errStr = '$msg[$statusCode]';
+            break;
+        }
       } else {
         errStr = error.message;
       }
