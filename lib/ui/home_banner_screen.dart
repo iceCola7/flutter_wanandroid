@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/custom_cached_image.dart';
 
 class HomeBannerScreen extends StatefulWidget {
   @override
@@ -52,12 +51,7 @@ class HomeBannerState extends State<HomeBannerScreen> {
           } else {
             return InkWell(
               child: new Container(
-                child: CachedNetworkImage(
-                  fit: BoxFit.fill,
-                  imageUrl: _bannerList[index].imagePath,
-                  placeholder: (context, url) => new ProgressView(),
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
-                ),
+                child: CustomCachedImage(imageUrl: _bannerList[index].imagePath),
               ),
               onTap: () {
                 RouteUtil.toWebView(

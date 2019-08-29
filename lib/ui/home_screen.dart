@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
+import 'package:flutter_wanandroid/widgets/custom_cached_image.dart';
 import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -201,11 +201,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
           } else {
             return InkWell(
               child: new Container(
-                child: CachedNetworkImage(
+                child: CustomCachedImage(
                   fit: BoxFit.fill,
                   imageUrl: _bannerList[index].imagePath,
-                  placeholder: (context, url) => new ProgressView(),
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
                 ),
               ),
               onTap: () {
@@ -325,17 +323,10 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
                   Offstage(
                     offstage: item.envelopePic == "",
                     child: Container(
-                      width: 100,
-                      height: 80,
-                      padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: item.envelopePic,
-                        placeholder: (context, url) => new ProgressView(),
-                        errorWidget: (context, url, error) =>
-                            new Icon(Icons.error),
-                      ),
-                    ),
+                        width: 100,
+                        height: 80,
+                        padding: EdgeInsets.fromLTRB(16, 8, 0, 8),
+                        child: CustomCachedImage(imageUrl: item.envelopePic)),
                   ),
                   Expanded(
                     child: Column(

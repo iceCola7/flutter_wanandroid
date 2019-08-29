@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
-import 'package:flutter_wanandroid/widgets/progress_view.dart';
+import 'package:flutter_wanandroid/widgets/custom_cached_image.dart';
 import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -266,12 +265,9 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen>
                     child: Container(
                       width: 80,
                       height: 130,
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
+                      child: CustomCachedImage(
                         imageUrl: item.envelopePic,
-                        placeholder: (context, url) => new ProgressView(),
-                        errorWidget: (context, url, error) =>
-                            new Icon(Icons.error),
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
