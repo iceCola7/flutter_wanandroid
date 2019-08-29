@@ -9,17 +9,22 @@ class LogInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) {
     if (isDebug) {
-      print('┌────────────────────────Begin Request────────────────────────');
-      print('uri: ${options.uri}');
-      print('method: ${options.method}');
-      print('queryParameters: ${options.queryParameters}');
-      print('headers: ${options.headers}');
-      // print('cookies: ${options.cookies}');
+      print('┌─────────────────────Begin Request─────────────────────');
+      printKV('uri', options.uri);
+      printKV('method', options.method);
+      printKV('queryParameters', options.queryParameters);
+      printKV('contentType', options.contentType.toString());
+      printKV('responseType', options.responseType.toString());
+
+      StringBuffer stringBuffer = new StringBuffer();
+      options.headers.forEach((key, v) => stringBuffer.write('\n  $key: $v'));
+      printKV('headers', stringBuffer.toString());
+      stringBuffer.clear();
+
       if (options.data != null) {
-        printLong('body: ' + options.data.toString());
+        printKV('body', options.data);
       }
-      print(
-          '└————————————————————————End Request——————————————————————————\n\n');
+      print('└—————————————————————End Request———————————————————————\n\n');
     }
     return options;
   }
@@ -27,28 +32,35 @@ class LogInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response) {
     if (isDebug) {
-      if (response != null) {
-        print(
-            '┌────────────────────────Begin Response————————————————————————');
-        print('status: ${response.statusCode}');
-        print('headers: ${response.headers}');
-        printLong('response: ' + response.toString());
-        print(
-            '└————————————————————————End Response——————————————————————————\n\n');
-      }
+      print('┌─────────────────────Begin Response—————————————————————');
+      printKV('uri', response.request.uri);
+      printKV('status', response.statusCode);
+      printKV('responseType', response.request.responseType.toString());
+
+      StringBuffer stringBuffer = new StringBuffer();
+      response.headers.forEach((key, v) => stringBuffer.write('\n  $key: $v'));
+      printKV('headers', stringBuffer.toString());
+      stringBuffer.clear();
+
+      // printLong('response: ' + response.toString());
+
+      print('└—————————————————————End Response———————————————————————\n\n');
     }
-    return response; // continue
+    return response;
   }
 
   @override
   onError(DioError err) {
     if (isDebug) {
-      print('┌────────────────────────Begin Dio Error————————————————————————');
-      print('请求异常: ' + err.toString());
-      print('请求异常信息: ' + (err.response?.toString() ?? ''));
-      print(
-          '└————————————————————————End Dio Error——————————————————————————\n\n');
+      print('┌─────────────────────Begin Dio Error—————————————————————');
+      printKV('error', err.toString());
+      printKV('error message', (err.response?.toString() ?? ''));
+      print('└—————————————————————End Dio Error———————————————————————\n\n');
     }
     return err;
+  }
+
+  printKV(String key, Object value) {
+    printLong('$key: $value');
   }
 }
