@@ -51,6 +51,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     showLoading().then((value) {
       getBannerList();
       getTopArticleList();
@@ -78,9 +79,7 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
   Future getBannerList() async {
     apiService.getBannerList((BannerModel bannerModel) {
       if (bannerModel.data.length > 0) {
-        setState(() {
-          _bannerList = bannerModel.data;
-        });
+        _bannerList = bannerModel.data;
       }
     });
   }

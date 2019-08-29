@@ -13,7 +13,8 @@ class TodoScreen extends StatefulWidget {
   }
 }
 
-class TodoScreenState extends State<TodoScreen> {
+class TodoScreenState extends State<TodoScreen>
+    with AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0; // 当前选中的索引
 
   final bottomBarTitles = ["待办", "已完成"];
@@ -21,6 +22,8 @@ class TodoScreenState extends State<TodoScreen> {
   int _todoSelectedIndex = 0;
 
   final todoTypeList = ["只用这一个", "工作", "学习", "生活"];
+
+  PageController _pageController = PageController();
 
   var pages = <Widget>[
     TodoListScreen(),
@@ -44,7 +47,11 @@ class TodoScreenState extends State<TodoScreen> {
       ));
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: new Text(todoTypeList[_todoSelectedIndex]),
@@ -69,9 +76,16 @@ class TodoScreenState extends State<TodoScreen> {
           ),
         ],
       ),
-      body: new IndexedStack(
-        children: pages,
-        index: _selectedIndex,
+      body: PageView.builder(
+        itemBuilder: (context, index) => pages[index],
+        itemCount: pages.length,
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -83,9 +97,7 @@ class TodoScreenState extends State<TodoScreen> {
         type: BottomNavigationBarType.fixed, // 设置显示模式
         currentIndex: _selectedIndex, // 当前选中项的索引
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          _pageController.jumpToPage(index);
         }, //
       ),
     );

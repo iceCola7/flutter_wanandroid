@@ -16,6 +16,8 @@ class Main extends StatefulWidget {
 }
 
 class MainState extends State<Main> with AutomaticKeepAliveClientMixin {
+  PageController _pageController = PageController();
+
   int _selectedIndex = 0; // 当前选中的索引
 
   final bottomBarTitles = ["首页", "知识体系", "公众号", "导航", "项目"];
@@ -33,6 +35,7 @@ class MainState extends State<Main> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -50,9 +53,16 @@ class MainState extends State<Main> with AutomaticKeepAliveClientMixin {
             )
           ],
         ),
-        body: new IndexedStack(
-          children: pages,
-          index: _selectedIndex,
+        body: PageView.builder(
+          itemBuilder: (context, index) => pages[index],
+          itemCount: pages.length,
+          controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
@@ -86,9 +96,7 @@ class MainState extends State<Main> with AutomaticKeepAliveClientMixin {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    _pageController.jumpToPage(index);
   }
 
   Future<bool> _onWillPop() {

@@ -14,7 +14,8 @@ abstract class BaseWidget extends StatefulWidget {
   BaseWidgetState attachState();
 }
 
-abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
+abstract class BaseWidgetState<T extends BaseWidget> extends State<T>
+    with AutomaticKeepAliveClientMixin {
   /// 导航栏是否显示
   bool _isAppBarShow = true;
 
@@ -29,17 +30,23 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   String _emptyContentMsg = "暂无数据";
   String _emptyImgPath = "assets/images/ic_empty.png";
 
+  bool _isShowContent = false;
+
   /// 错误页面和空页面的字体粗度
   FontWeight _fontWidget = FontWeight.w600;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: _attachBaseAppBar(),
       body: Container(
         child: Stack(
           children: <Widget>[
-            attachContentWidget(context),
+            _attachBaseContentWidget(context),
             _attachBaseErrorWidget(),
             _attachBaseLoadingWidget(),
             _attachBaseEmptyWidget()
@@ -55,9 +62,16 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
     return null;
   }
 
-  /// 内容视图
+  /// 导航栏  AppBar
+  AppBar attachAppBar();
+
+  /// 暴露内容视图
   Widget attachContentWidget(BuildContext context);
 
+  /// 点击错误页面后展示内容
+  void onClickErrorWidget();
+
+  /// 导航栏 AppBar
   PreferredSizeWidget _attachBaseAppBar() {
     return PreferredSize(
       child: Offstage(
@@ -68,8 +82,13 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
     );
   }
 
-  /// 导航栏  AppBar
-  AppBar attachAppBar();
+  /// 内容页面
+  Widget _attachBaseContentWidget(BuildContext context) {
+    return Offstage(
+      offstage: !_isShowContent,
+      child: attachContentWidget(context),
+    );
+  }
 
   /// 错误页面
   Widget _attachBaseErrorWidget() {
@@ -120,9 +139,6 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
       ),
     );
   }
-
-  /// 点击错误页面后展示内容
-  void onClickErrorWidget();
 
   /// 正在加载页面
   Widget _attachBaseLoadingWidget() {
@@ -183,7 +199,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置错误提示信息
-  Future<Null> setErrorContent(String content) async {
+  Future setErrorContent(String content) async {
     if (content != null) {
       setState(() {
         _errorContentMsg = content;
@@ -192,7 +208,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置空页面信息
-  Future<Null> setEmptyContent(String content) async {
+  Future setEmptyContent(String content) async {
     if (content != null) {
       setState(() {
         _emptyContentMsg = content;
@@ -201,7 +217,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置错误页面图片
-  Future<Null> setErrorImg(String imgPath) async {
+  Future setErrorImg(String imgPath) async {
     if (imgPath != null) {
       setState(() {
         _errorImgPath = imgPath;
@@ -210,7 +226,7 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置空页面图片
-  Future<Null> setEmptyImg(String imgPath) async {
+  Future setEmptyImg(String imgPath) async {
     if (imgPath != null) {
       setState(() {
         _emptyImgPath = imgPath;
@@ -219,15 +235,16 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 设置导航栏显示或者隐藏
-  Future<Null> setAppBarVisible(bool visible) async {
+  Future setAppBarVisible(bool visible) async {
     setState(() {
       _isAppBarShow = visible;
     });
   }
 
   /// 显示展示的内容
-  Future<Null> showContent() async {
+  Future showContent() async {
     setState(() {
+      _isShowContent = true;
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = false;
       _isErrorWidgetShow = false;
@@ -235,8 +252,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示正在加载
-  Future<Null> showLoading() async {
+  Future showLoading() async {
     setState(() {
+      _isShowContent = false;
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = true;
       _isErrorWidgetShow = false;
@@ -244,8 +262,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示空数据页面
-  Future<Null> showEmpty() async {
+  Future showEmpty() async {
     setState(() {
+      _isShowContent = false;
       _isEmptyWidgetShow = true;
       _isLoadingWidgetShow = false;
       _isErrorWidgetShow = false;
@@ -253,8 +272,9 @@ abstract class BaseWidgetState<T extends BaseWidget> extends State<T> {
   }
 
   /// 显示错误页面
-  Future<Null> showError() async {
+  Future showError() async {
     setState(() {
+      _isShowContent = false;
       _isEmptyWidgetShow = false;
       _isLoadingWidgetShow = false;
       _isErrorWidgetShow = true;

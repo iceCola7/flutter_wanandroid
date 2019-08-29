@@ -49,13 +49,14 @@ class WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        elevation: 0.4,
         title: new Text(widget.title),
         bottom: new PreferredSize(
-            child: isLoad
-                ? SizedBox(height: 1.0, child: new LinearProgressIndicator())
-                : Divider(height: 1.0),
-            preferredSize: Size.fromHeight(1.0)),
+          child: SizedBox(
+            height: 2,
+            child: isLoad ? new LinearProgressIndicator() : Container(),
+          ),
+          preferredSize: Size.fromHeight(2),
+        ),
         actions: <Widget>[
           new PopupMenuButton(
             padding: const EdgeInsets.all(0.0),

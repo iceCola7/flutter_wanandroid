@@ -35,6 +35,7 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    showLoading();
     getKnowledgeTreeList();
 
     _scrollController.addListener(() {

@@ -123,7 +123,8 @@ class WXArticleScreen extends StatefulWidget {
   }
 }
 
-class WXArticleScreenState extends State<WXArticleScreen> {
+class WXArticleScreenState extends State<WXArticleScreen>
+    with AutomaticKeepAliveClientMixin {
   List<WXArticleBean> _wxArticleList = new List();
 
   /// listview 控制器
@@ -134,7 +135,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   int _page = 1;
 
   RefreshController _refreshController =
-      new RefreshController(initialRefresh: false);
+      new RefreshController(initialRefresh: true);
 
   Future getWXArticleList() async {
     _page = 1;
@@ -175,6 +176,9 @@ class WXArticleScreenState extends State<WXArticleScreen> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void dispose() {
     _refreshController.dispose();
     _scrollController.dispose();
@@ -212,6 +216,7 @@ class WXArticleScreenState extends State<WXArticleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SmartRefresher(
         enablePullDown: true,

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_wanandroid/common/application.dart';
@@ -65,7 +64,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
         showError();
         T.show(msg: model.errorMsg);
       }
-    }, (DioError error) {
+    }, (error) {
       showError();
     }, todoType, _page);
   }
@@ -88,7 +87,7 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
         _refreshController.loadFailed();
         T.show(msg: model.errorMsg);
       }
-    }, (DioError error) {
+    }, (error) {
       _refreshController.loadFailed();
     }, todoType, _page);
   }
@@ -376,9 +375,8 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
       } else {
         T.show(msg: model.errorMsg);
       }
-    }, (DioError error) {
+    }, (error) {
       _dismissLoading(context);
-      print(error.response);
     }, _id);
   }
 
@@ -398,9 +396,8 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
       } else {
         T.show(msg: model.errorMsg);
       }
-    }, (DioError error) {
+    }, (error) {
       _dismissLoading(context);
-      print(error.response);
     }, _id, params);
   }
 }

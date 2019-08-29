@@ -125,7 +125,8 @@ class ProjectArticleScreen extends StatefulWidget {
   }
 }
 
-class ProjectArticleScreenState extends State<ProjectArticleScreen> {
+class ProjectArticleScreenState extends State<ProjectArticleScreen>
+    with AutomaticKeepAliveClientMixin {
   List<ProjectArticleBean> _projectArticleList = new List();
 
   /// listview 控制器
@@ -136,7 +137,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
   int _page = 1;
 
   RefreshController _refreshController =
-      new RefreshController(initialRefresh: false);
+      new RefreshController(initialRefresh: true);
 
   Future<Null> getProjectArticleList() async {
     _page = 1;
@@ -177,6 +178,9 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void dispose() {
     _refreshController.dispose();
     _scrollController.dispose();
@@ -214,6 +218,7 @@ class ProjectArticleScreenState extends State<ProjectArticleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: SmartRefresher(
         enablePullDown: true,

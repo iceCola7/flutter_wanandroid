@@ -18,7 +18,7 @@ class NavigationScreen extends BaseWidget {
   }
 }
 
-class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
+class NavigationScreenState extends BaseWidgetState<NavigationScreen>  {
   List<NavigationBean> _navigationList = new List();
 
   /// listview 控制器
@@ -34,9 +34,15 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
   void initState() {
     super.initState();
     setAppBarVisible(false);
+  }
 
-    showLoading();
-    getNavigationList();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    showLoading().then((value) {
+      getNavigationList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
@@ -58,11 +64,12 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
     apiService.getNavigationList((NavigationModel navigationModel) {
       if (navigationModel.errorCode == Constants.STATUS_SUCCESS) {
         if (navigationModel.data.length > 0) {
-          showContent();
-          _refreshController.refreshCompleted();
-          setState(() {
-            _navigationList.clear();
-            _navigationList.addAll(navigationModel.data);
+          showContent().then((value) {
+            _refreshController.refreshCompleted();
+            setState(() {
+              _navigationList.clear();
+              _navigationList.addAll(navigationModel.data);
+            });
           });
         } else {
           showEmpty();
@@ -121,8 +128,9 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getNavigationList();
+    showLoading().then((value) {
+      getNavigationList();
+    });
   }
 
   Widget itemView(BuildContext context, int index) {
@@ -157,7 +165,8 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
     List<Widget> tiles = [];
     Widget content;
     for (var item in children) {
-      tiles.add(new InkWell(
+      tiles.add(
+        new InkWell(
           onTap: () {
             RouteUtil.toWebView(context, item.title, item.link);
           },
@@ -174,7 +183,9 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0)),
             materialTapTargetSize: MaterialTapTargetSize.padded,
-          )));
+          ),
+        ),
+      );
     }
 
     content = Wrap(spacing: 2, alignment: WrapAlignment.start, children: tiles);
