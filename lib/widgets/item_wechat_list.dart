@@ -76,11 +76,9 @@ class ItemWeChatListState extends State<ItemWeChatList> {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                InkWell(
-                  child: Container(
-                    child: LikeButtonWidget(isLike: item.collect),
-                  ),
-                  onTap: () {
+                LikeButtonWidget(
+                  isLike: item.collect,
+                  onClick: () {
                     addOrCancelCollect(item);
                   },
                 )

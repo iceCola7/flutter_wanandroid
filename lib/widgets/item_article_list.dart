@@ -39,7 +39,7 @@ class ItemArticleListState extends State<ItemArticleList> {
                   child: Container(
                     decoration: new BoxDecoration(
                       border:
-                      new Border.all(color: Color(0xFFF44336), width: 0.5),
+                          new Border.all(color: Color(0xFFF44336), width: 0.5),
                       borderRadius: new BorderRadius.vertical(
                           top: Radius.elliptical(2, 2),
                           bottom: Radius.elliptical(2, 2)),
@@ -59,7 +59,7 @@ class ItemArticleListState extends State<ItemArticleList> {
                   child: Container(
                     decoration: new BoxDecoration(
                       border:
-                      new Border.all(color: Color(0xFFF44336), width: 0.5),
+                          new Border.all(color: Color(0xFFF44336), width: 0.5),
                       borderRadius: new BorderRadius.vertical(
                           top: Radius.elliptical(2, 2),
                           bottom: Radius.elliptical(2, 2)),
@@ -148,12 +148,9 @@ class ItemArticleListState extends State<ItemArticleList> {
                                 textAlign: TextAlign.left,
                               ),
                             ),
-                            InkWell(
-                              child: Container(
-                                  child: LikeButtonWidget(
-                                    isLike: item.collect,
-                                  )),
-                              onTap: () {
+                            LikeButtonWidget(
+                              isLike: item.collect,
+                              onClick: () {
                                 addOrCancelCollect(item);
                               },
                             )

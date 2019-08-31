@@ -100,11 +100,11 @@ class ItemProjectListState extends State<ItemProjectList> {
                       Container(
                         alignment: Alignment.topRight,
                         padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
-                        child: InkWell(
-                          onTap: () {
+                        child: LikeButtonWidget(
+                          isLike: item.collect,
+                          onClick: () {
                             addOrCancelCollect(item);
                           },
-                          child: LikeButtonWidget(isLike: item.collect),
                         ),
                       )
                     ],

@@ -101,11 +101,9 @@ class ItemCollectListState extends State<ItemCollectList> {
                               textAlign: TextAlign.left,
                             ),
                           ),
-                          InkWell(
-                            child: Container(
-                              child: LikeButtonWidget(isLike: true),
-                            ),
-                            onTap: () {
+                          LikeButtonWidget(
+                            isLike: true,
+                            onClick: () {
                               cancelCollect(item);
                             },
                           )
@@ -139,7 +137,7 @@ class ItemCollectListState extends State<ItemCollectList> {
         }
       }, (DioError error) {
         print(error.response);
-      }, item.id);
+      }, item.originId);
     }
   }
 }
