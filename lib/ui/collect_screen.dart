@@ -2,14 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
-import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
-import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/collection_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
-import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
-import 'package:flutter_wanandroid/widgets/custom_cached_image.dart';
+import 'package:flutter_wanandroid/widgets/item_collect_list.dart';
 import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -70,7 +67,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
   /// 获取收藏文章列表
   Future<Null> getCollectionList() async {
     _page = 0;
-    ApiService().getCollectionList((CollectionModel model) {
+    apiService.getCollectionList((CollectionModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           showContent();
@@ -94,7 +91,7 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
   /// 获取更多文章列表
   Future<Null> getMoreCollectionList() async {
     _page++;
-    ApiService().getCollectionList((CollectionModel model) {
+    apiService.getCollectionList((CollectionModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
         if (model.data.datas.length > 0) {
           _refreshController.loadComplete();
@@ -151,131 +148,17 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
   }
 
   Widget itemView(BuildContext context, int index) {
-    if (index < _collectList.length) {
-      CollectionBean item = _collectList[index];
-      return InkWell(
-        onTap: () {
-          RouteUtil.toWebView(context, item.title, item.link);
-        },
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Offstage(
-                  offstage: item.envelopePic == '',
-                  child: Container(
-                    width: 100,
-                    height: 80,
-                    padding: EdgeInsets.fromLTRB(16, 10, 8, 10),
-                    child: CustomCachedImage(imageUrl: item.envelopePic),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              item.author,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            Expanded(
-                              child: Text(
-                                item.niceDate,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                item.title,
-                                maxLines: 2,
-                                style: TextStyle(fontSize: 16),
-                                textAlign: TextAlign.left,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                item.chapterName,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            InkWell(
-                              child: Container(
-                                child: Image(
-                                  // color: Colors.black12,
-                                  image:
-                                      AssetImage('assets/images/ic_like.png'),
-                                  width: 24,
-                                  height: 24,
-                                ),
-                              ),
-                              onTap: () {
-                                cancelCollect(index, item);
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Divider(height: 1),
-          ],
-        ),
-      );
-    }
-    return null;
-  }
-
-  /// 取消收藏
-  void cancelCollect(index, item) {
-    List<String> cookies = User.singleton.cookie;
-    if (cookies == null || cookies.length == 0) {
-      T.show(msg: '请先登录~');
-    } else {
-      ApiService().cancelCollection((BaseModel model) {
-        if (model.errorCode == Constants.STATUS_SUCCESS) {
-          T.show(msg: '已取消收藏~');
+    CollectionBean item = _collectList[index];
+    return ItemCollectList(
+      item: item,
+      onCollectCallback: (isCollect) {
+        if (isCollect) {
           setState(() {
             _collectList.removeAt(index);
           });
-        } else {
-          T.show(msg: '取消收藏失败~');
         }
-      }, (DioError error) {
-        print(error.response);
-      }, item.id);
-    }
+      },
+    );
   }
 
   @override

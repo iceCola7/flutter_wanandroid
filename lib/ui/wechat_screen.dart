@@ -1,14 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
-import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
-import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
-import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
+import 'package:flutter_wanandroid/widgets/item_wechat_list.dart';
 import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -248,125 +246,7 @@ class WXArticleScreenState extends State<WXArticleScreen>
   }
 
   Widget itemView(BuildContext context, int index) {
-    if (index < _wxArticleList.length) {
-      WXArticleBean item = _wxArticleList[index];
-      return InkWell(
-        onTap: () {
-          RouteUtil.toWebView(context, item.title, item.link);
-        },
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    item.author,
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    textAlign: TextAlign.left,
-                  ),
-                  Expanded(
-                    child: Text(
-                      item.niceDate,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.title,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      item.superChapterName + " / " + item.chapterName,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  InkWell(
-                    child: Container(
-                      child: item.collect
-                          ? Image(
-                              image: AssetImage('assets/images/ic_like.png'),
-                              width: 24,
-                              height: 24,
-                            )
-                          : Image(
-                              color: Colors.grey[600],
-                              image:
-                                  AssetImage('assets/images/ic_like_not.png'),
-                              width: 24,
-                              height: 24,
-                            ),
-                    ),
-                    onTap: () {
-                      addOrCancelCollect(item);
-                    },
-                  )
-                ],
-              ),
-            ),
-            Divider(height: 1),
-          ],
-        ),
-      );
-    }
-    return null;
-  }
-
-  /// 添加收藏或者取消收藏
-  void addOrCancelCollect(item) {
-    List<String> cookies = User.singleton.cookie;
-    if (cookies == null || cookies.length == 0) {
-      T.show(msg: '请先登录~');
-    } else {
-      if (item.collect) {
-        apiService.cancelCollection((BaseModel model) {
-          if (model.errorCode == Constants.STATUS_SUCCESS) {
-            T.show(msg: '已取消收藏~');
-            setState(() {
-              item.collect = false;
-            });
-          } else {
-            T.show(msg: '取消收藏失败~');
-          }
-        }, (DioError error) {
-          print(error.response);
-        }, item.id);
-      } else {
-        apiService.addCollection((BaseModel model) {
-          if (model.errorCode == Constants.STATUS_SUCCESS) {
-            T.show(msg: '收藏成功~');
-            setState(() {
-              item.collect = true;
-            });
-          } else {
-            T.show(msg: '收藏失败~');
-          }
-        }, (DioError error) {
-          print(error.response);
-        }, item.id);
-      }
-    }
+    WXArticleBean item = _wxArticleList[index];
+    return ItemWeChatList(item: item);
   }
 }

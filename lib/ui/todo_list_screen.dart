@@ -9,12 +9,11 @@ import 'package:flutter_wanandroid/event/refresh_todo_event.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/ui/todo_add_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
+import 'package:flutter_wanandroid/widgets/item_todo_list.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
 import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:sticky_headers/sticky_headers.dart';
 
 /// TODO 待办列表页面
 class TodoListScreen extends BaseWidget {
@@ -201,139 +200,28 @@ class TodoListScreenState extends BaseWidgetState<TodoListScreen> {
   }
 
   Widget itemView(BuildContext context, int index) {
-    if (index < _todoBeanList.length) {
-      TodoBean item = _todoBeanList[index];
-
-      bool isShowSuspension = false;
-      if (map.containsKey(item.dateStr)) {
-        if (map[item.dateStr].length > 0) {
-          if (map[item.dateStr][0].id == item.id) {
-            isShowSuspension = true;
-          }
+    TodoBean item = _todoBeanList[index];
+    bool isShowSuspension = false;
+    if (map.containsKey(item.dateStr)) {
+      if (map[item.dateStr].length > 0) {
+        if (map[item.dateStr][0].id == item.id) {
+          isShowSuspension = true;
         }
       }
-
-      return StickyHeader(
-          header: Offstage(
-            offstage: !isShowSuspension,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              alignment: Alignment.centerLeft,
-              height: 28,
-              color: ThemeUtils.dark ? Color(0xFF515151) : Color(0xFFF5F5F5),
-              child: Text(
-                item.dateStr,
-                style: TextStyle(fontSize: 12, color: Colors.cyan),
-              ),
-            ),
-          ),
-          content: Slidable(
-            controller: slidableController,
-            actionPane: SlidableDrawerActionPane(),
-            actionExtentRatio: 0.25,
-            child: InkWell(
-              onTap: () {
-                RouteUtil.push(
-                    context,
-                    TodoAddScreen(
-                      todoType: this.todoType,
-                      editKey: 1,
-                      bean: item,
-                    ));
-              },
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.topLeft,
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: Text(
-                                  item.title,
-                                  style: TextStyle(fontSize: 16),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                                child: Text(
-                                  item.content,
-                                  style: TextStyle(
-                                      fontSize: 15, color: Color(0xFF757575)),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Offstage(
-                        offstage: item.priority != 1,
-                        child: Container(
-                          decoration: new BoxDecoration(
-                            border: new Border.all(
-                                color: Color(0xFFF44336), width: 0.5),
-                            borderRadius: new BorderRadius.vertical(
-                                top: Radius.elliptical(2, 2),
-                                bottom: Radius.elliptical(2, 2)),
-                          ),
-                          padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                          margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Text(
-                            "重要",
-                            style: TextStyle(
-                                fontSize: 10, color: const Color(0xFFF44336)),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(height: 1),
-                ],
-              ),
-            ),
-            secondaryActions: <Widget>[
-              InkWell(
-                onTap: () {
-                  this.updateTodoState(item.id, index);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  color: const Color(0xFF4CAF50),
-                  child: Text(
-                    "已完成",
-                    style: TextStyle(fontSize: 14, color: Colors.white),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  this.deleteTodoById(item.id, index);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.red,
-                  child: Text(
-                    "删除",
-                    style: TextStyle(fontSize: 14, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ));
     }
-    return null;
+    return ItemTodoList(
+      isTodo: true,
+      item: item,
+      slidableController: slidableController,
+      isShowSuspension: isShowSuspension,
+      todoType: todoType,
+      updateTodoCallback: (_id) {
+        this.updateTodoState(_id, index);
+      },
+      deleteItemCallback: (_id) {
+        this.deleteTodoById(_id, index);
+      },
+    );
   }
 
   @override
