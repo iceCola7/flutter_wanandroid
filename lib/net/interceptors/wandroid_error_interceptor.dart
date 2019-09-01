@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_wanandroid/app.dart';
+import 'package:flutter_wanandroid/main.dart';
 import 'package:flutter_wanandroid/common/router_config.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 

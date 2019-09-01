@@ -1,122 +1,108 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/ui/drawer_screen.dart';
-import 'package:flutter_wanandroid/ui/home_screen.dart';
-import 'package:flutter_wanandroid/ui/hot_word_screen.dart';
-import 'package:flutter_wanandroid/ui/knowledge_tree_screen.dart';
-import 'package:flutter_wanandroid/ui/navigation_screen.dart';
-import 'package:flutter_wanandroid/ui/project_screen.dart';
-import 'package:flutter_wanandroid/ui/wechat_screen.dart';
-import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'dart:io';
 
-class Main extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new MainState();
+import 'package:event_bus/event_bus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_wanandroid/common/application.dart';
+import 'package:flutter_wanandroid/common/common.dart';
+import 'package:flutter_wanandroid/common/router_config.dart';
+import 'package:flutter_wanandroid/common/user.dart';
+import 'package:flutter_wanandroid/event/theme_change_event.dart';
+import 'package:flutter_wanandroid/res/colors.dart';
+import 'package:flutter_wanandroid/ui/splash_screen.dart';
+import 'package:flutter_wanandroid/utils/sp_util.dart';
+import 'package:flutter_wanandroid/utils/theme_util.dart';
+
+import 'net/index.dart';
+
+/// 在拿不到context的地方通过navigatorKey进行路由跳转：
+/// https://stackoverflow.com/questions/52962112/how-to-navigate-without-context-in-flutter-app
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
+void main() async {
+  await SPUtil.getInstance();
+
+  await getTheme();
+
+  runApp(MyApp());
+
+  if (Platform.isAndroid) {
+    // 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，
+    // 是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+    SystemUiOverlayStyle systemUiOverlayStyle =
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
 
-class MainState extends State<Main> with AutomaticKeepAliveClientMixin {
-  PageController _pageController = PageController();
+/// 获取主题
+Future<Null> getTheme() async {
+  // 是否是夜间模式
+  bool dark = SPUtil.getBool(Constants.DARK_KEY, defValue: false);
+  ThemeUtils.dark = dark;
 
-  int _selectedIndex = 0; // 当前选中的索引
+  // 如果不是夜间模式，设置的其他主题颜色才起作用
+  if (!dark) {
+    String themeColorKey =
+        SPUtil.getString(Constants.THEME_COLOR_KEY, defValue: 'redAccent');
+    if (themeColorMap.containsKey(themeColorKey)) {
+      ThemeUtils.currentThemeColor = themeColorMap[themeColorKey];
+    }
+  }
+}
 
-  final bottomBarTitles = ["首页", "知识体系", "公众号", "导航", "项目"];
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new MyAppState();
+  }
+}
 
-  var pages = <Widget>[
-    HomeScreen(),
-    KnowledgeTreeScreen(),
-    WeChatScreen(),
-    NavigationScreen(),
-    ProjectScreen(),
-  ];
+class MyAppState extends State<MyApp> {
+  ThemeData themeData;
 
   @override
-  bool get wantKeepAlive => true;
+  void initState() {
+    super.initState();
+    _initAsync();
+    Application.eventBus = new EventBus();
+    themeData = ThemeUtils.getThemeData();
+    this.registerThemeEvent();
+  }
+
+  void _initAsync() async {
+    await User().getUserInfo();
+    await DioManager.init();
+  }
+
+  /// 注册主题改变事件
+  void registerThemeEvent() {
+    Application.eventBus
+        .on<ThemeChangeEvent>()
+        .listen((ThemeChangeEvent onData) => this.changeTheme(onData));
+  }
+
+  void changeTheme(ThemeChangeEvent onData) async {
+    setState(() {
+      themeData = ThemeUtils.getThemeData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        drawer: DrawerScreen(),
-        appBar: AppBar(
-          title: new Text(bottomBarTitles[_selectedIndex]),
-          bottom: null,
-          elevation: 0,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                RouteUtil.push(context, HotWordScreen());
-              },
-            )
-          ],
-        ),
-        body: PageView.builder(
-          itemBuilder: (context, index) => pages[index],
-          itemCount: pages.length,
-          controller: _pageController,
-          physics: NeverScrollableScrollPhysics(),
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text(bottomBarTitles[0]),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
-              title: Text(bottomBarTitles[1]),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              title: Text(bottomBarTitles[2]),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.navigation),
-              title: Text(bottomBarTitles[3]),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              title: Text(bottomBarTitles[4]),
-            ),
-          ],
-          type: BottomNavigationBarType.fixed, // 设置显示模式
-          currentIndex: _selectedIndex, // 当前选中项的索引
-          onTap: _onItemTapped, // 选择的处理事件
-        ),
-      ),
+    return MaterialApp(
+      title: AppConfig.appName,
+      debugShowCheckedModeBanner: false,
+      theme: themeData,
+      routes: Router.generateRoute(),
+      navigatorKey: navigatorKey,
+      home: new SplashScreen(),
     );
   }
 
-  void _onItemTapped(int index) {
-    _pageController.jumpToPage(index);
-  }
-
-  Future<bool> _onWillPop() {
-    return showDialog(
-          context: context,
-          builder: (context) => new AlertDialog(
-            title: new Text('提示'),
-            content: new Text('确定退出应用吗？'),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: new Text('再看一会', style: TextStyle(color: Colors.cyan)),
-              ),
-              new FlatButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: new Text('退出', style: TextStyle(color: Colors.cyan)),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+  @override
+  void dispose() {
+    super.dispose();
+    Application.eventBus.destroy();
   }
 }

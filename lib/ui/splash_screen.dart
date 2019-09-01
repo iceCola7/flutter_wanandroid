@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/common.dart';
-import 'package:flutter_wanandroid/main.dart';
 import 'package:flutter_wanandroid/res/styles.dart';
+import 'package:flutter_wanandroid/ui/main_screen.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:flutter_wanandroid/utils/utils.dart';
 
@@ -20,7 +20,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pushAndRemoveUntil(
-          new MaterialPageRoute(builder: (context) => Main()),
+          new MaterialPageRoute(builder: (context) => MainScreen()),
           (route) => route == null);
     });
   }
