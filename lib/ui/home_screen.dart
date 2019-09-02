@@ -1,18 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
 import 'package:flutter_wanandroid/data/model/banner_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
-import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/item_article_list.dart';
-import 'package:flutter_wanandroid/widgets/custom_cached_image.dart';
-import 'package:flutter_wanandroid/widgets/progress_view.dart';
 import 'package:flutter_wanandroid/widgets/refresh_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'home_banner_screen.dart';
 
 /// 首页
 class HomeScreen extends BaseWidget {
@@ -52,7 +50,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     super.didChangeDependencies();
 
     showLoading().then((value) {
-      getBannerList();
       getTopArticleList();
     });
 
@@ -70,15 +67,6 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         setState(() {
           _isShowFAB = true;
         });
-      }
-    });
-  }
-
-  /// 获取首页轮播图数据
-  Future getBannerList() async {
-    apiService.getBannerList((BannerModel bannerModel) {
-      if (bannerModel.data.length > 0) {
-        _bannerList = bannerModel.data;
       }
     });
   }
@@ -187,53 +175,17 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
     });
   }
 
-  /// 构建轮播视图
-  Widget buildBannerView(BuildContext context) {
-    return Offstage(
-      offstage: _bannerList.length == 0,
-      child: Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          if (index >= _bannerList.length ||
-              _bannerList[index] == null ||
-              _bannerList[index].imagePath == null) {
-            return new ProgressView();
-          } else {
-            return InkWell(
-              child: new Container(
-                child: CustomCachedImage(
-                  fit: BoxFit.fill,
-                  imageUrl: _bannerList[index].imagePath,
-                ),
-              ),
-              onTap: () {
-                RouteUtil.toWebView(
-                    context, _bannerList[index].title, _bannerList[index].url);
-              },
-            );
-          }
-        },
-        itemCount: _bannerList.length,
-        autoplay: true,
-        pagination: new SwiperPagination(),
-        // control: new SwiperControl(),
-      ),
-    );
-  }
-
   /// ListView 中每一行的视图
   Widget itemView(BuildContext context, int index) {
     if (index == 0) {
       return Container(
         height: 200,
         color: Colors.transparent,
-        child: buildBannerView(context),
+        child: HomeBannerScreen(),
       );
     }
-    if (index < _articles.length - 1) {
-      ArticleBean item = _articles[index - 1];
-      return ItemArticleList(item: item);
-    }
-    return null;
+    ArticleBean item = _articles[index - 1];
+    return ItemArticleList(item: item);
   }
 
   @override

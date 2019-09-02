@@ -18,7 +18,7 @@ class NavigationScreen extends BaseWidget {
   }
 }
 
-class NavigationScreenState extends BaseWidgetState<NavigationScreen>  {
+class NavigationScreenState extends BaseWidgetState<NavigationScreen> {
   List<NavigationBean> _navigationList = new List();
 
   /// listview 控制器
@@ -134,31 +134,28 @@ class NavigationScreenState extends BaseWidgetState<NavigationScreen>  {
   }
 
   Widget itemView(BuildContext context, int index) {
-    if (index < _navigationList.length) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text(
-                _navigationList[index].name,
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.left,
-              ),
+    return Container(
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              _navigationList[index].name,
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.left,
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: itemChildView(_navigationList[index].articles),
-            ),
-            Divider(height: 1),
-          ],
-        ),
-      );
-    }
-    return null;
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            child: itemChildView(_navigationList[index].articles),
+          ),
+          Divider(height: 1),
+        ],
+      ),
+    );
   }
 
   Widget itemChildView(List<NavigationArticleBean> children) {

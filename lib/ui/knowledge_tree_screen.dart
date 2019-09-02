@@ -5,7 +5,9 @@ import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../widgets/refresh_helper.dart';
 import 'knowledge_detail_screen.dart';
 
 /// 知识体系页面
@@ -25,6 +27,9 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
   /// 是否显示悬浮按钮
   bool _isShowFAB = false;
 
+  RefreshController _refreshController =
+      new RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -35,8 +40,9 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    showLoading();
-    getKnowledgeTreeList();
+    showLoading().then((value) {
+      getKnowledgeTreeList();
+    });
 
     _scrollController.addListener(() {
       /// 滑动到底部，加载更多
@@ -85,52 +91,49 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
   }
 
   Widget itemView(BuildContext context, int index) {
-    if (index < _list.length) {
-      KnowledgeTreeBean item = _list[index];
-      return InkWell(
-        onTap: () {
-          RouteUtil.push(context, KnowledgeDetailScreen(new ValueKey(item)));
-        },
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            item.name,
-                            style: TextStyle(fontSize: 16),
-                            textAlign: TextAlign.left,
-                          ),
+    KnowledgeTreeBean item = _list[index];
+    return InkWell(
+      onTap: () {
+        RouteUtil.push(context, KnowledgeDetailScreen(new ValueKey(item)));
+      },
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          item.name,
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.left,
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: itemChildrenView(item.children),
-                        )
-                      ],
-                    ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: itemChildrenView(item.children),
+                      )
+                    ],
                   ),
                 ),
-                Icon(
-                  Icons.chevron_right,
-                  color: Colors.grey,
-                )
-              ],
-            ),
-            Divider(height: 1),
-          ],
-        ),
-      );
-    }
-    return null;
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: Colors.grey,
+              )
+            ],
+          ),
+          Divider(height: 1),
+        ],
+      ),
+    );
   }
 
   Widget itemChildrenView(List<KnowledgeTreeChildBean> children) {
@@ -154,8 +157,12 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
   @override
   Widget attachContentWidget(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        displacement: 15,
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        header: MaterialClassicHeader(),
+        footer: RefreshFooter(),
+        controller: _refreshController,
         onRefresh: getKnowledgeTreeList,
         child: ListView.builder(
           itemBuilder: itemView,
@@ -180,7 +187,8 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
 
   @override
   void onClickErrorWidget() {
-    showLoading();
-    getKnowledgeTreeList();
+    showLoading().then((value) {
+      getKnowledgeTreeList();
+    });
   }
 }
