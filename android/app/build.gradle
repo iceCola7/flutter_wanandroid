@@ -62,7 +62,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled true // 使用代码压缩
+            // minifyEnabled true // 使用代码压缩
             // shrinkResources true // 自动清理无用资源
             useProguard true
             // 混淆使用的文件
