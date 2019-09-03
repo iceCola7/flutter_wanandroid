@@ -141,31 +141,41 @@ class ItemTodoListState extends State<ItemTodoList> {
           ),
         ),
         secondaryActions: <Widget>[
-          InkWell(
+          IconSlideAction(
+            caption: isTodo ? '已完成' : '复原',
+            color: Colors.grey.shade200,
+            icon: isTodo ? Icons.check : Icons.redo,
             onTap: () {
               widget.updateTodoCallback(item.id);
             },
-            child: Container(
-              alignment: Alignment.center,
-              color: const Color(0xFF4CAF50),
-              child: Text(
-                isTodo ? '已完成' : '复原',
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
-            ),
           ),
-          InkWell(
+          IconSlideAction(
+            caption: '删除',
+            color: Colors.red,
+            icon: Icons.delete,
             onTap: () {
-              widget.deleteItemCallback(item.id);
+              showDialog(
+                context: context,
+                builder: (context) => new AlertDialog(
+                  // title: new Text(''),
+                  content: new Text('确定删除吗？'),
+                  actions: <Widget>[
+                    new FlatButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child:
+                          new Text('取消', style: TextStyle(color: Colors.cyan)),
+                    ),
+                    new FlatButton(
+                      onPressed: () {
+                        widget.deleteItemCallback(item.id);
+                      },
+                      child:
+                          new Text('确定', style: TextStyle(color: Colors.cyan)),
+                    ),
+                  ],
+                ),
+              );
             },
-            child: Container(
-              alignment: Alignment.center,
-              color: Colors.red,
-              child: Text(
-                '删除',
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
-            ),
           ),
         ],
       ),

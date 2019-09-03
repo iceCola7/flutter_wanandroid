@@ -80,7 +80,7 @@ class DrawerScreenState extends State<DrawerScreen> {
               textAlign: TextAlign.left,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
             ),
-            leading: Icon(Icons.collections,
+            leading: Icon(Icons.favorite_border,
                 size: 22, color: Theme.of(context).primaryColor),
             onTap: () {
               if (isLogin) {
@@ -195,6 +195,7 @@ class DrawerScreenState extends State<DrawerScreen> {
                     isLogin = false;
                     username = "未登录";
                   });
+                  T.show(msg: '已退出登录');
                 } else {
                   T.show(msg: model.errorMsg);
                 }

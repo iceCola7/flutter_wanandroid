@@ -11,8 +11,14 @@ class AboutScreen extends StatelessWidget {
       new ComModel(title: '版本号', extra: AppConfig.version, isShowArrow: false);
   ComModel github = new ComModel(
       title: 'GitHub',
+      subtitle: 'github.com/iceCola7/flutter_wanandroid',
       url: 'https://github.com/iceCola7/flutter_wanandroid',
-      extra: 'github.com/iceCola7',
+      extra: '',
+      isShowArrow: true);
+  ComModel updateLogs = new ComModel(
+      title: '更新日志',
+      url: 'https://github.com/iceCola7/flutter_wanandroid/releases',
+      extra: '',
       isShowArrow: true);
   ComModel copyright =
       new ComModel(title: '版权声明', extra: '仅作个人及非商业用途', isShowArrow: true);
@@ -55,6 +61,7 @@ class AboutScreen extends StatelessWidget {
           ),
           new ComArrowItem(version),
           new ComArrowItem(github),
+          new ComArrowItem(updateLogs),
           new ComArrowItem(
             copyright,
             onClick: () {

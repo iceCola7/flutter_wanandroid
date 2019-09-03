@@ -6,6 +6,8 @@ import 'package:flutter_wanandroid/res/colors.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
+import '../utils/route_util.dart';
+
 /// 设置页面
 class SettingScreen extends StatefulWidget {
   @override
@@ -53,6 +55,22 @@ class SettingScreenState extends State<SettingScreen> {
                 }).toList(),
               )
             ],
+          ),
+          new ListTile(
+            trailing: Icon(Icons.chevron_right),
+            title: new Row(
+              children: <Widget>[
+                Icon(Icons.feedback, color: Theme.of(context).primaryColor),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text('意见反馈'),
+                )
+              ],
+            ),
+            onTap: () {
+              var url = 'https://github.com/iceCola7/flutter_wanandroid/issues';
+              RouteUtil.launchInBrowser(url);
+            },
           ),
         ],
       ),

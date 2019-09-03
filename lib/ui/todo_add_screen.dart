@@ -66,7 +66,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
 
   /// 构造分割线
   Widget buildDivider() {
-    return new Divider();
+    return new Divider(height: 1);
   }
 
   /// 显示Loading
@@ -215,10 +215,12 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
                         lastDate: new DateTime.now()
                             .add(new Duration(days: 30)), // 加 30 天
                       ).then((val) {
-                        setState(() {
-                          selectedDate =
-                              DateUtil.formatDate(val, format: 'yyyy-MM-dd');
-                        });
+                        if (val != null) {
+                          setState(() {
+                            selectedDate =
+                                DateUtil.formatDate(val, format: 'yyyy-MM-dd');
+                          });
+                        }
                       }).catchError((err) {
                         print(err);
                       });
