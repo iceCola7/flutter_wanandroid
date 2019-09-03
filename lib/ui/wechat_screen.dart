@@ -45,6 +45,7 @@ class WeChatScreenState extends BaseWidgetState<WeChatScreen>
         if (wxChaptersModel.data.length > 0) {
           showContent();
           setState(() {
+            _chaptersList.clear();
             _chaptersList.addAll(wxChaptersModel.data);
           });
         } else {
