@@ -11,6 +11,7 @@ import 'package:flutter_wanandroid/data/model/knowledge_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/navigation_model.dart';
 import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
+import 'package:flutter_wanandroid/data/model/rank_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/data/model/user_info_model.dart';
@@ -328,11 +329,23 @@ class ApiService {
   }
 
   /// 获取我的积分列表数据
-  void getUserScoreList(Function callback, Function errorCallback, int _page) {
+  void getUserScoreList(
+      Function callback, Function errorCallback, int _page) async {
     dio
         .get(Apis.USER_SCORE_LIST + "/$_page/json", options: _getOptions())
         .then((response) {
       callback(UserScoreModel.fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取积分排行榜列表
+  void getRankList(Function callback, Function errorCallback, int _page) async {
+    dio
+        .get(Apis.RANK_LIST + "/$_page/json", options: _getOptions())
+        .then((response) {
+      callback(RankModel.fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
     });

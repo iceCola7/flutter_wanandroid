@@ -11,6 +11,7 @@ import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/res/styles.dart';
 import 'package:flutter_wanandroid/ui/collect_screen.dart';
 import 'package:flutter_wanandroid/ui/login_screen.dart';
+import 'package:flutter_wanandroid/ui/rank_screen.dart';
 import 'package:flutter_wanandroid/ui/score_screen.dart';
 import 'package:flutter_wanandroid/ui/setting_screen.dart';
 import 'package:flutter_wanandroid/ui/todo_screen.dart';
@@ -82,11 +83,16 @@ class DrawerScreenState extends State<DrawerScreen> {
               children: <Widget>[
                 Container(
                   alignment: Alignment.centerRight,
-                  child: Image.asset(
-                    Utils.getImgPath('ic_rank'),
-                    color: Colors.white,
-                    width: 20,
-                    height: 20,
+                  child: InkWell(
+                    child: Image.asset(
+                      Utils.getImgPath('ic_rank'),
+                      color: Colors.white,
+                      width: 20,
+                      height: 20,
+                    ),
+                    onTap: () {
+                      RouteUtil.push(context, RankScreen());
+                    },
                   ),
                 ),
                 CircleAvatar(

@@ -84,4 +84,7 @@ class Apis {
 
   /// 我的积分
   static const String USER_SCORE_LIST = BASE_HOST + "/lg/coin/list";
+
+  /// 积分排行榜
+  static const String RANK_LIST = BASE_HOST + "/coin/rank";
 }
