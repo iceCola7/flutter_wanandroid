@@ -78,4 +78,10 @@ class Apis {
 
   /// 根据ID删除TODO
   static const String DELETE_TODO_BY_ID = BASE_HOST + "/lg/todo/delete";
+
+  /// 用户个人信息
+  static const String USER_INFO = BASE_HOST + "/lg/coin/userinfo/json";
+
+  /// 我的积分
+  static const String USER_SCORE_LIST = BASE_HOST + "/lg/coin/list";
 }

@@ -7,6 +7,7 @@ import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
 import '../utils/route_util.dart';
+import 'about_screen.dart';
 
 /// 设置页面
 class SettingScreen extends StatefulWidget {
@@ -70,6 +71,21 @@ class SettingScreenState extends State<SettingScreen> {
             onTap: () {
               var url = 'https://github.com/iceCola7/flutter_wanandroid/issues';
               RouteUtil.launchInBrowser(url);
+            },
+          ),
+          new ListTile(
+            trailing: Icon(Icons.chevron_right),
+            title: new Row(
+              children: <Widget>[
+                Icon(Icons.info, color: Theme.of(context).primaryColor),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text('关于'),
+                )
+              ],
+            ),
+            onTap: () {
+              RouteUtil.push(context, AboutScreen());
             },
           ),
         ],

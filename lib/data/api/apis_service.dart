@@ -13,7 +13,9 @@ import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
+import 'package:flutter_wanandroid/data/model/user_info_model.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
+import 'package:flutter_wanandroid/data/model/user_score_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_article_model.dart';
 import 'package:flutter_wanandroid/data/model/wx_chapters_model.dart';
 import 'package:flutter_wanandroid/net/index.dart';
@@ -311,6 +313,26 @@ class ApiService {
         .post(Apis.DELETE_TODO_BY_ID + "/$_id/json", options: _getOptions())
         .then((response) {
       callback(BaseModel(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取用户个人信息
+  void getUserInfo(Function callback, Function errorCallback) async {
+    dio.get(Apis.USER_INFO, options: _getOptions()).then((response) {
+      callback(UserInfoModel.fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取我的积分列表数据
+  void getUserScoreList(Function callback, Function errorCallback, int _page) {
+    dio
+        .get(Apis.USER_SCORE_LIST + "/$_page/json", options: _getOptions())
+        .then((response) {
+      callback(UserScoreModel.fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
