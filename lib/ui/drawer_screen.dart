@@ -31,7 +31,7 @@ class DrawerScreen extends StatefulWidget {
 
 class DrawerScreenState extends State<DrawerScreen> {
   bool isLogin = false;
-  String username = "未登录";
+  String username = "去登录";
   String level = "--"; // 等级
   String rank = "--"; // 排名
   String myScore = ''; // 我的积分
@@ -44,9 +44,8 @@ class DrawerScreenState extends State<DrawerScreen> {
     if (null != User.singleton.userName && User.singleton.userName.isNotEmpty) {
       isLogin = true;
       username = User.singleton.userName;
+      getUserInfo();
     }
-
-    getUserInfo();
   }
 
   void registerLoginEvent() {
@@ -54,10 +53,12 @@ class DrawerScreenState extends State<DrawerScreen> {
       setState(() {
         isLogin = true;
         username = User.singleton.userName;
+        getUserInfo();
       });
     });
   }
 
+  /// 获取用户信息
   Future getUserInfo() async {
     apiService.getUserInfo((UserInfoModel model) {
       if (model.errorCode == Constants.STATUS_SUCCESS) {
@@ -267,7 +268,10 @@ class DrawerScreenState extends State<DrawerScreen> {
                   User.singleton.clearUserInfo();
                   setState(() {
                     isLogin = false;
-                    username = "未登录";
+                    username = "去登录";
+                    level = "--";
+                    rank = "--";
+                    myScore = '';
                   });
                   T.show(msg: '已退出登录');
                 } else {
