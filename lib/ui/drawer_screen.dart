@@ -29,12 +29,16 @@ class DrawerScreen extends StatefulWidget {
   }
 }
 
-class DrawerScreenState extends State<DrawerScreen> {
+class DrawerScreenState extends State<DrawerScreen>
+    with AutomaticKeepAliveClientMixin {
   bool isLogin = false;
   String username = "去登录";
   String level = "--"; // 等级
   String rank = "--"; // 排名
   String myScore = ''; // 我的积分
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -73,172 +77,186 @@ class DrawerScreenState extends State<DrawerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(16, 40, 16, 10),
-            color: Theme.of(context).primaryColor,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    child: Image.asset(
-                      Utils.getImgPath('ic_rank'),
-                      color: Colors.white,
-                      width: 20,
-                      height: 20,
+    super.build(context);
+    return WillPopScope(
+      child: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(16, 40, 16, 10),
+              color: Theme.of(context).primaryColor,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      child: Image.asset(
+                        Utils.getImgPath('ic_rank'),
+                        color: Colors.white,
+                        width: 20,
+                        height: 20,
+                      ),
+                      onTap: () {
+                        RouteUtil.push(context, RankScreen());
+                      },
+                    ),
+                  ),
+                  CircleAvatar(
+                    backgroundImage:
+                        AssetImage(Utils.getImgPath('ic_default_avatar')),
+                    radius: 40.0,
+                  ),
+                  Gaps.vGap10,
+                  InkWell(
+                    child: Text(
+                      username,
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     onTap: () {
-                      RouteUtil.push(context, RankScreen());
+                      if (!isLogin) {
+                        RouteUtil.push(context, LoginScreen());
+                      }
                     },
                   ),
-                ),
-                CircleAvatar(
-                  backgroundImage:
-                      AssetImage(Utils.getImgPath('ic_default_avatar')),
-                  radius: 40.0,
-                ),
-                Gaps.vGap10,
-                InkWell(
-                  child: Text(
-                    username,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                  onTap: () {
-                    if (!isLogin) {
-                      RouteUtil.push(context, LoginScreen());
-                    }
-                  },
-                ),
-                Gaps.vGap5,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('等级:',
-                        style: TextStyle(fontSize: 11, color: Colors.grey[100]),
-                        textAlign: TextAlign.center),
-                    Text(level,
-                        style: TextStyle(fontSize: 11, color: Colors.grey[100]),
-                        textAlign: TextAlign.center),
-                    Gaps.hGap5,
-                    Text('排名:',
-                        style: TextStyle(fontSize: 11, color: Colors.grey[100]),
-                        textAlign: TextAlign.center),
-                    Text(rank,
-                        style: TextStyle(fontSize: 11, color: Colors.grey[100]),
-                        textAlign: TextAlign.center),
-                  ],
-                )
-              ],
+                  Gaps.vGap5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('等级:',
+                          style:
+                              TextStyle(fontSize: 11, color: Colors.grey[100]),
+                          textAlign: TextAlign.center),
+                      Text(level,
+                          style:
+                              TextStyle(fontSize: 11, color: Colors.grey[100]),
+                          textAlign: TextAlign.center),
+                      Gaps.hGap5,
+                      Text('排名:',
+                          style:
+                              TextStyle(fontSize: 11, color: Colors.grey[100]),
+                          textAlign: TextAlign.center),
+                      Text(rank,
+                          style:
+                              TextStyle(fontSize: 11, color: Colors.grey[100]),
+                          textAlign: TextAlign.center),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          ListTile(
-            title: Text(
-              "我的积分",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 16),
-            ),
-            leading: Image.asset(
-              Utils.getImgPath('ic_score'),
-              width: 24,
-              height: 24,
-              color: Theme.of(context).primaryColor,
-            ),
-            trailing: Text(myScore, style: TextStyle(color: Colors.grey[500])),
-            onTap: () {
-              if (isLogin) {
-                RouteUtil.push(context, ScoreScreen(myScore));
-              } else {
-                T.show(msg: "请先登录~");
-                RouteUtil.push(context, LoginScreen());
-              }
-            },
-          ),
-          ListTile(
-            title: Text(
-              "我的收藏",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 16),
-            ),
-            leading: Icon(Icons.favorite_border,
-                size: 24, color: Theme.of(context).primaryColor),
-            onTap: () {
-              if (isLogin) {
-                RouteUtil.push(context, CollectScreen());
-              } else {
-                T.show(msg: "请先登录~");
-                RouteUtil.push(context, LoginScreen());
-              }
-            },
-          ),
-          ListTile(
-            title: Text(
-              "TODO",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 16),
-            ),
-            leading: Image.asset(
-              Utils.getImgPath('ic_todo'),
-              width: 24,
-              height: 24,
-              color: Theme.of(context).primaryColor,
-            ),
-            onTap: () {
-              if (isLogin) {
-                RouteUtil.push(context, TodoScreen());
-              } else {
-                T.show(msg: "请先登录~");
-                RouteUtil.push(context, LoginScreen());
-              }
-            },
-          ),
-          ListTile(
-            title: Text(
-              "夜间模式",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 16),
-            ),
-            leading: Icon(Icons.brightness_2,
-                size: 24, color: Theme.of(context).primaryColor),
-            onTap: () {
-              setState(() {
-                changeTheme();
-              });
-            },
-          ),
-          ListTile(
-            title: Text(
-              "系统设置",
-              textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 16),
-            ),
-            leading: Icon(Icons.settings,
-                size: 24, color: Theme.of(context).primaryColor),
-            onTap: () {
-              RouteUtil.push(context, SettingScreen());
-            },
-          ),
-          Offstage(
-            offstage: !isLogin,
-            child: ListTile(
+            ListTile(
               title: Text(
-                "退出登录",
+                "我的积分",
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 16),
               ),
-              leading: Icon(Icons.power_settings_new,
-                  size: 24, color: Theme.of(context).primaryColor),
+              leading: Image.asset(
+                Utils.getImgPath('ic_score'),
+                width: 24,
+                height: 24,
+                color: Theme.of(context).primaryColor,
+              ),
+              trailing:
+                  Text(myScore, style: TextStyle(color: Colors.grey[500])),
               onTap: () {
-                _logout(context);
+                if (isLogin) {
+                  RouteUtil.push(context, ScoreScreen(myScore));
+                } else {
+                  T.show(msg: "请先登录~");
+                  RouteUtil.push(context, LoginScreen());
+                }
               },
             ),
-          )
-        ],
+            ListTile(
+              title: Text(
+                "我的收藏",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16),
+              ),
+              leading: Icon(Icons.favorite_border,
+                  size: 24, color: Theme.of(context).primaryColor),
+              onTap: () {
+                if (isLogin) {
+                  RouteUtil.push(context, CollectScreen());
+                } else {
+                  T.show(msg: "请先登录~");
+                  RouteUtil.push(context, LoginScreen());
+                }
+              },
+            ),
+            ListTile(
+              title: Text(
+                "TODO",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16),
+              ),
+              leading: Image.asset(
+                Utils.getImgPath('ic_todo'),
+                width: 24,
+                height: 24,
+                color: Theme.of(context).primaryColor,
+              ),
+              onTap: () {
+                if (isLogin) {
+                  RouteUtil.push(context, TodoScreen());
+                } else {
+                  T.show(msg: "请先登录~");
+                  RouteUtil.push(context, LoginScreen());
+                }
+              },
+            ),
+            ListTile(
+              title: Text(
+                "夜间模式",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16),
+              ),
+              leading: Icon(Icons.brightness_2,
+                  size: 24, color: Theme.of(context).primaryColor),
+              onTap: () {
+                setState(() {
+                  changeTheme();
+                });
+              },
+            ),
+            ListTile(
+              title: Text(
+                "系统设置",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16),
+              ),
+              leading: Icon(Icons.settings,
+                  size: 24, color: Theme.of(context).primaryColor),
+              onTap: () {
+                RouteUtil.push(context, SettingScreen());
+              },
+            ),
+            Offstage(
+              offstage: !isLogin,
+              child: ListTile(
+                title: Text(
+                  "退出登录",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 16),
+                ),
+                leading: Icon(Icons.power_settings_new,
+                    size: 24, color: Theme.of(context).primaryColor),
+                onTap: () {
+                  _logout(context);
+                },
+              ),
+            )
+          ],
+        ),
       ),
+      onWillPop: _onWillPop,
     );
+  }
+
+  Future<bool> _onWillPop() async {
+    Navigator.of(context).pop(true);
+    return true;
   }
 
   /// 改变主题

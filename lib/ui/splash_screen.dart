@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/common/common.dart';
-import 'package:flutter_wanandroid/res/styles.dart';
 import 'package:flutter_wanandroid/ui/main_screen.dart';
-import 'package:flutter_wanandroid/utils/theme_util.dart';
 import 'package:flutter_wanandroid/utils/utils.dart';
 
 /// 启动页面
@@ -31,31 +28,30 @@ class SplashScreenState extends State<SplashScreen> {
       child: Stack(
         children: <Widget>[
           Container(
-            color: ThemeUtils.dark ? Color(0xFF212A2F) : Colors.grey[200],
+            color: Theme.of(context).primaryColor,
+            // ThemeUtils.dark ? Color(0xFF212A2F) : Colors.grey[200],
             alignment: Alignment.center,
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Card(
-                  color: Theme.of(context).primaryColor,
-                  elevation: 0.0,
+                  elevation: 0,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(6.0))),
-                  child: new Image.asset(
-                    Utils.getImgPath('ic_launcher_news'),
-                    width: 72.0,
-                    height: 72.0,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Gaps.vGap10,
-                Text(
-                  AppConfig.appName,
-                  style: new TextStyle(
-                    fontSize: 20,
+                      borderRadius: BorderRadius.all(Radius.circular(48.0))),
+                  child: Card(
+                    elevation: 0,
                     color: Theme.of(context).primaryColor,
-                    decoration: TextDecoration.none,
+                    margin: EdgeInsets.all(2.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(46.0))),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage:
+                          AssetImage(Utils.getImgPath('ic_launcher_news')),
+                      radius: 46.0,
+                    ),
                   ),
                 ),
               ],

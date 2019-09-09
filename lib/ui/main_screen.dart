@@ -15,7 +15,8 @@ class MainScreen extends StatefulWidget {
   }
 }
 
-class MainScreenState extends State<MainScreen> with AutomaticKeepAliveClientMixin {
+class MainScreenState extends State<MainScreen>
+    with AutomaticKeepAliveClientMixin {
   PageController _pageController = PageController();
 
   int _selectedIndex = 0; // 当前选中的索引
