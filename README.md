@@ -79,10 +79,6 @@
 - 自定义切换主题颜色功能；
 - 关于模块。
 
-## Statement
-
-**项目中的 API 均来自于 [www.wanandroid.com](http://www.wanandroid.com/) 网站，纯属学习交流使用，不得用于商业用途。**
-
 ## 更新日志
 
 **[最新更新日志请点击查看](https://github.com/iceCola7/flutter_wanandroid/releases)**
@@ -90,6 +86,10 @@
 **V1.0.0**
 
 - 首次提交，主要功能都已完成。
+
+## Statement
+
+**项目中的 API 均来自于 [www.wanandroid.com](http://www.wanandroid.com/) 网站，纯属学习交流使用，不得用于商业用途。**
 
 ## LICENSE
 
