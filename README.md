@@ -12,14 +12,16 @@
 [6]:https://github.com/iceCola7/flutter_wanandroid/releases/latest
 
 [7]:https://img.shields.io/badge/license-Apache%202-blue.svg
-[8]:https://github.com/iceCola7/WanAndroid/blob/master/LICENSE
+[8]:https://github.com/iceCola7/flutter_wanandroid/blob/master/LICENSE
 
 [9]:https://img.shields.io/badge/QQ-563859095-orange.svg
 [10]:http://wpa.qq.com/msgrd?v=3&uin=563859095&site=qq&menu=yes
 
 ## 前言
 
-项目是继 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 之后的又一款 [玩Android] APP ，主要功能以及界面UI风格和 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 基本相同，不过也有一些不一样。 
+> 项目是继 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 之后的又一款 [玩Android] APP ，其主要功能以及界面UI风格和 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 基本相同，不过也有一些不一样。 
+
+> 
 
 #### Flutter 学习资源汇总
 
@@ -52,6 +54,46 @@
 | ![](screenshot/09.jpg) | ![](screenshot/10.jpg) | ![](screenshot/11.jpg) | ![](screenshot/12.jpg) |
 | ![](screenshot/13.jpg) | ![](screenshot/14.jpg) | ![](screenshot/15.jpg) | ![](screenshot/16.jpg) |
 
+## 主要功能
+
+- 首页、知识体系、公众号、导航、项目五大模块；
+- 登录注册功能；
+- 搜索功能：热门搜索、搜索历史；
+- 收藏功能：添加收藏、取消收藏；
+- 文章列表快速置顶功能；
+- 浏览文章、分享文章、用浏览器打开文章；
+- 我的积分、积分排行榜功能；
+- TODO模块：新增待办、更新待办、查看待办、删除待办等功能；
+- 夜间模式功能；
+- 自定义切换主题颜色功能；
+- 关于模块。
 
 ## Statement
+
 **项目中的 API 均来自于 [www.wanandroid.com](http://www.wanandroid.com/) 网站，纯属学习交流使用，不得用于商业用途。**
+
+## 更新日志
+
+**[最新更新日志请点击查看](https://github.com/iceCola7/flutter_wanandroid/releases)**
+
+**V1.0.0**
+
+- 首次提交，主要功能都已完成。
+
+## LICENSE
+
+```
+Copyright 2019 iceCola7 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

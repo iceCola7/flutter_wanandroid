@@ -121,10 +121,11 @@ class HotWordScreenState extends BaseWidgetState<HotWordScreen> {
           _hotWordList.addAll(model.data);
         });
       } else {
+        showError();
         T.show(msg: model.errorMsg);
       }
     }, (DioError error) {
-      print(error.response);
+      showError();
     });
   }
 

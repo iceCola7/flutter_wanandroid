@@ -82,7 +82,9 @@ class HomeScreenState extends BaseWidgetState<HomeScreen> {
         _articles.addAll(topArticleModel.data);
       }
       getArticleList();
-    }, (DioError error) {});
+    }, (DioError error) {
+      showError();
+    });
   }
 
   /// 获取文章列表数据
