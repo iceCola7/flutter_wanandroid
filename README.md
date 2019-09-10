@@ -21,7 +21,7 @@
 
 > 项目是继 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 之后的又一款 [玩Android] APP ，其主要功能以及界面UI风格和 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 基本相同，不过也有一些不一样。 
 
-> 
+> 在学习 `Flutter` 的过程中，收集了一些很好的学习网站以及插件，并做了汇总，以便日后学习。
 
 #### Flutter 学习资源汇总
 
@@ -53,6 +53,17 @@
 | ![](screenshot/05.jpg) | ![](screenshot/06.jpg) | ![](screenshot/07.jpg) | ![](screenshot/08.jpg) |
 | ![](screenshot/09.jpg) | ![](screenshot/10.jpg) | ![](screenshot/11.jpg) | ![](screenshot/12.jpg) |
 | ![](screenshot/13.jpg) | ![](screenshot/14.jpg) | ![](screenshot/15.jpg) | ![](screenshot/16.jpg) |
+
+## 下载体验
+
+- **Android**
+    - 点击[download](https://github.com/iceCola7/flutter_wanandroid/raw/master/android/release/flutter_wanandroid.apk)下载
+    - 扫描下方二维码下载(建议使用浏览器扫描下载)
+    
+        ![](screenshot/qr-code.png)
+        
+- **iOS**
+    - 暂时不支持下载，可以 `clone` 源码编译运行在 `iOS` 设备上。
 
 ## 主要功能
 
