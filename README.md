@@ -1,9 +1,30 @@
 # Flutter 版 WanAndroid 客户端
 
-## Flutter 学习资源汇总
+[![Flutter][1]][2]  [![Dart][3]][4]  [![Release][5]][6]  [![GitHub license][7]][8]  [![][9]][10] 
 
-- [Dscreenshot 官方网站](https://dscreenshot.dev/)
-- [Dscreenshot 编程语言中文网](http://dscreenshot.goodev.org/)
+[1]:https://img.shields.io/badge/Flutter-1.7.8-5bc7f8.svg
+[2]:https://flutter.dev
+
+[3]:https://img.shields.io/badge/Dart-2.4.0%2B-00B4AB.svg
+[4]:https://dart.dev
+
+[5]:https://img.shields.io/github/release/iceCola7/flutter_wanandroid.svg
+[6]:https://github.com/iceCola7/flutter_wanandroid/releases/latest
+
+[7]:https://img.shields.io/badge/license-Apache%202-blue.svg
+[8]:https://github.com/iceCola7/WanAndroid/blob/master/LICENSE
+
+[9]:https://img.shields.io/badge/QQ-563859095-orange.svg
+[10]:http://wpa.qq.com/msgrd?v=3&uin=563859095&site=qq&menu=yes
+
+## 前言
+
+项目是继 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 之后的又一款 [玩Android] APP ，主要功能以及界面UI风格和 [Kotlin版玩Android](https://github.com/iceCola7/WanAndroid) 基本相同，不过也有一些不一样。 
+
+#### Flutter 学习资源汇总
+
+- [Dart 官方网站](https://dart.dev/)
+- [Dart 编程语言中文网](http://dart.goodev.org/)
 - [Flutter 官方网站](https://flutter.dev/)
 - [Flutter 中文网](https://flutterchina.club/)
 - [Flutter 官方 Demo](https://github.com/flutter/flutter/tree/master/examples/flutter_gallery)
@@ -13,8 +34,12 @@
 - [阿里巴巴flutter-go](https://github.com/alibaba/flutter-go)：包含 Flutter 常用 140+ 组件的 Demo 演示与中文文档
 - [awesome-flutter](https://github.com/Solido/awesome-flutter)：包含了很多优秀的 Flutter 库
 - [Flutter-Notebook](https://github.com/OpenFlutter/Flutter-Notebook)：提供了很多优秀的样例
-- [Dscreenshot 语言的 Json 转 Model 插件](https://github.com/neverwoodsS/idea_dscreenshot_json_format)
-- [在线 Json to Dscreenshot](https://javiercbk.github.io/json_to_dscreenshot)
+- [Dart 语言的 Json 转 Model 插件](https://github.com/neverwoodsS/idea_dart_json_format)
+- [在线 Json to Dart](https://javiercbk.github.io/json_to_dart)
+
+## 简介
+
+项目基于 `Google` 在 2017 年 `Google I/O` 大会上首次推出的一款新的用于创建跨平台、高性能的移动应用框架——[Flutter](https://flutter.dev) ，采用 [Dart](https://dart.dev) 语言编写，打造一款优秀的 [WanAndroid](https://github.com/iceCola7/flutter_wanandroid) 客户端，项目会持续迭代更新，如有任何疑问和建议请提 [Issues](https://github.com/iceCola7/flutter_wanandroid/issues) 或联系 qq： **563859095** 。
 
 ## API
 [**玩 Android 开放 API**](http://www.wanandroid.com/blog/show/2)
@@ -28,4 +53,5 @@
 | ![](screenshot/13.jpg) | ![](screenshot/14.jpg) | ![](screenshot/15.jpg) | ![](screenshot/16.jpg) |
 
 
-
+## Statement
+**项目中的 API 均来自于 [www.wanandroid.com](http://www.wanandroid.com/) 网站，纯属学习交流使用，不得用于商业用途。**
