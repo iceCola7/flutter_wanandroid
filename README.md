@@ -23,6 +23,8 @@
 
 > 在学习 `Flutter` 的过程中，收集了一些很好的学习网站以及插件，并做了汇总，以便日后学习。
 
+> 如果你觉得这个 `APP` 不错，或者这个项目有帮助到你，不妨点个 `Star or Fork` 吧 ^_^
+
 #### Flutter 学习资源汇总
 
 - [Dart 官方网站](https://dart.dev/)
@@ -63,7 +65,7 @@
         ![](screenshot/qr-code.png)
         
 - **iOS**
-    - 暂时不支持下载，可以 `clone` 源码编译运行在 `iOS` 设备上。
+    - 暂时不支持下载~，可以 `clone` 源码编译运行在 `iOS` 设备上^_^。
 
 ## 主要功能
 
@@ -78,6 +80,19 @@
 - 夜间模式功能；
 - 自定义切换主题颜色功能；
 - 关于模块。
+
+## 主要开源库
+
+- [dio](https://github.com/flutterchina/dio): 网络库
+- [shared_preferences](https://pub.dartlang.org/packages/shared_preferences): 数据存储
+- [flutter_swiper](https://github.com/best-flutter/flutter_swiper): 轮播图
+- [fluttertoast](https://github.com/PonnamKarthik/FlutterToast): 吐司
+- [sqflite](https://pub.flutter-io.cn/packages/sqflite): 数据库
+- [event_bus](https://github.com/marcojakob/dart-event-bus): 事件总线
+- [cached_network_image](https://github.com/renefloor/flutter_cached_network_image): 图片缓存
+- [pull_to_refresh](https://github.com/peng8350/flutter_pulltorefresh): 上拉加载和下拉刷新的组件
+- [flutter_slidable](https://github.com/letsar/flutter_slidable): 滑动删除
+- [sticky_headers](https://github.com/fluttercommunity/flutter_sticky_headers): 列表悬浮头
 
 ## 更新日志
 
