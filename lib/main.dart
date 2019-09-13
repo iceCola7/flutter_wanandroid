@@ -20,6 +20,10 @@ import 'net/index.dart';
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 void main() async {
+  /// 修改问题: Unhandled Exception: ServicesBinding.defaultBinaryMessenger was accessed before the binding was initialized
+  /// https://stackoverflow.com/questions/57689492/flutter-unhandled-exception-servicesbinding-defaultbinarymessenger-was-accesse
+  WidgetsFlutterBinding.ensureInitialized();
+
   await SPUtil.getInstance();
 
   await getTheme();
