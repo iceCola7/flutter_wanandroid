@@ -19,12 +19,12 @@ class ComModel {
       this.page});
 
   ComModel.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        subtitle = json['subtitle'],
-        content = json['content'],
-        extra = json['extra'],
-        url = json['url'],
-        isShowArrow = json['isShowArrow'];
+      : title = json['title'] ?? '',
+        subtitle = json['subtitle'] ?? '',
+        content = json['content'] ?? '',
+        extra = json['extra'] ?? '',
+        url = json['url'] ?? '',
+        isShowArrow = json['isShowArrow'] ?? false;
 
   Map<String, dynamic> toJson() => {
         'title': title,

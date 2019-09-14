@@ -21,7 +21,7 @@ class ComArrowItem extends StatelessWidget {
           onTap: () {
             if (model.page != null) {
               RouteUtil.push(context, model.page);
-            } else if (model.url != null || model.url != '') {
+            } else if (model.url != null) {
               RouteUtil.toWebView(context, model.title, model.url);
             } else {
               onClick();
