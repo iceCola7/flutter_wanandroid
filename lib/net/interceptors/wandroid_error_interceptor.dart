@@ -16,7 +16,7 @@ class WanAndroidErrorInterceptor extends InterceptorsWrapper {
 
   @override
   onError(DioError error) {
-    String errorMsg = DioManager.parseError(error);
+    String errorMsg = DioManager.handleError(error);
     T.show(msg: errorMsg);
     return error;
   }

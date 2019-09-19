@@ -37,13 +37,17 @@ class DioManager {
     dio.interceptors.add(CookieManager(cj));
   }
 
-  static String parseError(error, {String defaultErrorStr = '网络连接超时~'}) {
+  static String handleError(error, {String defaultErrorStr = '未知错误~'}) {
     String errStr;
     if (error is DioError) {
-      if (error.type == DioErrorType.CONNECT_TIMEOUT ||
-          error.type == DioErrorType.SEND_TIMEOUT ||
-          error.type == DioErrorType.RECEIVE_TIMEOUT) {
-        errStr = defaultErrorStr;
+      if (error.type == DioErrorType.CONNECT_TIMEOUT) {
+        errStr = '连接超时~';
+      } else if (error.type == DioErrorType.SEND_TIMEOUT) {
+        errStr = '请求超时~';
+      } else if (error.type == DioErrorType.RECEIVE_TIMEOUT) {
+        errStr = '响应超时~';
+      } else if (error.type == DioErrorType.CANCEL) {
+        errStr = '请求取消~';
       } else if (error.type == DioErrorType.RESPONSE) {
         int statusCode = error.response.statusCode;
         String msg = error.response.statusMessage;
@@ -61,11 +65,12 @@ class DioManager {
             break;
         }
       } else if (error.type == DioErrorType.DEFAULT) {
+        errStr = '${error.message}';
         if (error.error is SocketException) {
-          errStr = defaultErrorStr;
+          errStr = '网络连接超时~';
         }
       } else {
-        errStr = error.message;
+        errStr = '未知错误~';
       }
     }
     return errStr ?? defaultErrorStr;
