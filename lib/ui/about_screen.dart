@@ -9,8 +9,14 @@ import 'package:flutter_wanandroid/widgets/com_item.dart';
 class AboutScreen extends StatelessWidget {
   ComModel version =
       new ComModel(title: '版本号', extra: AppConfig.version, isShowArrow: false);
+  ComModel officialAddress = new ComModel(
+      title: '官方网站',
+      subtitle: 'www.wanandroid.com',
+      url: 'https://www.wanandroid.com',
+      extra: '',
+      isShowArrow: true);
   ComModel github = new ComModel(
-      title: 'GitHub',
+      title: '项目源码',
       subtitle: 'github.com/iceCola7/flutter_wanandroid',
       url: 'https://github.com/iceCola7/flutter_wanandroid',
       extra: '',
@@ -60,6 +66,7 @@ class AboutScreen extends StatelessWidget {
             decoration: Decorations.bottom,
           ),
           new ComArrowItem(version),
+          new ComArrowItem(officialAddress),
           new ComArrowItem(github),
           new ComArrowItem(updateLogs),
           new ComArrowItem(

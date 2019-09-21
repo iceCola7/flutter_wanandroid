@@ -33,7 +33,7 @@ class DioManager {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path + "/dioCookie";
     print('DioUtil : http cookie path = $tempPath');
-    CookieJar cj = PersistCookieJar(dir: tempPath);
+    CookieJar cj = PersistCookieJar(dir: tempPath, ignoreExpires: true);
     dio.interceptors.add(CookieManager(cj));
   }
 

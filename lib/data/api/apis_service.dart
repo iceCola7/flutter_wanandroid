@@ -34,16 +34,14 @@ class ApiService {
 
   ///  获取首页轮播数据
   void getBannerList(Function callback) async {
-    dio.get(Apis.HOME_BANNER, options: _getOptions()).then((response) {
+    dio.get(Apis.HOME_BANNER).then((response) {
       callback(BannerModel(response.data));
     });
   }
 
   /// 获取首页置顶文章数据
   void getTopArticleList(Function callback, Function errorCallback) async {
-    dio
-        .get(Apis.HOME_TOP_ARTICLE_LIST, options: _getOptions())
-        .then((response) {
+    dio.get(Apis.HOME_TOP_ARTICLE_LIST).then((response) {
       callback(TopArticleModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -53,9 +51,7 @@ class ApiService {
   /// 获取首页文章列表数据
   void getArticleList(
       Function callback, Function errorCallback, int _page) async {
-    dio
-        .get(Apis.HOME_ARTICLE_LIST + "/$_page/json", options: _getOptions())
-        .then((response) {
+    dio.get(Apis.HOME_ARTICLE_LIST + "/$_page/json").then((response) {
       callback(ArticleModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -64,7 +60,7 @@ class ApiService {
 
   /// 获取知识体系数据
   void getKnowledgeTreeList(Function callback, Function errorCallback) async {
-    dio.get(Apis.KNOWLEDGE_TREE_LIST, options: _getOptions()).then((response) {
+    dio.get(Apis.KNOWLEDGE_TREE_LIST).then((response) {
       callback(KnowledgeTreeModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -75,8 +71,7 @@ class ApiService {
   void getKnowledgeDetailList(
       Function callback, Function errorCallback, int _page, int _id) async {
     dio
-        .get(Apis.KNOWLEDGE_DETAIL_LIST + "/$_page/json?cid=$_id",
-            options: _getOptions())
+        .get(Apis.KNOWLEDGE_DETAIL_LIST + "/$_page/json?cid=$_id")
         .then((response) {
       callback(KnowledgeDetailModel(response.data));
     }).catchError((e) {
@@ -86,7 +81,7 @@ class ApiService {
 
   /// 获取公众号名称
   void getWXChaptersList(Function callback, Function errorCallback) async {
-    dio.get(Apis.WX_CHAPTERS_LIST, options: _getOptions()).then((response) {
+    dio.get(Apis.WX_CHAPTERS_LIST).then((response) {
       callback(WXChaptersModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -96,9 +91,7 @@ class ApiService {
   /// 获取公众号文章列表数据
   void getWXArticleList(
       Function callback, Function errorCallback, int _id, int _page) async {
-    dio
-        .get(Apis.WX_ARTICLE_LIST + "/$_id/$_page/json", options: _getOptions())
-        .then((response) {
+    dio.get(Apis.WX_ARTICLE_LIST + "/$_id/$_page/json").then((response) {
       callback(WXArticleModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -107,7 +100,7 @@ class ApiService {
 
   /// 获取导航列表数据
   void getNavigationList(Function callback, Function errorCallback) async {
-    dio.get(Apis.NAVIGATION_LIST, options: _getOptions()).then((response) {
+    dio.get(Apis.NAVIGATION_LIST).then((response) {
       callback(NavigationModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -116,7 +109,7 @@ class ApiService {
 
   /// 获取项目分类列表数据
   void getProjectTreeList(Function callback, Function errorCallback) async {
-    dio.get(Apis.PROJECT_TREE_LIST, options: _getOptions()).then((response) {
+    dio.get(Apis.PROJECT_TREE_LIST).then((response) {
       callback(ProjectTreeModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -127,8 +120,7 @@ class ApiService {
   void getProjectArticleList(
       Function callback, Function errorCallback, int _id, int _page) async {
     dio
-        .get(Apis.PROJECT_ARTICLE_LIST + "/$_page/json?cid=$_id",
-            options: _getOptions())
+        .get(Apis.PROJECT_ARTICLE_LIST + "/$_page/json?cid=$_id")
         .then((response) {
       callback(ProjectArticleListModel(response.data));
     }).catchError((e) {
@@ -138,7 +130,7 @@ class ApiService {
 
   /// 获取搜索热词列表数据
   void getSearchHotList(Function callback, Function errorCallback) async {
-    dio.get(Apis.SEARCH_HOT_LIST, options: _getOptions()).then((response) {
+    dio.get(Apis.SEARCH_HOT_LIST).then((response) {
       callback(HotWordModel.fromMap(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -150,8 +142,7 @@ class ApiService {
       int _page, String _keyword) async {
     FormData formData = new FormData.from({"k": _keyword});
     dio
-        .post(Apis.SEARCH_ARTICLE_LIST + "/$_page/json",
-            data: formData, options: _getOptions())
+        .post(Apis.SEARCH_ARTICLE_LIST + "/$_page/json", data: formData)
         .then((response) {
       callback(SearchArticleModel.fromMap(response.data));
     }).catchError((e) {
@@ -164,9 +155,7 @@ class ApiService {
       String _password) async {
     FormData formData =
         new FormData.from({"username": _username, "password": _password});
-    dio
-        .post(Apis.USER_LOGIN, data: formData, options: _getOptions())
-        .then((response) {
+    dio.post(Apis.USER_LOGIN, data: formData).then((response) {
       callback(UserModel(response.data), response);
     }).catchError((e) {
       errorCallback(e);
@@ -181,9 +170,7 @@ class ApiService {
       "password": _password,
       "repassword": _password
     });
-    dio
-        .post(Apis.USER_REGISTER, data: formData, options: null)
-        .then((response) {
+    dio.post(Apis.USER_REGISTER, data: formData).then((response) {
       callback(UserModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -193,9 +180,7 @@ class ApiService {
   /// 获取收藏列表
   void getCollectionList(
       Function callback, Function errorCallback, int _page) async {
-    dio
-        .get(Apis.COLLECTION_LIST + "/$_page/json", options: _getOptions())
-        .then((response) {
+    dio.get(Apis.COLLECTION_LIST + "/$_page/json").then((response) {
       callback(CollectionModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -204,9 +189,7 @@ class ApiService {
 
   /// 新增收藏(收藏站内文章)
   void addCollection(Function callback, Function errorCallback, int _id) async {
-    dio
-        .post(Apis.ADD_COLLECTION + "/$_id/json", options: _getOptions())
-        .then((response) {
+    dio.post(Apis.ADD_COLLECTION + "/$_id/json").then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -216,9 +199,7 @@ class ApiService {
   /// 取消收藏
   void cancelCollection(
       Function callback, Function errorCallback, int _id) async {
-    dio
-        .post(Apis.CANCEL_COLLECTION + "/$_id/json", options: _getOptions())
-        .then((response) {
+    dio.post(Apis.CANCEL_COLLECTION + "/$_id/json").then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -236,9 +217,7 @@ class ApiService {
 
   /// 获取TODO列表数据
   void getTodoList(Function callback, Function errorCallback, int _page) async {
-    dio
-        .get(Apis.TODO_LIST + "/$_page/json", options: _getOptions())
-        .then((response) {
+    dio.get(Apis.TODO_LIST + "/$_page/json").then((response) {
       callback(TodoListModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -248,9 +227,7 @@ class ApiService {
   /// 获取未完成TODO列表
   void getNoTodoList(
       Function callback, Function errorCallback, int _type, int _page) async {
-    dio
-        .post(Apis.NO_TODO_LIST + "/$_type/json/$_page", options: _getOptions())
-        .then((response) {
+    dio.post(Apis.NO_TODO_LIST + "/$_type/json/$_page").then((response) {
       callback(TodoListModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -260,10 +237,7 @@ class ApiService {
   /// 获取已完成TODO列表
   void getDoneTodoList(
       Function callback, Function errorCallback, int _type, int _page) async {
-    dio
-        .post(Apis.DONE_TODO_LIST + "/$_type/json/$_page",
-            options: _getOptions())
-        .then((response) {
+    dio.post(Apis.DONE_TODO_LIST + "/$_type/json/$_page").then((response) {
       callback(TodoListModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -272,9 +246,7 @@ class ApiService {
 
   /// 新增一个TODO
   void addTodo(Function callback, Function errorCallback, params) async {
-    dio
-        .post(Apis.ADD_TODO, queryParameters: params, options: _getOptions())
-        .then((response) {
+    dio.post(Apis.ADD_TODO, queryParameters: params).then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -285,8 +257,7 @@ class ApiService {
   void updateTodo(
       Function callback, Function errorCallback, int _id, params) async {
     dio
-        .post(Apis.UPDATE_TODO + "/$_id/json",
-            queryParameters: params, options: _getOptions())
+        .post(Apis.UPDATE_TODO + "/$_id/json", queryParameters: params)
         .then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
@@ -298,8 +269,7 @@ class ApiService {
   void updateTodoState(
       Function callback, Function errorCallback, int _id, params) async {
     dio
-        .post(Apis.UPDATE_TODO_STATE + "/$_id/json",
-            queryParameters: params, options: _getOptions())
+        .post(Apis.UPDATE_TODO_STATE + "/$_id/json", queryParameters: params)
         .then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
@@ -310,9 +280,7 @@ class ApiService {
   /// 根据ID删除TODO
   void deleteTodoById(
       Function callback, Function errorCallback, int _id) async {
-    dio
-        .post(Apis.DELETE_TODO_BY_ID + "/$_id/json", options: _getOptions())
-        .then((response) {
+    dio.post(Apis.DELETE_TODO_BY_ID + "/$_id/json").then((response) {
       callback(BaseModel(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -321,7 +289,7 @@ class ApiService {
 
   /// 获取用户个人信息
   void getUserInfo(Function callback, Function errorCallback) async {
-    dio.get(Apis.USER_INFO, options: _getOptions()).then((response) {
+    dio.get(Apis.USER_INFO).then((response) {
       callback(UserInfoModel.fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -331,9 +299,7 @@ class ApiService {
   /// 获取我的积分列表数据
   void getUserScoreList(
       Function callback, Function errorCallback, int _page) async {
-    dio
-        .get(Apis.USER_SCORE_LIST + "/$_page/json", options: _getOptions())
-        .then((response) {
+    dio.get(Apis.USER_SCORE_LIST + "/$_page/json").then((response) {
       callback(UserScoreModel.fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
@@ -342,9 +308,7 @@ class ApiService {
 
   /// 获取积分排行榜列表
   void getRankList(Function callback, Function errorCallback, int _page) async {
-    dio
-        .get(Apis.RANK_LIST + "/$_page/json", options: _getOptions())
-        .then((response) {
+    dio.get(Apis.RANK_LIST + "/$_page/json").then((response) {
       callback(RankModel.fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);

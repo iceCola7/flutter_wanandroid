@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_wanandroid/main.dart';
 import 'package:flutter_wanandroid/common/router_config.dart';
+import 'package:flutter_wanandroid/main.dart';
+import 'package:flutter_wanandroid/utils/index.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 
 import '../index.dart';
@@ -35,6 +36,7 @@ class WanAndroidErrorInterceptor extends InterceptorsWrapper {
         return response;
       } else if (errorCode == -1001 /*未登录错误码*/) {
         dio.clear();
+        SPUtil.clear();
         goLogin();
         return dio.reject(errorMsg);
       } else {
