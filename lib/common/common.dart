@@ -13,6 +13,7 @@ class Constants {
 
 class AppConfig {
   static const String appName = '玩Android';
-  static const String version = '1.0.0';
+  static const String version = '1.0.1';
+  static const int versionCode = 2;
   static const bool isDebug = true;
 }
