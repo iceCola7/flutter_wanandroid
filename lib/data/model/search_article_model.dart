@@ -1,136 +1,227 @@
-import 'package:flutter_wanandroid/utils/string_util.dart';
-
 class SearchArticleModel {
-  String errorMsg;
-  int errorCode;
   SearchArticleListBean data;
+  int errorCode;
+  String errorMsg;
 
-  static SearchArticleModel fromMap(Map<String, dynamic> map) {
-    SearchArticleModel searchArticleModel = new SearchArticleModel();
-    searchArticleModel.errorMsg = map['errorMsg'];
-    searchArticleModel.errorCode = map['errorCode'];
-    searchArticleModel.data = SearchArticleListBean.fromMap(map['data']);
-    return searchArticleModel;
+  SearchArticleModel({this.data, this.errorCode, this.errorMsg});
+
+  SearchArticleModel.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null
+        ? new SearchArticleListBean.fromJson(json['data'])
+        : null;
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  static List<SearchArticleModel> fromMapList(dynamic mapList) {
-    List<SearchArticleModel> list = new List(mapList.length);
-    for (int i = 0; i < mapList.length; i++) {
-      list[i] = fromMap(mapList[i]);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
     }
-    return list;
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class SearchArticleListBean {
-  bool over;
   int curPage;
+  List<SearchArticleBean> datas;
   int offset;
+  bool over;
   int pageCount;
   int size;
   int total;
-  List<SearchArticleBean> datas;
 
-  static SearchArticleListBean fromMap(Map<String, dynamic> map) {
-    SearchArticleListBean dataBean = new SearchArticleListBean();
-    dataBean.over = map['over'];
-    dataBean.curPage = map['curPage'];
-    dataBean.offset = map['offset'];
-    dataBean.pageCount = map['pageCount'];
-    dataBean.size = map['size'];
-    dataBean.total = map['total'];
-    dataBean.datas = SearchArticleBean.fromMapList(map['datas']);
-    return dataBean;
+  SearchArticleListBean(
+      {this.curPage,
+      this.datas,
+      this.offset,
+      this.over,
+      this.pageCount,
+      this.size,
+      this.total});
+
+  SearchArticleListBean.fromJson(Map<String, dynamic> json) {
+    curPage = json['curPage'];
+    if (json['datas'] != null) {
+      datas = new List<SearchArticleBean>();
+      json['datas'].forEach((v) {
+        datas.add(new SearchArticleBean.fromJson(v));
+      });
+    }
+    offset = json['offset'];
+    over = json['over'];
+    pageCount = json['pageCount'];
+    size = json['size'];
+    total = json['total'];
   }
 
-  static List<SearchArticleListBean> fromMapList(dynamic mapList) {
-    List<SearchArticleListBean> list = new List(mapList.length);
-    for (int i = 0; i < mapList.length; i++) {
-      list[i] = fromMap(mapList[i]);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['curPage'] = this.curPage;
+    if (this.datas != null) {
+      data['datas'] = this.datas.map((v) => v.toJson()).toList();
     }
-    return list;
+    data['offset'] = this.offset;
+    data['over'] = this.over;
+    data['pageCount'] = this.pageCount;
+    data['size'] = this.size;
+    data['total'] = this.total;
+    return data;
   }
 }
 
 class SearchArticleBean {
   String apkLink;
+  int audit;
   String author;
+  int chapterId;
   String chapterName;
+  bool collect;
+  int courseId;
   String desc;
   String envelopePic;
+  bool fresh;
+  int id;
   String link;
   String niceDate;
+  String niceShareDate;
   String origin;
+  String prefix;
   String projectLink;
-  String superChapterName;
-  String title;
-  bool collect;
-  bool fresh;
-  int chapterId;
-  int courseId;
-  int id;
   int publishTime;
+  int shareDate;
+  String shareUser;
   int superChapterId;
+  String superChapterName;
+  List<Tag> tags;
+  String title;
   int type;
   int userId;
   int visible;
   int zan;
-  List<TagListBean> tags;
+  int top;
 
-  static SearchArticleBean fromMap(Map<String, dynamic> map) {
-    SearchArticleBean datasListBean = new SearchArticleBean();
-    datasListBean.apkLink = map['apkLink'];
-    datasListBean.author = map['author'];
-    datasListBean.chapterName = StringUtil.urlDecoder(map['chapterName']);
-    datasListBean.desc = StringUtil.urlDecoder(map['desc']);
-    datasListBean.envelopePic = map['envelopePic'];
-    datasListBean.link = map['link'];
-    datasListBean.niceDate = map['niceDate'];
-    datasListBean.origin = map['origin'];
-    datasListBean.projectLink = map['projectLink'];
-    datasListBean.superChapterName =
-        StringUtil.urlDecoder(map['superChapterName']);
-    datasListBean.title = StringUtil.urlDecoder(map['title']);
-    datasListBean.collect = map['collect'];
-    datasListBean.fresh = map['fresh'];
-    datasListBean.chapterId = map['chapterId'];
-    datasListBean.courseId = map['courseId'];
-    datasListBean.id = map['id'];
-    datasListBean.publishTime = map['publishTime'];
-    datasListBean.superChapterId = map['superChapterId'];
-    datasListBean.type = map['type'];
-    datasListBean.userId = map['userId'];
-    datasListBean.visible = map['visible'];
-    datasListBean.zan = map['zan'];
-    datasListBean.tags = TagListBean.fromMapList(map['tags']);
-    return datasListBean;
+  SearchArticleBean(
+      {this.apkLink,
+      this.audit,
+      this.author,
+      this.chapterId,
+      this.chapterName,
+      this.collect,
+      this.courseId,
+      this.desc,
+      this.envelopePic,
+      this.fresh,
+      this.id,
+      this.link,
+      this.niceDate,
+      this.niceShareDate,
+      this.origin,
+      this.prefix,
+      this.projectLink,
+      this.publishTime,
+      this.shareDate,
+      this.shareUser,
+      this.superChapterId,
+      this.superChapterName,
+      this.tags,
+      this.title,
+      this.type,
+      this.userId,
+      this.visible,
+      this.zan,
+      this.top});
+
+  SearchArticleBean.fromJson(Map<String, dynamic> json) {
+    apkLink = json['apkLink'];
+    audit = json['audit'];
+    author = json['author'];
+    chapterId = json['chapterId'];
+    chapterName = json['chapterName'];
+    collect = json['collect'];
+    courseId = json['courseId'];
+    desc = json['desc'];
+    envelopePic = json['envelopePic'];
+    fresh = json['fresh'];
+    id = json['id'];
+    link = json['link'];
+    niceDate = json['niceDate'];
+    niceShareDate = json['niceShareDate'];
+    origin = json['origin'];
+    prefix = json['prefix'];
+    projectLink = json['projectLink'];
+    publishTime = json['publishTime'];
+    shareDate = json['shareDate'];
+    shareUser = json['shareUser'];
+    superChapterId = json['superChapterId'];
+    superChapterName = json['superChapterName'];
+    if (json['tags'] != null) {
+      tags = new List<Tag>();
+      json['tags'].forEach((v) {
+        tags.add(new Tag.fromJson(v));
+      });
+    }
+    title = json['title'];
+    type = json['type'];
+    userId = json['userId'];
+    visible = json['visible'];
+    zan = json['zan'];
+    top = 0;
   }
 
-  static List<SearchArticleBean> fromMapList(dynamic mapList) {
-    List<SearchArticleBean> list = new List(mapList.length);
-    for (int i = 0; i < mapList.length; i++) {
-      list[i] = fromMap(mapList[i]);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['apkLink'] = this.apkLink;
+    data['audit'] = this.audit;
+    data['author'] = this.author;
+    data['chapterId'] = this.chapterId;
+    data['chapterName'] = this.chapterName;
+    data['collect'] = this.collect;
+    data['courseId'] = this.courseId;
+    data['desc'] = this.desc;
+    data['envelopePic'] = this.envelopePic;
+    data['fresh'] = this.fresh;
+    data['id'] = this.id;
+    data['link'] = this.link;
+    data['niceDate'] = this.niceDate;
+    data['niceShareDate'] = this.niceShareDate;
+    data['origin'] = this.origin;
+    data['prefix'] = this.prefix;
+    data['projectLink'] = this.projectLink;
+    data['publishTime'] = this.publishTime;
+    data['shareDate'] = this.shareDate;
+    data['shareUser'] = this.shareUser;
+    data['superChapterId'] = this.superChapterId;
+    data['superChapterName'] = this.superChapterName;
+    if (this.tags != null) {
+      data['tags'] = this.tags.map((v) => v.toJson()).toList();
     }
-    return list;
+    data['title'] = this.title;
+    data['type'] = this.type;
+    data['userId'] = this.userId;
+    data['visible'] = this.visible;
+    data['zan'] = this.zan;
+    return data;
   }
 }
 
-class TagListBean {
+class Tag {
   String name;
   String url;
 
-  static TagListBean fromMap(Map<String, dynamic> map) {
-    TagListBean tagsListBean = new TagListBean();
-    tagsListBean.name = map['name'];
-    tagsListBean.url = map['url'];
-    return tagsListBean;
+  Tag({this.name, this.url});
+
+  Tag.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    url = json['url'];
   }
 
-  static List<TagListBean> fromMapList(dynamic mapList) {
-    List<TagListBean> list = new List(mapList.length);
-    for (int i = 0; i < mapList.length; i++) {
-      list[i] = fromMap(mapList[i]);
-    }
-    return list;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['url'] = this.url;
+    return data;
   }
 }

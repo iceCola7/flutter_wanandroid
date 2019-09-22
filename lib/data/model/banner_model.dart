@@ -1,69 +1,73 @@
-import 'dart:convert' show json;
-
-import 'package:flutter_wanandroid/utils/string_util.dart';
-
 class BannerModel {
+  List<BannerBean> data;
   int errorCode;
   String errorMsg;
-  List<BannerBean> data;
 
-  BannerModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  BannerModel({this.data, this.errorCode, this.errorMsg});
 
-  factory BannerModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new BannerModel.fromJson(json.decode(jsonStr))
-          : new BannerModel.fromJson(jsonStr);
-
-  BannerModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null ? null : [];
-
-    for (var dataItem in data == null ? [] : jsonRes['data']) {
-      data.add(dataItem == null ? null : new BannerBean.fromJson(dataItem));
+  BannerModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<BannerBean>();
+      json['data'].forEach((v) {
+        data.add(new BannerBean.fromJson(v));
+      });
     }
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class BannerBean {
+  String desc;
   int id;
+  String imagePath;
   int isVisible;
   int order;
-  int type;
-  String desc;
-  String imagePath;
   String title;
+  int type;
   String url;
 
-  BannerBean.fromParams(
-      {this.id,
-      this.isVisible,
-      this.order,
-      this.type,
-      this.desc,
-      this.imagePath,
-      this.title,
-      this.url});
+  BannerBean(
+      {this.desc,
+        this.id,
+        this.imagePath,
+        this.isVisible,
+        this.order,
+        this.title,
+        this.type,
+        this.url});
 
-  BannerBean.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    isVisible = jsonRes['isVisible'];
-    order = jsonRes['order'];
-    type = jsonRes['type'];
-    desc = StringUtil.urlDecoder(jsonRes['desc']);
-    imagePath = jsonRes['imagePath'];
-    title = jsonRes['title'];
-    url = jsonRes['url'];
+  BannerBean.fromJson(Map<String, dynamic> json) {
+    desc = json['desc'];
+    id = json['id'];
+    imagePath = json['imagePath'];
+    isVisible = json['isVisible'];
+    order = json['order'];
+    title = json['title'];
+    type = json['type'];
+    url = json['url'];
   }
 
-  @override
-  String toString() {
-    return '{"id": $id,"isVisible": $isVisible,"order": $order,"type": $type,"desc": ${desc != null ? '${json.encode(desc)}' : 'null'},"imagePath": ${imagePath != null ? '${json.encode(imagePath)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"url": ${url != null ? '${json.encode(url)}' : 'null'}}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['desc'] = this.desc;
+    data['id'] = this.id;
+    data['imagePath'] = this.imagePath;
+    data['isVisible'] = this.isVisible;
+    data['order'] = this.order;
+    data['title'] = this.title;
+    data['type'] = this.type;
+    data['url'] = this.url;
+    return data;
   }
 }

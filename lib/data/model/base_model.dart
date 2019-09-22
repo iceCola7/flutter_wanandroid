@@ -1,24 +1,18 @@
-import 'dart:convert' show json;
-
 class BaseModel {
   int errorCode;
   String errorMsg;
 
-  BaseModel.fromParams({this.errorCode, this.errorMsg});
+  BaseModel({this.errorCode, this.errorMsg});
 
-  factory BaseModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new BaseModel(json.decode(jsonStr))
-          : new BaseModel.fromJson(jsonStr);
-
-  BaseModel.fromJson(jsonRes) {
-    errorCode = jsonRes["errorCode"];
-    errorMsg = jsonRes["errorMsg"];
+  BaseModel.fromJson(Map<String, dynamic> json) {
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return 'BaseModel{errorCode: $errorCode, errorMsg: $errorMsg}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }

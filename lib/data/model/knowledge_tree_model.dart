@@ -1,117 +1,132 @@
-import 'dart:convert' show json;
-
-import 'package:flutter_wanandroid/utils/string_util.dart';
-
 class KnowledgeTreeModel {
+  List<KnowledgeTreeBean> data;
   int errorCode;
   String errorMsg;
-  List<KnowledgeTreeBean> data;
 
-  KnowledgeTreeModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  KnowledgeTreeModel({this.data, this.errorCode, this.errorMsg});
 
-  factory KnowledgeTreeModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new KnowledgeTreeModel.fromJson(json.decode(jsonStr))
-          : new KnowledgeTreeModel.fromJson(jsonStr);
-
-  KnowledgeTreeModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null ? null : [];
-
-    for (var dataItem in data == null ? [] : jsonRes['data']) {
-      data.add(
-          dataItem == null ? null : new KnowledgeTreeBean.fromJson(dataItem));
+  KnowledgeTreeModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<KnowledgeTreeBean>();
+      json['data'].forEach((v) {
+        data.add(new KnowledgeTreeBean.fromJson(v));
+      });
     }
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class KnowledgeTreeBean {
+  List<KnowledgeTreeChildBean> children;
   int courseId;
   int id;
+  String name;
   int order;
   int parentChapterId;
-  int visible;
   bool userControlSetTop;
-  String name;
-  List<KnowledgeTreeChildBean> children;
+  int visible;
 
-  KnowledgeTreeBean.fromParams(
-      {this.courseId,
+  KnowledgeTreeBean(
+      {this.children,
+      this.courseId,
       this.id,
+      this.name,
       this.order,
       this.parentChapterId,
-      this.visible,
       this.userControlSetTop,
-      this.name,
-      this.children});
+      this.visible});
 
-  KnowledgeTreeBean.fromJson(jsonRes) {
-    courseId = jsonRes['courseId'];
-    id = jsonRes['id'];
-    order = jsonRes['order'];
-    parentChapterId = jsonRes['parentChapterId'];
-    visible = jsonRes['visible'];
-    userControlSetTop = jsonRes['userControlSetTop'];
-    name = StringUtil.urlDecoder(jsonRes['name']);
-    children = jsonRes['children'] == null ? null : [];
-
-    for (var childrenItem in children == null ? [] : jsonRes['children']) {
-      children.add(childrenItem == null
-          ? null
-          : new KnowledgeTreeChildBean.fromJson(childrenItem));
+  KnowledgeTreeBean.fromJson(Map<String, dynamic> json) {
+    if (json['children'] != null) {
+      children = new List<KnowledgeTreeChildBean>();
+      json['children'].forEach((v) {
+        children.add(new KnowledgeTreeChildBean.fromJson(v));
+      });
     }
+    courseId = json['courseId'];
+    id = json['id'];
+    name = json['name'];
+    order = json['order'];
+    parentChapterId = json['parentChapterId'];
+    userControlSetTop = json['userControlSetTop'];
+    visible = json['visible'];
   }
 
-  @override
-  String toString() {
-    return '{"courseId": $courseId,"id": $id,"order": $order,"parentChapterId": $parentChapterId,"visible": $visible,"userControlSetTop": $userControlSetTop,"name": ${name != null ? '${json.encode(name)}' : 'null'},"children": $children}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.children != null) {
+      data['children'] = this.children.map((v) => v.toJson()).toList();
+    }
+    data['courseId'] = this.courseId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['order'] = this.order;
+    data['parentChapterId'] = this.parentChapterId;
+    data['userControlSetTop'] = this.userControlSetTop;
+    data['visible'] = this.visible;
+    return data;
   }
 }
 
 class KnowledgeTreeChildBean {
+  List<dynamic> children;
   int courseId;
   int id;
+  String name;
   int order;
   int parentChapterId;
-  int visible;
   bool userControlSetTop;
-  String name;
-  List<dynamic> children;
+  int visible;
 
-  KnowledgeTreeChildBean.fromParams(
-      {this.courseId,
+  KnowledgeTreeChildBean(
+      {this.children,
+      this.courseId,
       this.id,
+      this.name,
       this.order,
       this.parentChapterId,
-      this.visible,
       this.userControlSetTop,
-      this.name,
-      this.children});
+      this.visible});
 
-  KnowledgeTreeChildBean.fromJson(jsonRes) {
-    courseId = jsonRes['courseId'];
-    id = jsonRes['id'];
-    order = jsonRes['order'];
-    parentChapterId = jsonRes['parentChapterId'];
-    visible = jsonRes['visible'];
-    userControlSetTop = jsonRes['userControlSetTop'];
-    name = jsonRes['name'];
-    children = jsonRes['children'] == null ? null : [];
-
-    for (var childrenItem in children == null ? [] : jsonRes['children']) {
-      children.add(childrenItem);
+  KnowledgeTreeChildBean.fromJson(Map<String, dynamic> json) {
+    if (json['children'] != null) {
+      children = new List<Null>();
+      json['children'].forEach((v) {
+        children.add(v);
+      });
     }
+    courseId = json['courseId'];
+    id = json['id'];
+    name = json['name'];
+    order = json['order'];
+    parentChapterId = json['parentChapterId'];
+    userControlSetTop = json['userControlSetTop'];
+    visible = json['visible'];
   }
 
-  @override
-  String toString() {
-    return '{"courseId": $courseId,"id": $id,"order": $order,"parentChapterId": $parentChapterId,"visible": $visible,"userControlSetTop": $userControlSetTop,"name": ${name != null ? '${json.encode(name)}' : 'null'},"children": $children}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.children != null) {
+      data['children'] = this.children.map((v) => v.toJson()).toList();
+    }
+    data['courseId'] = this.courseId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['order'] = this.order;
+    data['parentChapterId'] = this.parentChapterId;
+    data['userControlSetTop'] = this.userControlSetTop;
+    data['visible'] = this.visible;
+    return data;
   }
 }

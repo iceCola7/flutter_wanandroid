@@ -1,187 +1,238 @@
-import 'dart:convert' show json;
-
-import 'package:flutter_wanandroid/utils/string_util.dart';
-
 class ArticleModel {
+  ArticleListBean data;
   int errorCode;
   String errorMsg;
-  ArticleListBean data;
 
-  ArticleModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  ArticleModel({this.data, this.errorCode, this.errorMsg});
 
-  factory ArticleModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new ArticleModel.fromJson(json.decode(jsonStr))
-          : new ArticleModel.fromJson(jsonStr);
-
-  ArticleModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null
-        ? null
-        : new ArticleListBean.fromJson(jsonRes['data']);
+  ArticleModel.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null
+        ? new ArticleListBean.fromJson(json['data'])
+        : null;
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class TopArticleModel {
+  List<ArticleBean> data;
   int errorCode;
   String errorMsg;
-  List<ArticleBean> data;
 
-  TopArticleModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  TopArticleModel({this.data, this.errorCode, this.errorMsg});
 
-  factory TopArticleModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new TopArticleModel.fromJson(json.decode(jsonStr))
-          : new TopArticleModel.fromJson(jsonStr);
-
-  TopArticleModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null ? null : [];
-
-    for (var dataItem in data == null ? [] : jsonRes['data']) {
-      data.add(dataItem == null ? null : new ArticleBean.fromJson(dataItem));
+  TopArticleModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<ArticleBean>();
+      json['data'].forEach((v) {
+        data.add(new ArticleBean.fromJson(v));
+      });
     }
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class ArticleListBean {
   int curPage;
+  List<ArticleBean> datas;
   int offset;
+  bool over;
   int pageCount;
   int size;
   int total;
-  bool over;
-  List<ArticleBean> datas;
 
-  ArticleListBean.fromParams(
+  ArticleListBean(
       {this.curPage,
+      this.datas,
       this.offset,
+      this.over,
       this.pageCount,
       this.size,
-      this.total,
-      this.over,
-      this.datas});
+      this.total});
 
-  ArticleListBean.fromJson(jsonRes) {
-    curPage = jsonRes['curPage'];
-    offset = jsonRes['offset'];
-    pageCount = jsonRes['pageCount'];
-    size = jsonRes['size'];
-    total = jsonRes['total'];
-    over = jsonRes['over'];
-    datas = jsonRes['datas'] == null ? null : [];
-
-    for (var datasItem in datas == null ? [] : jsonRes['datas']) {
-      datas.add(datasItem == null ? null : new ArticleBean.fromJson(datasItem));
+  ArticleListBean.fromJson(Map<String, dynamic> json) {
+    curPage = json['curPage'];
+    if (json['datas'] != null) {
+      datas = new List<ArticleBean>();
+      json['datas'].forEach((v) {
+        datas.add(new ArticleBean.fromJson(v));
+      });
     }
+    offset = json['offset'];
+    over = json['over'];
+    pageCount = json['pageCount'];
+    size = json['size'];
+    total = json['total'];
   }
 
-  @override
-  String toString() {
-    return '{"curPage": $curPage,"offset": $offset,"pageCount": $pageCount,"size": $size,"total": $total,"over": $over,"datas": $datas}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['curPage'] = this.curPage;
+    if (this.datas != null) {
+      data['datas'] = this.datas.map((v) => v.toJson()).toList();
+    }
+    data['offset'] = this.offset;
+    data['over'] = this.over;
+    data['pageCount'] = this.pageCount;
+    data['size'] = this.size;
+    data['total'] = this.total;
+    return data;
   }
 }
 
 class ArticleBean {
+  String apkLink;
+  int audit;
+  String author;
   int chapterId;
+  String chapterName;
+  bool collect;
   int courseId;
+  String desc;
+  String envelopePic;
+  bool fresh;
   int id;
+  String link;
+  String niceDate;
+  String niceShareDate;
+  String origin;
+  String prefix;
+  String projectLink;
   int publishTime;
+  int shareDate;
+  String shareUser;
   int superChapterId;
+  String superChapterName;
+  List<Tag> tags;
+  String title;
   int type;
   int userId;
   int visible;
   int zan;
-  bool collect;
-  bool fresh;
-  String apkLink;
-  String author;
-  String chapterName;
-  String desc;
-  String envelopePic;
-  String link;
-  String niceDate;
-  String origin;
-  String projectLink;
-  String superChapterName;
-  String title;
-  List<Tag> tags;
   int top;
 
-  ArticleBean.fromParams(
-      {this.chapterId,
+  ArticleBean(
+      {this.apkLink,
+      this.audit,
+      this.author,
+      this.chapterId,
+      this.chapterName,
+      this.collect,
       this.courseId,
+      this.desc,
+      this.envelopePic,
+      this.fresh,
       this.id,
+      this.link,
+      this.niceDate,
+      this.niceShareDate,
+      this.origin,
+      this.prefix,
+      this.projectLink,
       this.publishTime,
+      this.shareDate,
+      this.shareUser,
       this.superChapterId,
+      this.superChapterName,
+      this.tags,
+      this.title,
       this.type,
       this.userId,
       this.visible,
       this.zan,
-      this.collect,
-      this.fresh,
-      this.apkLink,
-      this.author,
-      this.chapterName,
-      this.desc,
-      this.envelopePic,
-      this.link,
-      this.niceDate,
-      this.origin,
-      this.projectLink,
-      this.superChapterName,
-      this.title,
-      this.tags,
       this.top});
 
-  ArticleBean.fromJson(jsonRes) {
-    chapterId = jsonRes['chapterId'];
-    courseId = jsonRes['courseId'];
-    id = jsonRes['id'];
-    publishTime = jsonRes['publishTime'];
-    superChapterId = jsonRes['superChapterId'];
-    type = jsonRes['type'];
-    userId = jsonRes['userId'];
-    visible = jsonRes['visible'];
-    zan = jsonRes['zan'];
-    collect = jsonRes['collect'];
-    fresh = jsonRes['fresh'];
-    apkLink = jsonRes['apkLink'];
-    author = jsonRes['author'];
-    chapterName = StringUtil.urlDecoder(jsonRes['chapterName']);
-    desc = StringUtil.urlDecoder(jsonRes['desc']);
-    envelopePic = jsonRes['envelopePic'];
-    link = jsonRes['link'];
-    niceDate = jsonRes['niceDate'];
-    origin = jsonRes['origin'];
-    projectLink = jsonRes['projectLink'];
-    superChapterName = jsonRes['superChapterName'];
-    title = StringUtil.urlDecoder(jsonRes['title']);
-    tags = jsonRes['tags'] == null ? null : [];
-    top = 0;
-
-    for (var tagsItem in tags == null ? [] : jsonRes['tags']) {
-      tags.add(tagsItem == null ? null : new Tag.fromJson(tagsItem));
+  ArticleBean.fromJson(Map<String, dynamic> json) {
+    apkLink = json['apkLink'];
+    audit = json['audit'];
+    author = json['author'];
+    chapterId = json['chapterId'];
+    chapterName = json['chapterName'];
+    collect = json['collect'];
+    courseId = json['courseId'];
+    desc = json['desc'];
+    envelopePic = json['envelopePic'];
+    fresh = json['fresh'];
+    id = json['id'];
+    link = json['link'];
+    niceDate = json['niceDate'];
+    niceShareDate = json['niceShareDate'];
+    origin = json['origin'];
+    prefix = json['prefix'];
+    projectLink = json['projectLink'];
+    publishTime = json['publishTime'];
+    shareDate = json['shareDate'];
+    shareUser = json['shareUser'];
+    superChapterId = json['superChapterId'];
+    superChapterName = json['superChapterName'];
+    if (json['tags'] != null) {
+      tags = new List<Tag>();
+      json['tags'].forEach((v) {
+        tags.add(new Tag.fromJson(v));
+      });
     }
+    title = json['title'];
+    type = json['type'];
+    userId = json['userId'];
+    visible = json['visible'];
+    zan = json['zan'];
+    top = 0;
   }
 
-  @override
-  String toString() {
-    return '{"chapterId": $chapterId,"courseId": $courseId,"id": $id,"publishTime": $publishTime,"superChapterId": $superChapterId,"type": $type,"userId": $userId,"visible": $visible,"zan": $zan,"collect": $collect,"fresh": $fresh,"apkLink": ${apkLink != null ? '${json.encode(apkLink)}' : 'null'},"author": ${author != null ? '${json.encode(author)}' : 'null'},"chapterName": ${chapterName != null ? '${json.encode(chapterName)}' : 'null'},"desc": ${desc != null ? '${json.encode(desc)}' : 'null'},"envelopePic": ${envelopePic != null ? '${json.encode(envelopePic)}' : 'null'},"link": ${link != null ? '${json.encode(link)}' : 'null'},"niceDate": ${niceDate != null ? '${json.encode(niceDate)}' : 'null'},"origin": ${origin != null ? '${json.encode(origin)}' : 'null'},"projectLink": ${projectLink != null ? '${json.encode(projectLink)}' : 'null'},"superChapterName": ${superChapterName != null ? '${json.encode(superChapterName)}' : 'null'},"title": ${title != null ? '${json.encode(title)}' : 'null'},"tags": $tags}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['apkLink'] = this.apkLink;
+    data['audit'] = this.audit;
+    data['author'] = this.author;
+    data['chapterId'] = this.chapterId;
+    data['chapterName'] = this.chapterName;
+    data['collect'] = this.collect;
+    data['courseId'] = this.courseId;
+    data['desc'] = this.desc;
+    data['envelopePic'] = this.envelopePic;
+    data['fresh'] = this.fresh;
+    data['id'] = this.id;
+    data['link'] = this.link;
+    data['niceDate'] = this.niceDate;
+    data['niceShareDate'] = this.niceShareDate;
+    data['origin'] = this.origin;
+    data['prefix'] = this.prefix;
+    data['projectLink'] = this.projectLink;
+    data['publishTime'] = this.publishTime;
+    data['shareDate'] = this.shareDate;
+    data['shareUser'] = this.shareUser;
+    data['superChapterId'] = this.superChapterId;
+    data['superChapterName'] = this.superChapterName;
+    if (this.tags != null) {
+      data['tags'] = this.tags.map((v) => v.toJson()).toList();
+    }
+    data['title'] = this.title;
+    data['type'] = this.type;
+    data['userId'] = this.userId;
+    data['visible'] = this.visible;
+    data['zan'] = this.zan;
+    return data;
   }
 }
 
@@ -189,15 +240,17 @@ class Tag {
   String name;
   String url;
 
-  Tag.fromParams({this.name, this.url});
+  Tag({this.name, this.url});
 
-  Tag.fromJson(jsonRes) {
-    name = jsonRes['name'];
-    url = jsonRes['url'];
+  Tag.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    url = json['url'];
   }
 
-  @override
-  String toString() {
-    return '{"name": ${name != null ? '${json.encode(name)}' : 'null'},"url": ${url != null ? '${json.encode(url)}' : 'null'}}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['url'] = this.url;
+    return data;
   }
 }

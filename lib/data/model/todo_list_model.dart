@@ -1,69 +1,72 @@
-import 'dart:convert' show json;
-
-import 'package:flutter_wanandroid/utils/string_util.dart';
-
 class TodoListModel {
+  TodoListBean data;
   int errorCode;
   String errorMsg;
-  TodoListBean data;
 
-  TodoListModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  TodoListModel({this.data, this.errorCode, this.errorMsg});
 
-  factory TodoListModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new TodoListModel.fromJson(json.decode(jsonStr))
-          : new TodoListModel.fromJson(jsonStr);
-
-  TodoListModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null
-        ? null
-        : new TodoListBean.fromJson(jsonRes['data']);
+  TodoListModel.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new TodoListBean.fromJson(json['data']) : null;
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class TodoListBean {
   int curPage;
+  List<TodoBean> datas;
   int offset;
+  bool over;
   int pageCount;
   int size;
   int total;
-  bool over;
-  List<TodoBean> datas;
 
-  TodoListBean.fromParams(
+  TodoListBean(
       {this.curPage,
-      this.offset,
-      this.pageCount,
-      this.size,
-      this.total,
-      this.over,
-      this.datas});
+        this.datas,
+        this.offset,
+        this.over,
+        this.pageCount,
+        this.size,
+        this.total});
 
-  TodoListBean.fromJson(jsonRes) {
-    curPage = jsonRes['curPage'];
-    offset = jsonRes['offset'];
-    pageCount = jsonRes['pageCount'];
-    size = jsonRes['size'];
-    total = jsonRes['total'];
-    over = jsonRes['over'];
-    datas = jsonRes['datas'] == null ? null : [];
-
-    for (var datasItem in datas == null ? [] : jsonRes['datas']) {
-      datas.add(datasItem == null ? null : new TodoBean.fromJson(datasItem));
+  TodoListBean.fromJson(Map<String, dynamic> json) {
+    curPage = json['curPage'];
+    if (json['datas'] != null) {
+      datas = new List<TodoBean>();
+      json['datas'].forEach((v) {
+        datas.add(new TodoBean.fromJson(v));
+      });
     }
+    offset = json['offset'];
+    over = json['over'];
+    pageCount = json['pageCount'];
+    size = json['size'];
+    total = json['total'];
   }
 
-  @override
-  String toString() {
-    return '{"curPage": $curPage,"offset": $offset,"pageCount": $pageCount,"size": $size,"total": $total,"over": $over,"datas": $datas}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['curPage'] = this.curPage;
+    if (this.datas != null) {
+      data['datas'] = this.datas.map((v) => v.toJson()).toList();
+    }
+    data['offset'] = this.offset;
+    data['over'] = this.over;
+    data['pageCount'] = this.pageCount;
+    data['size'] = this.size;
+    data['total'] = this.total;
+    return data;
   }
 }
 
@@ -80,36 +83,46 @@ class TodoBean {
   int type;
   int userId;
 
-  TodoBean.fromParams(
+  TodoBean(
       {this.completeDate,
-      this.completeDateStr,
-      this.content,
-      this.date,
-      this.dateStr,
-      this.id,
-      this.priority,
-      this.status,
-      this.title,
-      this.type,
-      this.userId});
+        this.completeDateStr,
+        this.content,
+        this.date,
+        this.dateStr,
+        this.id,
+        this.priority,
+        this.status,
+        this.title,
+        this.type,
+        this.userId});
 
-  TodoBean.fromJson(jsonRes) {
-    completeDate = jsonRes['completeDate'];
-    completeDateStr = jsonRes['completeDateStr'];
-    content = StringUtil.urlDecoder(jsonRes['content']);
-    date = jsonRes['date'];
-    dateStr = jsonRes['dateStr'];
-    id = jsonRes['id'];
-    priority = jsonRes['priority'];
-    status = jsonRes['status'];
-    title = StringUtil.urlDecoder(jsonRes['title']);
-    type = jsonRes['type'];
-    userId = jsonRes['userId'];
+  TodoBean.fromJson(Map<String, dynamic> json) {
+    completeDate = json['completeDate'];
+    completeDateStr = json['completeDateStr'];
+    content = json['content'];
+    date = json['date'];
+    dateStr = json['dateStr'];
+    id = json['id'];
+    priority = json['priority'];
+    status = json['status'];
+    title = json['title'];
+    type = json['type'];
+    userId = json['userId'];
   }
 
-  @override
-  String toString() {
-    return '{"completeDate": $completeDate,"completeDateStr": $completeDateStr,"content": $content,"date": $date,"dateStr": $dateStr,"id": $id,"priority": $priority,'
-        '"status": $status,"title": $title,"type": $type,"userId": $userId}}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['completeDate'] = this.completeDate;
+    data['completeDateStr'] = this.completeDateStr;
+    data['content'] = this.content;
+    data['date'] = this.date;
+    data['dateStr'] = this.dateStr;
+    data['id'] = this.id;
+    data['priority'] = this.priority;
+    data['status'] = this.status;
+    data['title'] = this.title;
+    data['type'] = this.type;
+    data['userId'] = this.userId;
+    return data;
   }
 }

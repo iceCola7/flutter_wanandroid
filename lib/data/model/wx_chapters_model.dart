@@ -1,73 +1,79 @@
-import 'dart:convert' show json;
-
-import 'package:flutter_wanandroid/utils/string_util.dart';
-
 class WXChaptersModel {
+  List<WXChaptersBean> data;
   int errorCode;
   String errorMsg;
-  List<WXChaptersBean> data;
 
-  WXChaptersModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  WXChaptersModel({this.data, this.errorCode, this.errorMsg});
 
-  factory WXChaptersModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new WXChaptersModel.fromJson(json.decode(jsonStr))
-          : new WXChaptersModel.fromJson(jsonStr);
-
-  WXChaptersModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data = jsonRes['data'] == null ? null : [];
-
-    for (var dataItem in data == null ? [] : jsonRes['data']) {
-      data.add(dataItem == null ? null : new WXChaptersBean.fromJson(dataItem));
+  WXChaptersModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<WXChaptersBean>();
+      json['data'].forEach((v) {
+        data.add(new WXChaptersBean.fromJson(v));
+      });
     }
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class WXChaptersBean {
+  List<dynamic> children;
   int courseId;
   int id;
+  String name;
   int order;
   int parentChapterId;
-  int visible;
   bool userControlSetTop;
-  String name;
-  List<dynamic> children;
+  int visible;
 
-  WXChaptersBean.fromParams(
-      {this.courseId,
+  WXChaptersBean(
+      {this.children,
+      this.courseId,
       this.id,
+      this.name,
       this.order,
       this.parentChapterId,
-      this.visible,
       this.userControlSetTop,
-      this.name,
-      this.children});
+      this.visible});
 
-  WXChaptersBean.fromJson(jsonRes) {
-    courseId = jsonRes['courseId'];
-    id = jsonRes['id'];
-    order = jsonRes['order'];
-    parentChapterId = jsonRes['parentChapterId'];
-    visible = jsonRes['visible'];
-    userControlSetTop = jsonRes['userControlSetTop'];
-    name = StringUtil.urlDecoder(jsonRes['name']);
-    children = jsonRes['children'] == null ? null : [];
-
-    for (var childrenItem in children == null ? [] : jsonRes['children']) {
-      children.add(childrenItem);
+  WXChaptersBean.fromJson(Map<String, dynamic> json) {
+    if (json['children'] != null) {
+      json['children'].forEach((v) {
+        children.add(v);
+      });
     }
+    courseId = json['courseId'];
+    id = json['id'];
+    name = json['name'];
+    order = json['order'];
+    parentChapterId = json['parentChapterId'];
+    userControlSetTop = json['userControlSetTop'];
+    visible = json['visible'];
   }
 
-  @override
-  String toString() {
-    return '{"courseId": $courseId,"id": $id,"order": $order,"parentChapterId": $parentChapterId,"visible": $visible,"userControlSetTop": $userControlSetTop,"name": ${name != null ? '${json.encode(name)}' : 'null'},"children": $children}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.children != null) {
+      data['children'] = this.children.map((v) => v.toJson()).toList();
+    }
+    data['courseId'] = this.courseId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['order'] = this.order;
+    data['parentChapterId'] = this.parentChapterId;
+    data['userControlSetTop'] = this.userControlSetTop;
+    data['visible'] = this.visible;
+    return data;
   }
 }

@@ -1,47 +1,56 @@
 class HotWordModel {
+  List<HotWordBean> data;
   int errorCode;
   String errorMsg;
-  List<HotWordBean> data;
 
-  static HotWordModel fromMap(Map<String, dynamic> map) {
-    HotWordModel hotWordModel = new HotWordModel();
-    hotWordModel.errorMsg = map['errorMsg'];
-    hotWordModel.errorCode = map['errorCode'];
-    hotWordModel.data = HotWordBean.fromMapList(map['data']);
-    return hotWordModel;
+  HotWordModel({this.data, this.errorCode, this.errorMsg});
+
+  HotWordModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = new List<HotWordBean>();
+      json['data'].forEach((v) {
+        data.add(new HotWordBean.fromJson(v));
+      });
+    }
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  static List<HotWordModel> fromMapList(dynamic mapList) {
-    List<HotWordModel> list = new List(mapList.length);
-    for (int i = 0; i < mapList.length; i++) {
-      list[i] = fromMap(mapList[i]);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    return list;
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class HotWordBean {
   int id;
-  String name;
   String link;
+  String name;
   int order;
   int visible;
 
-  static HotWordBean fromMap(Map<String, dynamic> map) {
-    HotWordBean dataListBean = new HotWordBean();
-    dataListBean.link = map['link'];
-    dataListBean.name = map['name'];
-    dataListBean.id = map['id'];
-    dataListBean.order = map['order'];
-    dataListBean.visible = map['visible'];
-    return dataListBean;
+  HotWordBean({this.id, this.link, this.name, this.order, this.visible});
+
+  HotWordBean.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    link = json['link'];
+    name = json['name'];
+    order = json['order'];
+    visible = json['visible'];
   }
 
-  static List<HotWordBean> fromMapList(dynamic mapList) {
-    List<HotWordBean> list = new List(mapList.length);
-    for (int i = 0; i < mapList.length; i++) {
-      list[i] = fromMap(mapList[i]);
-    }
-    return list;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['link'] = this.link;
+    data['name'] = this.name;
+    data['order'] = this.order;
+    data['visible'] = this.visible;
+    return data;
   }
 }

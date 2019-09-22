@@ -1,78 +1,91 @@
-import 'dart:convert' show json;
-
 class UserModel {
+  UserData data;
   int errorCode;
   String errorMsg;
-  UserData data;
 
-  UserModel.fromParams({this.errorCode, this.errorMsg, this.data});
+  UserModel({this.data, this.errorCode, this.errorMsg});
 
-  factory UserModel(jsonStr) => jsonStr == null
-      ? null
-      : jsonStr is String
-          ? new UserModel.fromJson(json.decode(jsonStr))
-          : new UserModel.fromJson(jsonStr);
-
-  UserModel.fromJson(jsonRes) {
-    errorCode = jsonRes['errorCode'];
-    errorMsg = jsonRes['errorMsg'];
-    data =
-        jsonRes['data'] == null ? null : new UserData.fromJson(jsonRes['data']);
+  UserModel.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new UserData.fromJson(json['data']) : null;
+    errorCode = json['errorCode'];
+    errorMsg = json['errorMsg'];
   }
 
-  @override
-  String toString() {
-    return '{"errorCode": $errorCode,"errorMsg": ${errorMsg != null ? '${json.encode(errorMsg)}' : 'null'},"data": $data}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
+    }
+    data['errorCode'] = this.errorCode;
+    data['errorMsg'] = this.errorMsg;
+    return data;
   }
 }
 
 class UserData {
-  int id;
-  int type;
-  String email;
-  String icon;
-  String password;
-  String token;
-  String username;
+  bool admin;
   List<dynamic> chapterTops;
   List<int> collectIds;
+  String email;
+  String icon;
+  int id;
+  String nickname;
+  String password;
+  String publicName;
+  String token;
+  int type;
+  String username;
 
-  UserData.fromParams(
-      {this.id,
-      this.type,
-      this.email,
-      this.icon,
-      this.password,
-      this.token,
-      this.username,
-      this.chapterTops,
-      this.collectIds});
+  UserData(
+      {this.admin,
+        this.chapterTops,
+        this.collectIds,
+        this.email,
+        this.icon,
+        this.id,
+        this.nickname,
+        this.password,
+        this.publicName,
+        this.token,
+        this.type,
+        this.username});
 
-  UserData.fromJson(jsonRes) {
-    id = jsonRes['id'];
-    type = jsonRes['type'];
-    email = jsonRes['email'];
-    icon = jsonRes['icon'];
-    password = jsonRes['password'];
-    token = jsonRes['token'];
-    username = jsonRes['username'];
-    chapterTops = jsonRes['chapterTops'] == null ? null : [];
-
-    for (var chapterTopsItem
-        in chapterTops == null ? [] : jsonRes['chapterTops']) {
-      chapterTops.add(chapterTopsItem);
+  UserData.fromJson(Map<String, dynamic> json) {
+    admin = json['admin'];
+    if (json['chapterTops'] != null) {
+      chapterTops = new List<Null>();
+      json['chapterTops'].forEach((v) {
+        chapterTops.add(v);
+      });
     }
-
-    collectIds = jsonRes['collectIds'] == null ? null : [];
-
-    for (var collectIdsItem
-        in collectIds == null ? [] : jsonRes['collectIds']) {
-      collectIds.add(collectIdsItem);
-    }
+    collectIds = json['collectIds'].cast<int>();
+    email = json['email'];
+    icon = json['icon'];
+    id = json['id'];
+    nickname = json['nickname'];
+    password = json['password'];
+    publicName = json['publicName'];
+    token = json['token'];
+    type = json['type'];
+    username = json['username'];
   }
 
-  @override
-  String toString() {
-    return '{"id": $id,"type": $type,"email": ${email != null ? '${json.encode(email)}' : 'null'},"icon": ${icon != null ? '${json.encode(icon)}' : 'null'},"password": ${password != null ? '${json.encode(password)}' : 'null'},"token": ${token != null ? '${json.encode(token)}' : 'null'},"username": ${username != null ? '${json.encode(username)}' : 'null'},"chapterTops": $chapterTops,"collectIds": $collectIds}';
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['admin'] = this.admin;
+    if (this.chapterTops != null) {
+      data['chapterTops'] = this.chapterTops.map((v) => v.toJson()).toList();
+    }
+    data['collectIds'] = this.collectIds;
+    data['email'] = this.email;
+    data['icon'] = this.icon;
+    data['id'] = this.id;
+    data['nickname'] = this.nickname;
+    data['password'] = this.password;
+    data['publicName'] = this.publicName;
+    data['token'] = this.token;
+    data['type'] = this.type;
+    data['username'] = this.username;
+    return data;
   }
 }
