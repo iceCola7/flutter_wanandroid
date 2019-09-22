@@ -33,6 +33,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.4,
         title: Text("关于"),
       ),
       body: new ListView(

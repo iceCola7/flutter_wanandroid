@@ -93,7 +93,7 @@ class ItemArticleListState extends State<ItemArticleList> {
                   ),
                 ),
                 Text(
-                  item.author,
+                  item.author.isNotEmpty ? item.author : item.shareUser,
                   style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   textAlign: TextAlign.left,
                 ),

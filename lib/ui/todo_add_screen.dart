@@ -98,6 +98,7 @@ class TodoAddScreenSate extends State<TodoAddScreen> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            elevation: 0.4,
             title: new Text(toolbarTitle),
           ),
           body: Container(

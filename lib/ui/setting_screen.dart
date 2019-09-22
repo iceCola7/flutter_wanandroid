@@ -22,6 +22,7 @@ class SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.4,
         title: Text('设置'),
       ),
       body: ListView(

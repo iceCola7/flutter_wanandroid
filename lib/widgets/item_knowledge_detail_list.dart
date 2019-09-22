@@ -49,7 +49,9 @@ class ItemKnowledgeDetailListState extends State<ItemKnowledgeDetailList> {
                       child: Row(
                         children: <Widget>[
                           Text(
-                            item.author,
+                            item.author.isNotEmpty
+                                ? item.author
+                                : item.shareUser,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[600],

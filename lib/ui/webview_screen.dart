@@ -72,14 +72,14 @@ class WebViewScreenState extends State<WebViewScreen> {
         ),
         actions: <Widget>[
           IconButton(
-            tooltip: '用浏览器打开',
+            // tooltip: '用浏览器打开',
             icon: Icon(Icons.language, size: 20.0),
             onPressed: () {
               RouteUtil.launchInBrowser(widget.url, title: widget.title);
             },
           ),
           IconButton(
-            tooltip: '分享',
+            // tooltip: '分享',
             icon: Icon(Icons.share, size: 20.0),
             onPressed: () {
               Share.share('${widget.title} : ${widget.url}');
