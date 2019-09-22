@@ -98,6 +98,14 @@
 
 **[最新更新日志请点击查看](https://github.com/iceCola7/flutter_wanandroid/releases)**
 
+**V1.0.1**
+
+- 优化界面，增加官方网站；
+- 替换 flutter_webview_plugin；
+- 修改 author 为空显示 shareUser ；
+- 修改 CookieManager 管理 Cookie 的问题；
+- 修改版权声明点击无弹窗问题；
+
 **V1.0.0**
 
 - 首次提交，主要功能都已完成。
