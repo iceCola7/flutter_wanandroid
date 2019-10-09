@@ -91,7 +91,8 @@ class WXArticleBean {
   String prefix;
   String projectLink;
   int publishTime;
-  Null shareDate;
+  int selfVisible;
+  int shareDate;
   String shareUser;
   int superChapterId;
   String superChapterName;
@@ -121,6 +122,7 @@ class WXArticleBean {
       this.prefix,
       this.projectLink,
       this.publishTime,
+      this.selfVisible,
       this.shareDate,
       this.shareUser,
       this.superChapterId,
@@ -151,6 +153,7 @@ class WXArticleBean {
     prefix = json['prefix'];
     projectLink = json['projectLink'];
     publishTime = json['publishTime'];
+    selfVisible = json['selfVisible'];
     shareDate = json['shareDate'];
     shareUser = json['shareUser'];
     superChapterId = json['superChapterId'];
@@ -188,6 +191,7 @@ class WXArticleBean {
     data['prefix'] = this.prefix;
     data['projectLink'] = this.projectLink;
     data['publishTime'] = this.publishTime;
+    data['selfVisible'] = this.selfVisible;
     data['shareDate'] = this.shareDate;
     data['shareUser'] = this.shareUser;
     data['superChapterId'] = this.superChapterId;
