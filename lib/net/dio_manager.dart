@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
+import 'package:flutter_wanandroid/net/interceptors/cookie_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'interceptors/log_interceptor.dart';
@@ -34,7 +35,7 @@ class DioManager {
     String tempPath = tempDir.path + "/dioCookie";
     print('DioUtil : http cookie path = $tempPath');
     CookieJar cj = PersistCookieJar(dir: tempPath, ignoreExpires: true);
-    dio.interceptors.add(CookieManager(cj));
+    dio.interceptors.add(CookieInterceptor(cj));
   }
 
   static String handleError(error, {String defaultErrorStr = '未知错误~'}) {
