@@ -20,7 +20,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   # 网络库 https://github.com/flutterchina/dio
-  dio: ^2.1.13
+  dio: ^3.0.3
+  # Cookie https://github.com/flutterchina/dio/tree/master/plugins/cookie_manager
+  dio_cookie_manager: 1.0.0
   # 轻量级数据存储 https://pub.dartlang.org/packages/shared_preferences
   shared_preferences: ^0.4.3
   # https://github.com/duytq94/flutter-intro-slider

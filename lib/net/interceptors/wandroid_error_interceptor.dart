@@ -11,19 +11,19 @@ import '../index.dart';
 /// WanAndroid 统一接口返回格式错误检测
 class WanAndroidErrorInterceptor extends InterceptorsWrapper {
   @override
-  onRequest(RequestOptions options) {
+  onRequest(RequestOptions options) async {
     return options;
   }
 
   @override
-  onError(DioError error) {
+  onError(DioError error) async {
     String errorMsg = DioManager.handleError(error);
     T.show(msg: errorMsg);
     return error;
   }
 
   @override
-  onResponse(Response response) {
+  onResponse(Response response) async {
     var data = response.data;
 
     if (data is String) {

@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_wanandroid/data/api/apis.dart';
-import 'package:flutter_wanandroid/net/interceptors/cookie_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'interceptors/cookie_interceptor.dart';
 import 'interceptors/log_interceptor.dart';
 import 'interceptors/wandroid_error_interceptor.dart';
 

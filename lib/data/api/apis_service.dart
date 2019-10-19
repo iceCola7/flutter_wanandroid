@@ -140,7 +140,7 @@ class ApiService {
   /// 获取搜索的文章列表
   void getSearchArticleList(Function callback, Function errorCallback,
       int _page, String _keyword) async {
-    FormData formData = new FormData.from({"k": _keyword});
+    FormData formData = new FormData.fromMap({"k": _keyword});
     dio
         .post(Apis.SEARCH_ARTICLE_LIST + "/$_page/json", data: formData)
         .then((response) {
@@ -154,7 +154,7 @@ class ApiService {
   void login(Function callback, Function errorCallback, String _username,
       String _password) async {
     FormData formData =
-        new FormData.from({"username": _username, "password": _password});
+        new FormData.fromMap({"username": _username, "password": _password});
     dio.post(Apis.USER_LOGIN, data: formData).then((response) {
       callback(UserModel.fromJson(response.data), response);
     }).catchError((e) {
@@ -165,7 +165,7 @@ class ApiService {
   /// 注册
   void register(Function callback, Function errorCallback, String _username,
       String _password) async {
-    FormData formData = new FormData.from({
+    FormData formData = new FormData.fromMap({
       "username": _username,
       "password": _password,
       "repassword": _password

@@ -7,7 +7,7 @@ class LogInterceptors extends InterceptorsWrapper {
   bool isDebug = AppConfig.isDebug;
 
   @override
-  onRequest(RequestOptions options) {
+  onRequest(RequestOptions options) async {
     if (isDebug) {
       print('┌─────────────────────Begin Request─────────────────────');
       printKV('uri', options.uri);
@@ -30,7 +30,7 @@ class LogInterceptors extends InterceptorsWrapper {
   }
 
   @override
-  onResponse(Response response) {
+  onResponse(Response response) async {
     if (isDebug) {
       print('┌─────────────────────Begin Response—————————————————————');
       printKV('uri', response.request.uri);
@@ -50,7 +50,7 @@ class LogInterceptors extends InterceptorsWrapper {
   }
 
   @override
-  onError(DioError err) {
+  onError(DioError err) async {
     if (isDebug) {
       print('┌─────────────────────Begin Dio Error—————————————————————');
       printKV('error', err.toString());
