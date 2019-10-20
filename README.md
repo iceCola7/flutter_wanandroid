@@ -98,6 +98,11 @@
 
 **[最新更新日志请点击查看](https://github.com/iceCola7/flutter_wanandroid/releases)**
 
+**v1.0.3**
+
+- 适配 dio 3.0.3 版本；
+- 修改注册完成后自动登录。
+
 **v1.0.2**
 
 - 修改 CookieInterceptor 管理 Cookie 的问题。
