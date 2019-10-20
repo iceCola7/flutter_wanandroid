@@ -112,7 +112,10 @@ class CollectScreenState extends BaseWidgetState<CollectScreen> {
 
   @override
   AppBar attachAppBar() {
-    return AppBar(title: Text("收藏"));
+    return AppBar(
+      elevation: 0.4,
+      title: Text("收藏"),
+    );
   }
 
   @override

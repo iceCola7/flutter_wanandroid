@@ -137,6 +137,7 @@ class HotWordScreenState extends BaseWidgetState<HotWordScreen> {
   @override
   AppBar attachAppBar() {
     return AppBar(
+      elevation: 0.4,
       title: TextField(
         autofocus: false,
         style: TextStyle(color: Colors.white),

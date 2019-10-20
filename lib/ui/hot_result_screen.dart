@@ -119,7 +119,10 @@ class HotResultScreenState extends BaseWidgetState<HotResultScreen> {
 
   @override
   AppBar attachAppBar() {
-    return AppBar(title: Text(widget.keyword));
+    return AppBar(
+      elevation: 0.4,
+      title: Text(widget.keyword),
+    );
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
@@ -31,7 +33,8 @@ class RegisterScreenState extends State<RegisterScreen> {
         if (_userModel != null) {
           if (_userModel.errorCode == 0) {
             T.show(msg: "注册成功！");
-            Navigator.of(context).pop();
+            var map = {'username': username, 'password': password};
+            Navigator.of(context).pop(jsonEncode(map));
           } else {
             T.show(msg: _userModel.errorMsg);
           }

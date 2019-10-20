@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/common/application.dart';
@@ -26,10 +28,7 @@ class LoginScreenState extends State<LoginScreen> {
   final FocusNode _userNameFocusNode = FocusNode();
   final FocusNode _psdFocusNode = FocusNode();
 
-  Future _login() async {
-    String username = _userNameController.text;
-    String password = _psdController.text;
-
+  Future _login(String username, String password) async {
     if ((null != username && username.length > 0) &&
         (null != password && password.length > 0)) {
       _showLoading(context);
@@ -180,7 +179,9 @@ class LoginScreenState extends State<LoginScreen> {
                               color: Theme.of(context).primaryColor,
                               textColor: Colors.white,
                               onPressed: () {
-                                _login();
+                                String username = _userNameController.text;
+                                String password = _psdController.text;
+                                _login(username, password);
                               },
                             ),
                           ),
@@ -208,6 +209,13 @@ class LoginScreenState extends State<LoginScreen> {
   void registerClick() async {
     await Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new RegisterScreen();
-    }));
+    })).then((value) {
+      var map = jsonDecode(value);
+      var username = map['username'];
+      var password = map['password'];
+      _userNameController.text = username;
+      _psdController.text = password;
+      _login(username, password);
+    });
   }
 }
