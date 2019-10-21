@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/main_screen.dart';
+import 'package:flutter_wanandroid/utils/screen_adapter.dart';
 import 'package:flutter_wanandroid/utils/utils.dart';
 
 /// 启动页面
@@ -24,6 +25,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenAdapter.init(context);
     return new Center(
       child: Stack(
         children: <Widget>[
