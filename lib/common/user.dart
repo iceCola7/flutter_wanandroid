@@ -42,11 +42,7 @@ class User {
   void clearUserInfo() {
     cookie = null;
     userName = null;
-    clearInfo();
-  }
-
-  clearInfo() async {
-    SPUtil.putString(Constants.COOKIES_KEY, null);
-    SPUtil.putString(Constants.USERNAME_KEY, null);
+    SPUtil.remove(Constants.COOKIES_KEY);
+    SPUtil.remove(Constants.USERNAME_KEY);
   }
 }
