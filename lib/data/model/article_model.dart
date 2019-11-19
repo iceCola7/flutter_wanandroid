@@ -120,6 +120,7 @@ class ArticleBean {
   String prefix;
   String projectLink;
   int publishTime;
+  int selfVisible;
   int shareDate;
   String shareUser;
   int superChapterId;
@@ -151,6 +152,7 @@ class ArticleBean {
       this.prefix,
       this.projectLink,
       this.publishTime,
+      this.selfVisible,
       this.shareDate,
       this.shareUser,
       this.superChapterId,
@@ -182,6 +184,7 @@ class ArticleBean {
     prefix = json['prefix'];
     projectLink = json['projectLink'];
     publishTime = json['publishTime'];
+    selfVisible = json['selfVisible'];
     shareDate = json['shareDate'];
     shareUser = json['shareUser'];
     superChapterId = json['superChapterId'];
@@ -220,6 +223,7 @@ class ArticleBean {
     data['prefix'] = this.prefix;
     data['projectLink'] = this.projectLink;
     data['publishTime'] = this.publishTime;
+    data['selfVisible'] = this.selfVisible;
     data['shareDate'] = this.shareDate;
     data['shareUser'] = this.shareUser;
     data['superChapterId'] = this.superChapterId;

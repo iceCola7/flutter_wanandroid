@@ -47,6 +47,7 @@ class KnowledgeDetailScreenState extends State<KnowledgeDetailScreen>
         new TabController(length: bean.children.length, vsync: this);
     return new Scaffold(
       appBar: new AppBar(
+        elevation: 0.4,
         title: Text(bean.name),
         bottom: new TabBar(
             indicatorColor: Colors.white,
