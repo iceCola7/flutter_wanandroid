@@ -90,4 +90,11 @@ class Apis {
 
   /// 广场列表
   static const String SQUARE_LIST = BASE_HOST + "/user_article/list";
+
+  /// 我的分享列表
+  static const String SHARE_LIST = BASE_HOST + "/user/lg/private_articles";
+
+  /// 删除已分享的文章
+  static const String DELETE_SHARE_ARTICLE =
+      BASE_HOST + "/lg/user_article/delete";
 }

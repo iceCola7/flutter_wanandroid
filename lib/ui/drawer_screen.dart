@@ -14,6 +14,7 @@ import 'package:flutter_wanandroid/ui/login_screen.dart';
 import 'package:flutter_wanandroid/ui/rank_screen.dart';
 import 'package:flutter_wanandroid/ui/score_screen.dart';
 import 'package:flutter_wanandroid/ui/setting_screen.dart';
+import 'package:flutter_wanandroid/ui/share_screen.dart';
 import 'package:flutter_wanandroid/ui/todo_screen.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
@@ -179,6 +180,27 @@ class DrawerScreenState extends State<DrawerScreen>
               onTap: () {
                 if (isLogin) {
                   RouteUtil.push(context, CollectScreen());
+                } else {
+                  T.show(msg: "请先登录~");
+                  RouteUtil.push(context, LoginScreen());
+                }
+              },
+            ),
+            ListTile(
+              title: Text(
+                "我的分享",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16),
+              ),
+              leading: Image.asset(
+                Utils.getImgPath('ic_share'),
+                width: 24,
+                height: 24,
+                color: Theme.of(context).primaryColor,
+              ),
+              onTap: () {
+                if (isLogin) {
+                  RouteUtil.push(context, ShareScreen());
                 } else {
                   T.show(msg: "请先登录~");
                   RouteUtil.push(context, LoginScreen());

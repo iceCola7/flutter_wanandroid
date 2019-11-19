@@ -13,6 +13,7 @@ import 'package:flutter_wanandroid/data/model/project_article_model.dart';
 import 'package:flutter_wanandroid/data/model/project_tree_model.dart';
 import 'package:flutter_wanandroid/data/model/rank_model.dart';
 import 'package:flutter_wanandroid/data/model/search_article_model.dart';
+import 'package:flutter_wanandroid/data/model/share_model.dart';
 import 'package:flutter_wanandroid/data/model/todo_list_model.dart';
 import 'package:flutter_wanandroid/data/model/user_info_model.dart';
 import 'package:flutter_wanandroid/data/model/user_model.dart';
@@ -320,6 +321,26 @@ class ApiService {
       Function callback, Function errorCallback, int _page) async {
     dio.get(Apis.SQUARE_LIST + "/$_page/json").then((response) {
       callback(ArticleModel.fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 获取我的分享列表数据
+  void getShareList(
+      Function callback, Function errorCallback, int _page) async {
+    dio.get(Apis.SHARE_LIST + "/$_page/json").then((response) {
+      callback(ShareModel.fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
+  /// 删除已分享的文章
+  void deleteShareArticle(
+      Function callback, Function errorCallback, int _id) async {
+    dio.post(Apis.DELETE_SHARE_ARTICLE + "/$_id/json").then((response) {
+      callback(BaseModel.fromJson(response.data));
     }).catchError((e) {
       errorCallback(e);
     });
