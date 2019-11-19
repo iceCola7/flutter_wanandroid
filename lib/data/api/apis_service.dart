@@ -345,4 +345,14 @@ class ApiService {
       errorCallback(e);
     });
   }
+
+  /// 分享文章
+  void shareArticle(Function callback, Function errorCallback, params) async {
+    dio.post(Apis.SHARE_ARTICLE_ADD, queryParameters: params).then((response) {
+      callback(BaseModel.fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
+
 }

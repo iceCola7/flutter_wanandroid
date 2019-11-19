@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/ui/drawer_screen.dart';
 import 'package:flutter_wanandroid/ui/home_screen.dart';
 import 'package:flutter_wanandroid/ui/hot_word_screen.dart';
 import 'package:flutter_wanandroid/ui/project_screen.dart';
+import 'package:flutter_wanandroid/ui/share_article_screen.dart';
 import 'package:flutter_wanandroid/ui/square_screen.dart';
 import 'package:flutter_wanandroid/ui/system_screen.dart';
 import 'package:flutter_wanandroid/ui/wechat_screen.dart';
@@ -51,6 +52,7 @@ class MainScreenState extends State<MainScreen>
               icon: _selectedIndex == 1 ? Icon(Icons.add) : Icon(Icons.search),
               onPressed: () {
                 if (_selectedIndex == 1) {
+                  RouteUtil.push(context, ShareArticleScreen());
                 } else {
                   RouteUtil.push(context, HotWordScreen());
                 }

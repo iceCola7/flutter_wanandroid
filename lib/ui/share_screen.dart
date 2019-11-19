@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/base_model.dart';
 import 'package:flutter_wanandroid/data/model/share_model.dart';
+import 'package:flutter_wanandroid/event/refresh_share_event.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
+import 'package:flutter_wanandroid/ui/share_article_screen.dart';
+import 'package:flutter_wanandroid/utils/index.dart';
 import 'package:flutter_wanandroid/utils/toast_util.dart';
 import 'package:flutter_wanandroid/widgets/item_share_list.dart';
 import 'package:flutter_wanandroid/widgets/loading_dialog.dart';
@@ -41,6 +45,16 @@ class ShareScreenState extends BaseWidgetState<ShareScreen> {
   @override
   void initState() {
     super.initState();
+    this.registerRefreshEvent();
+  }
+
+  /// 注册刷新列表事件
+  void registerRefreshEvent() {
+    Application.eventBus.on<RefreshShareEvent>().listen((event) {
+      showLoading().then((value) {
+        getShareList();
+      });
+    });
   }
 
   @override
@@ -138,10 +152,10 @@ class ShareScreenState extends BaseWidgetState<ShareScreen> {
   /// 删除已分享的文章
   Future deleteShareArticle(int id, int index) async {
     _showLoading(context);
-    apiService.deleteTodoById((BaseModel model) {
+    apiService.deleteShareArticle((BaseModel model) {
       _dismissLoading(context);
       if (model.errorCode == Constants.STATUS_SUCCESS) {
-        T.show(msg: "删除成功");
+        T.show(msg: "已删除分享的文章");
         setState(() {
           _shareList.removeAt(index);
         });
@@ -161,7 +175,9 @@ class ShareScreenState extends BaseWidgetState<ShareScreen> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.add),
-          onPressed: () {},
+          onPressed: () {
+            RouteUtil.push(context, ShareArticleScreen());
+          },
         )
       ],
     );

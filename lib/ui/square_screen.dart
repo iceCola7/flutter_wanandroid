@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/data/api/apis_service.dart';
 import 'package:flutter_wanandroid/data/model/article_model.dart';
+import 'package:flutter_wanandroid/event/refresh_share_event.dart';
 import 'package:flutter_wanandroid/ui/base_widget.dart';
 import 'package:flutter_wanandroid/utils/index.dart';
 import 'package:flutter_wanandroid/widgets/item_article_list.dart';
@@ -36,6 +38,16 @@ class SquareScreenState extends BaseWidgetState<SquareScreen> {
   void initState() {
     super.initState();
     setAppBarVisible(false);
+    this.registerRefreshEvent();
+  }
+
+  /// 注册刷新列表事件
+  void registerRefreshEvent() {
+    Application.eventBus.on<RefreshShareEvent>().listen((event) {
+      showLoading().then((value) {
+        getSquareList();
+      });
+    });
   }
 
   @override

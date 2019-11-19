@@ -97,4 +97,8 @@ class Apis {
   /// 删除已分享的文章
   static const String DELETE_SHARE_ARTICLE =
       BASE_HOST + "/lg/user_article/delete";
+
+  /// 分享文章
+  static const String SHARE_ARTICLE_ADD =
+      BASE_HOST + "/lg/user_article/add/json";
 }
