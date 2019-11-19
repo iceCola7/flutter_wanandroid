@@ -75,7 +75,8 @@ class NavigationArticleBean {
   String prefix;
   String projectLink;
   int publishTime;
-  Null shareDate;
+  int selfVisible;
+  String shareDate;
   String shareUser;
   int superChapterId;
   String superChapterName;
@@ -88,33 +89,34 @@ class NavigationArticleBean {
 
   NavigationArticleBean(
       {this.apkLink,
-        this.audit,
-        this.author,
-        this.chapterId,
-        this.chapterName,
-        this.collect,
-        this.courseId,
-        this.desc,
-        this.envelopePic,
-        this.fresh,
-        this.id,
-        this.link,
-        this.niceDate,
-        this.niceShareDate,
-        this.origin,
-        this.prefix,
-        this.projectLink,
-        this.publishTime,
-        this.shareDate,
-        this.shareUser,
-        this.superChapterId,
-        this.superChapterName,
-        this.tags,
-        this.title,
-        this.type,
-        this.userId,
-        this.visible,
-        this.zan});
+      this.audit,
+      this.author,
+      this.chapterId,
+      this.chapterName,
+      this.collect,
+      this.courseId,
+      this.desc,
+      this.envelopePic,
+      this.fresh,
+      this.id,
+      this.link,
+      this.niceDate,
+      this.niceShareDate,
+      this.origin,
+      this.prefix,
+      this.projectLink,
+      this.publishTime,
+      this.selfVisible,
+      this.shareDate,
+      this.shareUser,
+      this.superChapterId,
+      this.superChapterName,
+      this.tags,
+      this.title,
+      this.type,
+      this.userId,
+      this.visible,
+      this.zan});
 
   NavigationArticleBean.fromJson(Map<String, dynamic> json) {
     apkLink = json['apkLink'];
@@ -135,6 +137,7 @@ class NavigationArticleBean {
     prefix = json['prefix'];
     projectLink = json['projectLink'];
     publishTime = json['publishTime'];
+    selfVisible = json['selfVisible'];
     shareDate = json['shareDate'];
     shareUser = json['shareUser'];
     superChapterId = json['superChapterId'];
@@ -172,6 +175,7 @@ class NavigationArticleBean {
     data['prefix'] = this.prefix;
     data['projectLink'] = this.projectLink;
     data['publishTime'] = this.publishTime;
+    data['selfVisible'] = this.selfVisible;
     data['shareDate'] = this.shareDate;
     data['shareUser'] = this.shareUser;
     data['superChapterId'] = this.superChapterId;
