@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/drawer_screen.dart';
 import 'package:flutter_wanandroid/ui/home_screen.dart';
 import 'package:flutter_wanandroid/ui/hot_word_screen.dart';
-import 'package:flutter_wanandroid/ui/navigation_screen.dart';
 import 'package:flutter_wanandroid/ui/project_screen.dart';
 import 'package:flutter_wanandroid/ui/square_screen.dart';
+import 'package:flutter_wanandroid/ui/system_screen.dart';
 import 'package:flutter_wanandroid/ui/wechat_screen.dart';
 import 'package:flutter_wanandroid/utils/index.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
@@ -27,9 +27,8 @@ class MainScreenState extends State<MainScreen>
   var pages = <Widget>[
     HomeScreen(),
     SquareScreen(),
-    // KnowledgeTreeScreen(),
     WeChatScreen(),
-    NavigationScreen(),
+    SystemScreen(),
     ProjectScreen(),
   ];
 
