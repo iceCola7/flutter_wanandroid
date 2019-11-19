@@ -87,4 +87,7 @@ class Apis {
 
   /// 积分排行榜
   static const String RANK_LIST = BASE_HOST + "/coin/rank";
+
+  /// 广场列表
+  static const String SQUARE_LIST = BASE_HOST + "/user_article/list";
 }

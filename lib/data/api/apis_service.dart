@@ -314,4 +314,14 @@ class ApiService {
       errorCallback(e);
     });
   }
+
+  /// 获取广场列表数据
+  void getSquareList(
+      Function callback, Function errorCallback, int _page) async {
+    dio.get(Apis.SQUARE_LIST + "/$_page/json").then((response) {
+      callback(ArticleModel.fromJson(response.data));
+    }).catchError((e) {
+      errorCallback(e);
+    });
+  }
 }
