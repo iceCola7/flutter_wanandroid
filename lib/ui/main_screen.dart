@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/drawer_screen.dart';
 import 'package:flutter_wanandroid/ui/home_screen.dart';
 import 'package:flutter_wanandroid/ui/hot_word_screen.dart';
-import 'package:flutter_wanandroid/ui/knowledge_tree_screen.dart';
 import 'package:flutter_wanandroid/ui/navigation_screen.dart';
 import 'package:flutter_wanandroid/ui/project_screen.dart';
+import 'package:flutter_wanandroid/ui/square_screen.dart';
 import 'package:flutter_wanandroid/ui/wechat_screen.dart';
+import 'package:flutter_wanandroid/utils/index.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 
 class MainScreen extends StatefulWidget {
@@ -21,11 +22,12 @@ class MainScreenState extends State<MainScreen>
 
   int _selectedIndex = 0; // 当前选中的索引
 
-  final bottomBarTitles = ["首页", "知识体系", "公众号", "导航", "项目"];
+  final bottomBarTitles = ["首页", "广场", "公众号", "体系", "项目"];
 
   var pages = <Widget>[
     HomeScreen(),
-    KnowledgeTreeScreen(),
+    SquareScreen(),
+    // KnowledgeTreeScreen(),
     WeChatScreen(),
     NavigationScreen(),
     ProjectScreen(),
@@ -47,9 +49,12 @@ class MainScreenState extends State<MainScreen>
           elevation: 0,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.search),
+              icon: _selectedIndex == 1 ? Icon(Icons.add) : Icon(Icons.search),
               onPressed: () {
-                RouteUtil.push(context, HotWordScreen());
+                if (_selectedIndex == 1) {
+                } else {
+                  RouteUtil.push(context, HotWordScreen());
+                }
               },
             )
           ],
@@ -68,23 +73,23 @@ class MainScreenState extends State<MainScreen>
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: buildImage(0, "ic_home"), //Icon(Icons.home),
               title: Text(bottomBarTitles[0]),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
+              icon: buildImage(1, "ic_square_line"), //Icon(Icons.assignment),
               title: Text(bottomBarTitles[1]),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
+              icon: buildImage(2, "ic_wechat"), //Icon(Icons.chat),
               title: Text(bottomBarTitles[2]),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.navigation),
+              icon: buildImage(3, "ic_system"), //Icon(Icons.assignment),
               title: Text(bottomBarTitles[3]),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.book),
+              icon: buildImage(4, "ic_project"), //Icon(Icons.book),
               title: Text(bottomBarTitles[4]),
             ),
           ],
@@ -98,6 +103,17 @@ class MainScreenState extends State<MainScreen>
 
   void _onItemTapped(int index) {
     _pageController.jumpToPage(index);
+  }
+
+  Widget buildImage(index, iconPath) {
+    return Image.asset(
+      Utils.getImgPath(iconPath),
+      width: 22,
+      height: 22,
+      color: _selectedIndex == index
+          ? Theme.of(context).primaryColor
+          : Colors.grey[600],
+    );
   }
 
   Future<bool> _onWillPop() {

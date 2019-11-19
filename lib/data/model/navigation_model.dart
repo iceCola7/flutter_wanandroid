@@ -76,7 +76,7 @@ class NavigationArticleBean {
   String projectLink;
   int publishTime;
   int selfVisible;
-  String shareDate;
+  int shareDate;
   String shareUser;
   int superChapterId;
   String superChapterName;
