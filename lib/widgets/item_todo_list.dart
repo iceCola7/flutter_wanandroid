@@ -167,6 +167,7 @@ class ItemTodoListState extends State<ItemTodoList> {
                     ),
                     new FlatButton(
                       onPressed: () {
+                        Navigator.of(context).pop(false);
                         widget.deleteItemCallback(item.id);
                       },
                       child:
