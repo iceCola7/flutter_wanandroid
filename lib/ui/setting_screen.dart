@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
 import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/res/colors.dart';
+import 'package:flutter_wanandroid/ui/qr_code_screen.dart';
 import 'package:flutter_wanandroid/utils/sp_util.dart';
 import 'package:flutter_wanandroid/utils/theme_util.dart';
 
@@ -77,6 +78,22 @@ class SettingScreenState extends State<SettingScreen> {
           new ListTile(
             trailing: Icon(Icons.chevron_right),
             title: new Row(
+              children: <Widget>[
+                Icon(Icons.settings_overscan,
+                    color: Theme.of(context).primaryColor),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text('扫码下载'),
+                )
+              ],
+            ),
+            onTap: () {
+              RouteUtil.push(context, QrCodeScreen());
+            },
+          ),
+          new ListTile(
+            trailing: Icon(Icons.chevron_right),
+            title: Row(
               children: <Widget>[
                 Icon(Icons.info, color: Theme.of(context).primaryColor),
                 Padding(
