@@ -21,8 +21,11 @@ class CookieInterceptor2 extends Interceptor {
 
   _saveCookies(Response response) {
     if (response != null && response.headers != null) {
+      String uri = response.request.uri.toString();
       List<String> cookies = response.headers[HttpHeaders.setCookieHeader];
-      if (cookies != null) {
+      if (cookies != null &&
+          (uri.contains(Constants.SAVE_USER_LOGIN_KEY) ||
+              uri.contains(Constants.SAVE_USER_REGISTER_KEY))) {
         SPUtil.putStringList(Constants.COOKIES_KEY, cookies);
       }
     }

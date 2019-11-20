@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_wanandroid/common/common.dart';
 
 /// Cookie 拦截器
 class CookieInterceptor extends Interceptor {
@@ -15,12 +16,12 @@ class CookieInterceptor extends Interceptor {
   @override
   Future onRequest(RequestOptions options) async {
     var cookies = cookieJar.loadForRequest(options.uri);
-//    cookies.removeWhere((cookie) {
-//      if (cookie.expires != null) {
-//        return cookie.expires.isBefore(DateTime.now());
-//      }
-//      return false;
-//    });
+    cookies.removeWhere((cookie) {
+      if (cookie.expires != null) {
+        return cookie.expires.isBefore(DateTime.now());
+      }
+      return false;
+    });
     String cookie = getCookies(cookies);
     if (cookie.isNotEmpty) options.headers[HttpHeaders.cookieHeader] = cookie;
   }
@@ -33,8 +34,11 @@ class CookieInterceptor extends Interceptor {
 
   _saveCookies(Response response) {
     if (response != null && response.headers != null) {
+      String uri = response.request.uri.toString();
       List<String> cookies = response.headers[HttpHeaders.setCookieHeader];
-      if (cookies != null) {
+      if (cookies != null &&
+          (uri.contains(Constants.SAVE_USER_LOGIN_KEY) ||
+              uri.contains(Constants.SAVE_USER_REGISTER_KEY))) {
         cookieJar.saveFromResponse(
           response.request.uri,
           cookies.map((str) => Cookie.fromSetCookieValue(str)).toList(),
