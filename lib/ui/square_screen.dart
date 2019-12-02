@@ -142,13 +142,13 @@ class SquareScreenState extends BaseWidgetState<SquareScreen> {
           itemBuilder: itemView,
           physics: new AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
-          itemCount: _articles.length + 1,
+          itemCount: _articles.length,
         ),
       ),
       floatingActionButton: !_isShowFAB
           ? null
           : FloatingActionButton(
-              heroTag: "home",
+              heroTag: "square",
               child: Icon(Icons.arrow_upward),
               onPressed: () {
                 /// 回到顶部时要执行的动画
