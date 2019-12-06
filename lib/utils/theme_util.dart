@@ -10,6 +10,7 @@ class ThemeUtils {
   /// 是否是夜间模式
   static bool dark = false;
 
+  /** 改变主题模式 */
   static ThemeData getThemeData() {
     if (dark) {
       return new ThemeData(

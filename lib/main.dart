@@ -55,6 +55,9 @@ Future<Null> getTheme() async {
   }
 }
 
+/// 这个 widget 作用这个应用的顶层 widget.
+/// 这个 widget 是无状态的，所以我们继承的是 [StatelessWidget].
+/// 对应的，有状态的 widget 可以继承 [StatefulWidget]
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -63,6 +66,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  /** 主题模式 */
   ThemeData themeData;
 
   @override
@@ -95,12 +99,12 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppConfig.appName,
-      debugShowCheckedModeBanner: false,
+      title: AppConfig.appName, // 标题
+      debugShowCheckedModeBanner: false, //去掉debug图标
       theme: themeData,
-      routes: Router.generateRoute(),
+      routes: Router.generateRoute(), // 存放路由的配置
       navigatorKey: navigatorKey,
-      home: new SplashScreen(),
+      home: new SplashScreen(), // 启动页
     );
   }
 

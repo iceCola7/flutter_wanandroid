@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/ui/index.dart';
 
 /// 存放路由的配置
-
 class RouterName {
   static const String splash = 'splash';
   static const String login = 'login';
