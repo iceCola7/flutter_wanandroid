@@ -10,6 +10,7 @@ import 'package:flutter_wanandroid/ui/wechat_screen.dart';
 import 'package:flutter_wanandroid/utils/index.dart';
 import 'package:flutter_wanandroid/utils/route_util.dart';
 
+/// 首页
 class MainScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -21,10 +22,13 @@ class MainScreenState extends State<MainScreen>
     with AutomaticKeepAliveClientMixin {
   PageController _pageController = PageController();
 
+  /// 当前选中的索引
   int _selectedIndex = 0; // 当前选中的索引
 
+  /// tabs的名字
   final bottomBarTitles = ["首页", "广场", "公众号", "体系", "项目"];
 
+  /// 五个Tabs的内容
   var pages = <Widget>[
     HomeScreen(),
     SquareScreen(),
@@ -40,21 +44,21 @@ class MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: _onWillPop, // onWillPop 就表示当前页面将退出
       child: Scaffold(
-        drawer: DrawerScreen(),
+        drawer: DrawerScreen(), // 侧滑页面
         appBar: AppBar(
-          title: new Text(bottomBarTitles[_selectedIndex]),
+          title: new Text(bottomBarTitles[_selectedIndex]), // 标题
           bottom: null,
           elevation: 0,
-          actions: <Widget>[
+          actions: <Widget>[ // 标题栏右上角+和搜索
             IconButton(
               icon: _selectedIndex == 1 ? Icon(Icons.add) : Icon(Icons.search),
               onPressed: () {
                 if (_selectedIndex == 1) {
-                  RouteUtil.push(context, ShareArticleScreen());
+                  RouteUtil.push(context, ShareArticleScreen()); // 跳到分享
                 } else {
-                  RouteUtil.push(context, HotWordScreen());
+                  RouteUtil.push(context, HotWordScreen()); // 跳到搜索
                 }
               },
             )
@@ -96,7 +100,7 @@ class MainScreenState extends State<MainScreen>
           ],
           type: BottomNavigationBarType.fixed, // 设置显示模式
           currentIndex: _selectedIndex, // 当前选中项的索引
-          onTap: _onItemTapped, // 选择的处理事件
+          onTap: _onItemTapped, // 选择的处理事件 选中变化回调函数
         ),
       ),
     );
@@ -106,6 +110,7 @@ class MainScreenState extends State<MainScreen>
     _pageController.jumpToPage(index);
   }
 
+  /// tabs 底总的图片
   Widget buildImage(index, iconPath) {
     return Image.asset(
       Utils.getImgPath(iconPath),

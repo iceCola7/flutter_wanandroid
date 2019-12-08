@@ -10,10 +10,11 @@ import 'package:path_provider/path_provider.dart';
 import 'interceptors/log_interceptor.dart';
 import 'interceptors/wandroid_error_interceptor.dart';
 
-Dio _dio = Dio();
+Dio _dio = Dio(); /// 使用默认配置
 
 Dio get dio => _dio;
 
+/// dio 配置
 class DioManager {
   static Future init() async {
     dio.options.baseUrl = Apis.BASE_HOST;
@@ -40,7 +41,7 @@ class DioManager {
     dio.interceptors.add(CookieInterceptor(cj));
   }
 
-  static String handleError(error, {String defaultErrorStr = '未知错误~'}) {
+  static String handleError(error, {String defaultErrorStr = '未知错误~'}) { // 定义一个命名参数的方法
     String errStr;
     if (error is DioError) {
       if (error.type == DioErrorType.CONNECT_TIMEOUT) {
