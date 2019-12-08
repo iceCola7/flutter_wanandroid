@@ -64,10 +64,12 @@ class KnowledgeTreeState extends BaseWidgetState<KnowledgeTreeScreen> {
     apiService.getKnowledgeTreeList((KnowledgeTreeModel knowledgeTreeModel) {
       if (knowledgeTreeModel.errorCode == Constants.STATUS_SUCCESS) {
         if (knowledgeTreeModel.data.length > 0) {
-          showContent();
-          setState(() {
-            _list.clear();
-            _list.addAll(knowledgeTreeModel.data);
+          showContent().then((value) {
+            _refreshController.refreshCompleted();
+            setState(() {
+              _list.clear();
+              _list.addAll(knowledgeTreeModel.data);
+            });
           });
         } else {
           showEmpty();
