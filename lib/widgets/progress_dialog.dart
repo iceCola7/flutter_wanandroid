@@ -38,8 +38,7 @@ class ProgressDialog extends StatefulWidget {
       : super(key: key);
 
   static ProgressDialogState of(BuildContext context) {
-    return context
-        .ancestorStateOfType(const TypeMatcher<ProgressDialogState>());
+    return context.findAncestorStateOfType<ProgressDialogState>();
   }
 
   @override

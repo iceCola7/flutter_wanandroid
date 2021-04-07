@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/common/application.dart';
 import 'package:flutter_wanandroid/common/common.dart';
-import 'package:flutter_wanandroid/common/router_config.dart';
+import 'package:flutter_wanandroid/common/router_config.dart' as myrouter;
 import 'package:flutter_wanandroid/common/user.dart';
 import 'package:flutter_wanandroid/event/theme_change_event.dart';
 import 'package:flutter_wanandroid/res/colors.dart';
@@ -102,7 +102,7 @@ class MyAppState extends State<MyApp> {
       title: AppConfig.appName, // 标题
       debugShowCheckedModeBanner: false, //去掉debug图标
       theme: themeData,
-      routes: Router.generateRoute(), // 存放路由的配置
+      routes: myrouter.Router.generateRoute(), // 存放路由的配置
       navigatorKey: navigatorKey,
       home: new SplashScreen(), // 启动页
     );

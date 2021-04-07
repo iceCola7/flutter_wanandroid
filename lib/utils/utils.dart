@@ -24,12 +24,12 @@ class Utils {
       nextFocus: true,
       actions: List.generate(
           list.length,
-          (i) => KeyboardAction(
+          (i) => KeyboardActionsItem(
                 focusNode: list[i],
-                closeWidget: const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Text("关闭"),
-                ),
+                // closeWidget: const Padding(
+                //   padding: EdgeInsets.all(5.0),
+                //   child: Text("关闭"),
+                // ),
               )),
     );
   }
@@ -41,7 +41,7 @@ Future<T> showTransparentDialog<T>({
   bool barrierDismissible = true,
   WidgetBuilder builder,
 }) {
-  final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
+  final ThemeData theme = Theme.of(context);
   return showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext buildContext, Animation<double> animation,
@@ -82,7 +82,7 @@ Future<T> showElasticDialog<T>({
   bool barrierDismissible = true,
   WidgetBuilder builder,
 }) {
-  final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
+  final ThemeData theme = Theme.of(context);
   return showGeneralDialog(
     context: context,
     pageBuilder: (BuildContext buildContext, Animation<double> animation,

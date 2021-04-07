@@ -66,15 +66,15 @@ class LoginScreenState extends State<LoginScreen> {
       keyboardBarColor: Colors.grey[200],
       nextFocus: true,
       actions: [
-        KeyboardAction(
+        KeyboardActionsItem(
           focusNode: _userNameFocusNode,
         ),
-        KeyboardAction(
+        KeyboardActionsItem(
           focusNode: _psdFocusNode,
-          closeWidget: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.close),
-          ),
+          // closeWidget: Padding(
+          //   padding: EdgeInsets.all(8.0),
+          //   child: Icon(Icons.close),
+          // ),
         ),
       ],
     );
