@@ -27,7 +27,7 @@ class UserInfoBean {
   int coinCount;
   int level;
   String nickname;
-  int rank;
+  String rank;
   int userId;
   String username;
 
