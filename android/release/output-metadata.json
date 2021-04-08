@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.cxz.flutter.wanandroid",
+  "variantName": "processReleaseResources",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 5,
+      "versionName": "1.0.4",
+      "outputFile": "flutter_wanandroid.apk"
+    }
+  ]
+}
